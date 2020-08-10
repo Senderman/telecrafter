@@ -11,23 +11,18 @@ class Config @Inject constructor(plugin: JavaPlugin) {
     private val props = Properties()
     private val configFileName = "telecrafter.properties"
 
-    init {
-        val dataFolder = plugin.dataFolder
-        if (!dataFolder.exists())
-            throw Exception("Create ${dataFolder.absolutePath}/$configFileName")
+    val botToken: String = getProperty("bot.token")
+    val botName: String = getProperty("bot.name")
+    val chatId: Long = getProperty("bot.chatId").trim().toLong()
 
-        FileInputStream(File("${dataFolder.absolutePath}/$configFileName")).use { props.load(it) }
+    init {
+        val dataFile = File("${plugin.dataFolder.absolutePath}/$configFileName")
+        if (!dataFile.exists())
+            throw Exception("Create and fill in ${dataFile.absolutePath}!")
+
+        FileInputStream(dataFile).use { props.load(it) }
     }
 
-    val botToken: String
-        get() = props.getProperty("bot.token")
-            ?: throw Exception("You must define bot.token in $configFileName!")
-
-    val botName: String
-        get() = props.getProperty("bot.name")
-            ?: throw Exception("You must define bot.name in $configFileName!")
-
-    val chatId: Long
-        get() = props.getProperty("bot.chatId")?.trim()?.toLong()
-            ?: throw Exception("You must define bot.chatId in $configFileName!")
+    private fun getProperty(key: String): String = props.getProperty(key)?.trim()
+        ?: throw RuntimeException("You must define $key in $configFileName!")
 }
