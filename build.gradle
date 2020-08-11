@@ -1,6 +1,5 @@
 plugins {
     id 'java'
-    id 'org.jetbrains.kotlin.jvm' version '1.3.72'
     id 'com.github.johnrengelman.shadow' version '5.2.0'
 }
 
@@ -9,14 +8,12 @@ version '1.0'
 
 repositories {
     mavenCentral()
-    maven{
+    maven {
         url 'https://hub.spigotmc.org/nexus/content/repositories/public/'
     }
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib"
-
     implementation 'org.bukkit:bukkit:1.15.2-R0.1-SNAPSHOT'
     implementation 'org.telegram:telegrambots:4.9.1'
 }

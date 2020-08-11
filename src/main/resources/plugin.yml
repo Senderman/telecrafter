@@ -1,3 +1,4 @@
 name: Telecrafter
-main: com.senderman.telecrafter.minecraft.Telecrafter
+main: com.senderman.telecrafter.minecraft.TelecrafterPlugin
 version: 1,0
+prefix: Telecrafter
