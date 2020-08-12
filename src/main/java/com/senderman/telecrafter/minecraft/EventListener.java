@@ -3,8 +3,11 @@ package com.senderman.telecrafter.minecraft;
 import com.google.inject.Inject;
 import com.senderman.telecrafter.telegram.TelegramChat;
 import org.apache.commons.lang.ObjectUtils;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -74,5 +77,13 @@ public class EventListener implements Listener {
     @EventHandler
     void onServerLoad(ServerLoadEvent event) {
         telegram.sendMessage("⛏ ✅ Сервер запущен!");
+    }
+
+    @EventHandler
+    void onChristmasBlocks(BlockBreakEvent event) {
+        if (event.getBlock().getType() == Material.DIAMOND_ORE) {
+            Player player = event.getPlayer();
+            player.playSound(player.getLocation(), "jbells", 0.5f, 1f);
+        }
     }
 }
