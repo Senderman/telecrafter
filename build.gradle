@@ -13,11 +13,17 @@ repositories {
     }
 }
 
+def bukkitDep = 'org.bukkit:bukkit:1.15.2-R0.1-SNAPSHOT'
+
 dependencies {
-    implementation 'org.bukkit:bukkit:1.15.2-R0.1-SNAPSHOT'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.11.2'
     implementation 'org.telegram:telegrambots:4.9.1'
+    implementation bukkitDep
 }
 
 shadowJar {
     mergeServiceFiles()
+    dependencies {
+        exclude(dependency(bukkitDep))
+    }
 }

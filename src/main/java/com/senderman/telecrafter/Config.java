@@ -1,37 +1,29 @@
 package com.senderman.telecrafter;
 
-import com.google.inject.Inject;
-import org.bukkit.plugin.java.JavaPlugin;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Properties;
+import java.util.Set;
 
 public class Config {
 
-    private final Properties properties = new Properties();
-    private final String configFileName = "telecrafter.properties";
-    private final String botToken;
-    private final String botName;
-    private final Long chatId;
+    private static final String configFileName = "config.yaml";
+    private String botToken;
+    private String botName;
+    private Long chatId;
+    private Set<Integer> admins;
 
-    @Inject
-    public Config(JavaPlugin plugin) {
-        File dataFile = new File(plugin.getDataFolder().getAbsolutePath() + "/" + configFileName);
-
-        try (FileInputStream in = new FileInputStream(dataFile)) {
-            properties.load(in);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException("You must create and fill in " + dataFile.getAbsolutePath());
+    public static Config load(File configDir) {
+        File configFile = new File(configDir, configFileName);
+        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+        mapper.findAndRegisterModules();
+        try {
+            return mapper.readValue(configFile, Config.class);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Error reading config file");
         }
-
-        this.botToken = getProperty("bot.token");
-        this.botName = getProperty("bot.name");
-        this.chatId = Long.parseLong(getProperty("bot.chatId"));
     }
 
     public String getBotToken() {
@@ -46,13 +38,11 @@ public class Config {
         return chatId;
     }
 
-    private String getProperty(String key) {
-        String result = properties.getProperty(key);
-        if (result == null)
-            throw new RuntimeException("You must define " + key + " in " + configFileName + "!");
-
-        return result.trim();
+    public Set<Integer> getAdmins() {
+        return admins;
     }
 
-
+    public boolean isAdmin(int userId) {
+        return admins.contains(userId);
+    }
 }

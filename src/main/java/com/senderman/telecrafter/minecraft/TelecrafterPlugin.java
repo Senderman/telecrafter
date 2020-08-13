@@ -24,7 +24,5 @@ public class TelecrafterPlugin extends JavaPlugin {
             return;
         }
         getServer().getPluginManager().registerEvents(injector.getInstance(EventListener.class), this);
-
-
     }
 }
