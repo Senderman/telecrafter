@@ -3,6 +3,7 @@ package com.senderman.telecrafter;
 import com.google.inject.AbstractModule;
 import com.senderman.telecrafter.minecraft.EventListener;
 import com.senderman.telecrafter.minecraft.MinecraftProvider;
+import com.senderman.telecrafter.minecraft.PluginManager;
 import com.senderman.telecrafter.minecraft.ServerPropertiesProvider;
 import com.senderman.telecrafter.telegram.TelecrafterBot;
 import com.senderman.telecrafter.telegram.TelegramChat;
@@ -23,6 +24,8 @@ public class InjectorConfig extends AbstractModule {
                 .toInstance(plugin);
         bind(Config.class)
                 .toInstance(Config.load(plugin.getDataFolder()));
+        bind(PluginManager.class)
+                .toInstance(new PluginManager(plugin.getDataFolder().getParentFile()));
         bind(ServerPropertiesProvider.class)
                 .toInstance(new ServerPropertiesProvider(plugin.getDataFolder().getParentFile().getParentFile()));
 

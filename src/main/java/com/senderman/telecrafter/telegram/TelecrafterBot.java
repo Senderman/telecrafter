@@ -3,6 +3,7 @@ package com.senderman.telecrafter.telegram;
 import com.google.inject.Inject;
 import com.senderman.telecrafter.Config;
 import com.senderman.telecrafter.minecraft.MinecraftProvider;
+import com.senderman.telecrafter.minecraft.PluginManager;
 import com.senderman.telecrafter.minecraft.ServerPropertiesProvider;
 import com.senderman.telecrafter.telegram.command.CommandExecutor;
 import com.senderman.telecrafter.telegram.command.CommandKeeper;
@@ -28,11 +29,12 @@ public class TelecrafterBot extends TelegramLongPollingBot {
     public TelecrafterBot(
             Config config,
             MinecraftProvider minecraft,
-            ServerPropertiesProvider serverProperties
+            ServerPropertiesProvider serverProperties,
+            PluginManager pluginManager
     ) {
         this.config = config;
         this.minecraft = minecraft;
-        this.commandKeeper = new CommandKeeper(this, minecraft, serverProperties);
+        this.commandKeeper = new CommandKeeper(this, minecraft, serverProperties, pluginManager);
     }
 
     @Override
@@ -41,6 +43,8 @@ public class TelecrafterBot extends TelegramLongPollingBot {
         if (!update.hasMessage()) return;
 
         Message message = update.getMessage();
+
+        if (!message.getChatId().equals(config.getChatId())) return;
         if (message.getDate() + 120 < System.currentTimeMillis() / 1000) return;
 
         String text = message.getText();

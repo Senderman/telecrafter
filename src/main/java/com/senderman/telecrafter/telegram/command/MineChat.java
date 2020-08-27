@@ -15,7 +15,7 @@ public class MineChat implements CommandExecutor {
 
     @Override
     public String getCommand() {
-        return "/mchat";
+        return "/mc";
     }
 
     @Override

@@ -28,7 +28,7 @@ public class GetProp implements CommandExecutor {
     public void execute(Message message) {
         String[] params = message.getText().split("\\s+");
         if (params.length < 2) {
-            telegram.sendMessage("Неверное количество аргументов! " + getCommand() + "key");
+            telegram.sendMessage("Неверное количество аргументов! " + getCommand() + " key");
             return;
         }
 

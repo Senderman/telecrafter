@@ -1,6 +1,7 @@
 package com.senderman.telecrafter.telegram.command;
 
 import com.senderman.telecrafter.minecraft.MinecraftProvider;
+import com.senderman.telecrafter.minecraft.PluginManager;
 import com.senderman.telecrafter.minecraft.ServerPropertiesProvider;
 import com.senderman.telecrafter.telegram.TelecrafterBot;
 
@@ -15,7 +16,8 @@ public class CommandKeeper {
     public CommandKeeper(
             TelecrafterBot telegram,
             MinecraftProvider minecraft,
-            ServerPropertiesProvider serverProperties
+            ServerPropertiesProvider serverProperties,
+            PluginManager pluginManager
     ) {
         commands = new HashMap<>();
         register(
@@ -23,7 +25,10 @@ public class CommandKeeper {
                 new MineChat(minecraft),
                 new MineNow(telegram, minecraft),
                 new SetProp(telegram, serverProperties),
-                new GetProp(telegram, serverProperties)
+                new GetProp(telegram, serverProperties),
+                new ListPlugins(telegram, pluginManager),
+                new InstallPlugin(telegram, pluginManager),
+                new DeletePlugin(telegram, pluginManager)
         );
     }
 

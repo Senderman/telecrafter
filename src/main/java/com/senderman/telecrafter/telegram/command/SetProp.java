@@ -32,7 +32,7 @@ public class SetProp implements CommandExecutor {
             return;
         }
         if (serverProperties.setProperty(params[1], params[2]))
-            telegram.sendMessage("Новое значение для " + params[1] + "установлено!");
+            telegram.sendMessage("Новое значение для " + params[1] + " установлено!");
         else
             telegram.sendMessage("Такого ключа нет!");
     }
