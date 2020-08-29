@@ -19,6 +19,11 @@ public class MineChat implements CommandExecutor {
     }
 
     @Override
+    public String getDescription() {
+        return "отправить сообщение в игру";
+    }
+
+    @Override
     public void execute(Message message) {
         String name = message.getFrom().getFirstName();
         String[] params = message.getText().split("\\s+", 2);

@@ -1,7 +1,6 @@
 package com.senderman.telecrafter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,12 +14,10 @@ public class Config {
     private Long chatId;
     private Set<Integer> admins;
 
-    public static Config load(File configDir) {
+    public static Config load(File configDir, ObjectMapper objectMapper) {
         File configFile = new File(configDir, configFileName);
-        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-        mapper.findAndRegisterModules();
         try {
-            return mapper.readValue(configFile, Config.class);
+            return objectMapper.readValue(configFile, Config.class);
         } catch (IOException e) {
             throw new RuntimeException("Error reading config file");
         }

@@ -20,6 +20,11 @@ public class MineNow implements CommandExecutor {
     }
 
     @Override
+    public String getDescription() {
+        return "посмотреть текущий онлайн";
+    }
+
+    @Override
     public void execute(Message message) {
         String messageToSend = "<b>Игроки на сервере:</b>\n\n" + minecraft.getOnlinePlayersNames();
         telegram.sendMessage(messageToSend);

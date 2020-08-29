@@ -81,7 +81,7 @@ public class EventListener implements Listener {
     @EventHandler
     void onServerMessage(BroadcastMessageEvent event) {
         String message = event.getMessage();
-        telegram.sendMessage("\uD83D\uDCAC [Сервер]: " + message);
+        telegram.sendMessage("\uD83D\uDCAC " + message);
     }
 
     @EventHandler

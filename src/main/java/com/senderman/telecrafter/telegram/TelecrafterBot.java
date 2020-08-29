@@ -50,7 +50,8 @@ public class TelecrafterBot extends TelegramLongPollingBot {
         String text = message.getText();
 
         if (text.startsWith("!") && config.isAdmin(message.getFrom().getId())) {
-            runCommandFromText(text.replaceFirst("!", ""));
+            String command = text.replaceFirst("!", "");
+            runCommandFromText(command);
             return;
         }
 

@@ -20,6 +20,11 @@ public class GetProp implements CommandExecutor {
     }
 
     @Override
+    public String getDescription() {
+        return "прочитать проперти из server.properties";
+    }
+
+    @Override
     public boolean adminsOnly() {
         return true;
     }

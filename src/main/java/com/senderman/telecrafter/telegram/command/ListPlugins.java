@@ -20,6 +20,11 @@ public class ListPlugins implements CommandExecutor {
     }
 
     @Override
+    public String getDescription() {
+        return "посмотреть список плагинов";
+    }
+
+    @Override
     public void execute(Message message) {
         String plugins = pluginManager.listPlugins();
         telegram.sendMessage("<b>Плагины на сервере:</b>\n\n" + plugins);

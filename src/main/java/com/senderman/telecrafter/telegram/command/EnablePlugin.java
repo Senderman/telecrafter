@@ -4,24 +4,24 @@ import com.senderman.telecrafter.minecraft.PluginManager;
 import com.senderman.telecrafter.telegram.TelecrafterBot;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-public class DeletePlugin implements CommandExecutor {
+public class EnablePlugin implements CommandExecutor {
 
     private final TelecrafterBot telegram;
     private final PluginManager pluginManager;
 
-    public DeletePlugin(TelecrafterBot telegram, PluginManager pluginManager) {
+    public EnablePlugin(TelecrafterBot telegram, PluginManager pluginManager) {
         this.telegram = telegram;
         this.pluginManager = pluginManager;
     }
 
     @Override
     public String getCommand() {
-        return "/rmplugin";
+        return "/enplugin";
     }
 
     @Override
     public String getDescription() {
-        return "удалить плагин";
+        return "включить плагин";
     }
 
     @Override
@@ -33,15 +33,13 @@ public class DeletePlugin implements CommandExecutor {
     public void execute(Message message) {
         String[] params = message.getText().split("\\s+", 2);
         if (params.length < 2) {
-            telegram.sendMessage("Неверное использование команды! " + getCommand() + " plugin.jar");
+            telegram.sendMessage(getCommand() + " pluginName");
             return;
         }
-
-        String pluginFileName = params[1];
-        if (pluginManager.deletePlugin(pluginFileName))
-            telegram.sendMessage("Плагин " + pluginFileName + " выгружен и будет удален при релоаде!");
+        String pluginName = params[1];
+        if (pluginManager.enablePlugin(pluginName))
+            telegram.sendMessage("Плагин " + pluginName + " успешно включен!");
         else
-            telegram.sendMessage("Не удалось удалить плагин " + pluginFileName);
-
+            telegram.sendMessage("Плагин " + pluginName + " не найден/уже выключен!");
     }
 }

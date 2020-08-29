@@ -28,7 +28,10 @@ public class CommandKeeper {
                 new GetProp(telegram, serverProperties),
                 new ListPlugins(telegram, pluginManager),
                 new InstallPlugin(telegram, pluginManager),
-                new DeletePlugin(telegram, pluginManager)
+                new DeletePlugin(telegram, pluginManager),
+                new EnablePlugin(telegram, pluginManager),
+                new DisablePlugin(telegram, pluginManager),
+                new Help(telegram, commands)
         );
     }
 

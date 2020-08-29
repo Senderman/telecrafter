@@ -1,6 +1,7 @@
 package com.senderman.telecrafter.minecraft;
 
 import com.google.inject.Inject;
+import org.bukkit.Server;
 import org.bukkit.World.Environment;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -36,7 +37,17 @@ public class MinecraftProvider {
     }
 
     public boolean runCommand(String command) {
+        if (command.startsWith("reload")) {
+            reloadServer();
+            return true;
+        }
+
         return plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), command);
+    }
+
+    public void reloadServer() {
+        Server server = plugin.getServer();
+        server.getScheduler().scheduleSyncDelayedTask(plugin, server::reload);
     }
 
     private String getEnvironmentName(Environment environment) {

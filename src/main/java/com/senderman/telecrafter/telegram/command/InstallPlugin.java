@@ -26,6 +26,11 @@ public class InstallPlugin implements CommandExecutor {
     }
 
     @Override
+    public String getDescription() {
+        return "установить/обновить плагин";
+    }
+
+    @Override
     public boolean adminsOnly() {
         return true;
     }
@@ -45,8 +50,10 @@ public class InstallPlugin implements CommandExecutor {
         }
 
         try {
-            pluginManager.installPlugin(pluginFile);
-            telegram.sendMessage("Плагин успешно установлен!");
+            if (pluginManager.installPlugin(pluginFile))
+                telegram.sendMessage("Плагин успешно установлен!");
+            else
+                telegram.sendMessage("Ошибка установки плагина: неверный формат файла плагина!");
         } catch (IOException e) {
             telegram.sendMessage("Ошибка установки плагина: " + e.toString());
         } finally {

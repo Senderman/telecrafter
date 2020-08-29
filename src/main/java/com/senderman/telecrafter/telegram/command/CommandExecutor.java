@@ -6,6 +6,8 @@ public interface CommandExecutor {
 
     String getCommand();
 
+    String getDescription();
+
     default boolean adminsOnly() {
         return false;
     }

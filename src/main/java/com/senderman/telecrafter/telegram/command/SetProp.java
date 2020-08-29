@@ -20,6 +20,11 @@ public class SetProp implements CommandExecutor {
     }
 
     @Override
+    public String getDescription() {
+        return "выставить проперти в server.properties";
+    }
+
+    @Override
     public boolean adminsOnly() {
         return true;
     }

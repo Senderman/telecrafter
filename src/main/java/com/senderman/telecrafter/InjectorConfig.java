@@ -1,5 +1,7 @@
 package com.senderman.telecrafter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.inject.AbstractModule;
 import com.senderman.telecrafter.minecraft.EventListener;
 import com.senderman.telecrafter.minecraft.MinecraftProvider;
@@ -20,12 +22,19 @@ public class InjectorConfig extends AbstractModule {
     @Override
     protected void configure() {
 
+        ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
+        objectMapper.findAndRegisterModules();
+        bind(ObjectMapper.class).toInstance(objectMapper);
+
         bind(JavaPlugin.class)
                 .toInstance(plugin);
         bind(Config.class)
-                .toInstance(Config.load(plugin.getDataFolder()));
+                .toInstance(Config.load(plugin.getDataFolder(), objectMapper));
         bind(PluginManager.class)
-                .toInstance(new PluginManager(plugin.getDataFolder().getParentFile()));
+                .toInstance(new PluginManager(
+                        plugin,
+                        objectMapper
+                ));
         bind(ServerPropertiesProvider.class)
                 .toInstance(new ServerPropertiesProvider(plugin.getDataFolder().getParentFile().getParentFile()));
 
