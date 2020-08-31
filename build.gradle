@@ -4,26 +4,20 @@ plugins {
 }
 
 group 'com.senderman'
-version '1.2.5'
+version '1.2.6'
 
 repositories {
     mavenCentral()
-    maven {
-        url 'https://hub.spigotmc.org/nexus/content/repositories/public/'
-    }
 }
 
-def bukkitDep = 'org.bukkit:bukkit:1.15.2-R0.1-SNAPSHOT'
+def bukkitPath = '/home/senderman/mineserver/craftbukkit-1.16.1.jar'
 
 dependencies {
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.11.2'
     implementation 'org.telegram:telegrambots:4.9.1'
-    implementation bukkitDep
+    compileOnly files(bukkitPath)
 }
 
 shadowJar {
     mergeServiceFiles()
-    dependencies {
-        exclude(dependency(bukkitDep))
-    }
 }
