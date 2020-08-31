@@ -21,7 +21,7 @@ public class EnablePlugin implements CommandExecutor {
 
     @Override
     public String getDescription() {
-        return "включить плагин";
+        return "отдать команду включения плагина";
     }
 
     @Override
@@ -38,8 +38,8 @@ public class EnablePlugin implements CommandExecutor {
         }
         String pluginName = params[1];
         if (pluginManager.enablePlugin(pluginName))
-            telegram.sendMessage("Плагин " + pluginName + " успешно включен!");
+            telegram.sendMessage("Плагин " + pluginName + " скоро будет включен!");
         else
-            telegram.sendMessage("Плагин " + pluginName + " не найден/уже выключен!");
+            telegram.sendMessage("Плагин " + pluginName + " не найден/уже включен!");
     }
 }

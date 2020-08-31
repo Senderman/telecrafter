@@ -31,10 +31,7 @@ public class InjectorConfig extends AbstractModule {
         bind(Config.class)
                 .toInstance(Config.load(plugin.getDataFolder(), objectMapper));
         bind(PluginManager.class)
-                .toInstance(new PluginManager(
-                        plugin,
-                        objectMapper
-                ));
+                .toInstance(new PluginManager(plugin));
         bind(ServerPropertiesProvider.class)
                 .toInstance(new ServerPropertiesProvider(plugin.getDataFolder().getParentFile().getParentFile()));
 

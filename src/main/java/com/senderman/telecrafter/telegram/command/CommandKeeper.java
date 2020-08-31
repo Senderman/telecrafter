@@ -22,7 +22,7 @@ public class CommandKeeper {
         commands = new HashMap<>();
         register(
                 // add commands here
-                new MineChat(minecraft),
+                new MineChat(minecraft, telegram),
                 new MineNow(telegram, minecraft),
                 new SetProp(telegram, serverProperties),
                 new GetProp(telegram, serverProperties),

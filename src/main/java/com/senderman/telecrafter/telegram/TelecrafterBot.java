@@ -65,8 +65,13 @@ public class TelecrafterBot extends TelegramLongPollingBot {
         if (command.contains("@")) return; // skip other's bot commands
 
         Optional.ofNullable(commandKeeper.getExecutor(command)).ifPresent(executor -> {
-            if (userHasPermission(executor, message.getFrom().getId()))
-                executor.execute(message);
+            if (userHasPermission(executor, message.getFrom().getId())) {
+                try {
+                    executor.execute(message);
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
+            }
         });
 
     }
@@ -77,10 +82,8 @@ public class TelecrafterBot extends TelegramLongPollingBot {
 
     private void runCommandFromText(String text) {
         try {
-            if (minecraft.runCommand(text.replaceFirst("!", "")))
-                sendMessage("Команда отправлена серверу");
-            else
-                sendMessage("Такой команды нет!");
+            minecraft.runCommand(text.replaceFirst("!", ""),
+                    result -> sendMessage(result ? "Команда отправлена серверу!" : "Такой команды нет!"));
         } catch (CommandException e) {
             sendMessage("<b>Ошибка выполнения команды!</b>\n\n" + exceptionToString(e));
         }

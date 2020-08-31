@@ -1,23 +1,21 @@
 package com.senderman.telecrafter.minecraft;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.plugin.InvalidDescriptionException;
 import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import javax.annotation.Nullable;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -26,20 +24,22 @@ import java.util.zip.ZipFile;
 
 public class PluginManager {
 
-    private final JavaPlugin telecrafterPlugin;
+    private final Plugin mainPlugin;
     private final File pluginDirectory;
     private final org.bukkit.plugin.PluginManager pluginManager;
     private final BukkitScheduler scheduler;
-    private final ObjectMapper objectMapper;
     private final Set<Plugin> lostPlugins = new HashSet<>();
 
 
-    public PluginManager(JavaPlugin telecrafterPlugin, ObjectMapper objectMapper) {
-        this.telecrafterPlugin = telecrafterPlugin;
-        this.pluginDirectory = telecrafterPlugin.getDataFolder().getParentFile();
-        this.scheduler = telecrafterPlugin.getServer().getScheduler();
+    public PluginManager(JavaPlugin telecrafterPlugin) {
         this.pluginManager = telecrafterPlugin.getServer().getPluginManager();
-        this.objectMapper = objectMapper;
+        this.mainPlugin = pluginManager.getPlugin("EmptyBukkitPlugin");
+        if (this.mainPlugin == null) {
+            throw new IllegalStateException("You have EmptyBukkitPlugin to be installed!");
+        }
+        ;
+        this.pluginDirectory = mainPlugin.getDataFolder().getParentFile();
+        this.scheduler = mainPlugin.getServer().getScheduler();
     }
 
     public String listPlugins() {
@@ -50,37 +50,35 @@ public class PluginManager {
                 .collect(Collectors.joining("\n"));
     }
 
+    // Fires EnablePluginEvent, without checking result
     public boolean enablePlugin(String pluginName) {
         Plugin plugin = pluginManager.getPlugin(pluginName);
         if (plugin == null) return false;
         if (plugin.isEnabled()) return false;
-        scheduler.scheduleSyncDelayedTask(telecrafterPlugin, () ->
+        scheduler.scheduleSyncDelayedTask(mainPlugin, () ->
                 pluginManager.enablePlugin(plugin));
         return true;
     }
 
+    // Fires DisablePluginEvent, without checking result
     public boolean disablePlugin(String pluginName) {
         Plugin plugin = pluginManager.getPlugin(pluginName);
         if (plugin == null) return false;
         if (!plugin.isEnabled()) return false;
-        scheduler.scheduleSyncDelayedTask(telecrafterPlugin, () ->
+        scheduler.scheduleSyncDelayedTask(mainPlugin, () ->
                 pluginManager.disablePlugin(plugin));
 
-        while (plugin.isEnabled()) { // wait for plugin disabling
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
         return true;
     }
 
     public boolean deletePlugin(String pluginName) {
-        JavaPlugin plugin = (JavaPlugin) pluginManager.getPlugin(pluginName);
-        if (plugin == null) return false;
-        disablePlugin(pluginName);
+        return deletePlugin(pluginName, true);
+    }
 
+    public boolean deletePlugin(String pluginName, boolean disablePlugin) {
+        JavaPlugin plugin = (JavaPlugin) pluginManager.getPlugin(pluginName);
+
+        if (plugin == null) return false;
         try {
             Method getFile = JavaPlugin.class.getDeclaredMethod("getFile");
             getFile.setAccessible(true);
@@ -90,30 +88,38 @@ public class PluginManager {
             return false;
         }
 
+        if (disablePlugin)
+            disablePlugin(pluginName);
         lostPlugins.add(plugin);
         return true;
     }
 
+    // if plugin has to be replaced, reload server
     public boolean installPlugin(File pluginJar) throws IOException {
         String pluginName = getPluginName(pluginJar);
         if (pluginName == null) return false;
 
         Plugin oldPlugin = pluginManager.getPlugin(pluginName);
-        if (oldPlugin != null) deletePlugin(pluginName);
+        if (oldPlugin != null)
+            deletePlugin(pluginName, false);
+
         File copied = new File(pluginDirectory, pluginJar.getName());
         FileUtils.copyFile(pluginJar, copied);
-        try {
-            Plugin newPlugin = pluginManager.loadPlugin(copied);
-            if (newPlugin == null) {
+        if (oldPlugin != null)
+            scheduler.scheduleSyncDelayedTask(mainPlugin,
+                    () -> mainPlugin.getServer().dispatchCommand(mainPlugin.getServer().getConsoleSender(), "reload"));
+        else {
+            try {
+                Plugin newPlugin = pluginManager.loadPlugin(copied);
+                scheduler.scheduleSyncDelayedTask(mainPlugin,
+                        () -> pluginManager.enablePlugin(Objects.requireNonNull(newPlugin))
+                );
+            } catch (InvalidPluginException | InvalidDescriptionException e) {
+                e.printStackTrace();
                 return false;
-            } else {
-                enablePlugin(newPlugin.getName());
-                return true;
             }
-        } catch (InvalidPluginException | InvalidDescriptionException e) {
-            e.printStackTrace();
-            return false;
         }
+        return true;
     }
 
     @Nullable
@@ -121,24 +127,10 @@ public class PluginManager {
         ZipFile zipFile = new ZipFile(pluginJar);
         ZipEntry zipEntry = zipFile.getEntry("plugin.yml");
         if (zipEntry == null) return null;
-        File pluginYml = new File(pluginJar.getName() + "-plugin.yml");
-        try (
-                FileOutputStream out = new FileOutputStream(pluginYml);
-                InputStream in = zipFile.getInputStream(zipEntry)
-        ) {
-            int length;
-            byte[] buffer = new byte[1024];
-            while ((length = in.read(buffer)) != -1)
-                out.write(buffer, 0, length);
-        }
-
-        try {
-            PluginData pluginData = objectMapper.readValue(pluginYml, PluginData.class);
-            return pluginData.getName();
-        } catch (JsonParseException | JsonMappingException e) {
+        try (InputStream in = zipFile.getInputStream(zipEntry)) {
+            return new PluginDescriptionFile(in).getName();
+        } catch (InvalidDescriptionException e) {
             return null;
-        } finally {
-            pluginYml.delete();
         }
     }
 

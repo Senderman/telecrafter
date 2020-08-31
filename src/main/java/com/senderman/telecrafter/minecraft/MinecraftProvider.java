@@ -5,7 +5,9 @@ import org.bukkit.Server;
 import org.bukkit.World.Environment;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.util.Consumer;
 
+import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -36,18 +38,14 @@ public class MinecraftProvider {
                 )).collect(Collectors.joining("\n"));
     }
 
-    public boolean runCommand(String command) {
-        if (command.startsWith("reload")) {
-            reloadServer();
-            return true;
-        }
-
-        return plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), command);
-    }
-
-    public void reloadServer() {
+    public void runCommand(String command, @Nullable Consumer<Boolean> callback) {
         Server server = plugin.getServer();
-        server.getScheduler().scheduleSyncDelayedTask(plugin, server::reload);
+        server.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            boolean result = server.dispatchCommand(server.getConsoleSender(), command);
+            if (callback != null) {
+                callback.accept(result);
+            }
+        });
     }
 
     private String getEnvironmentName(Environment environment) {

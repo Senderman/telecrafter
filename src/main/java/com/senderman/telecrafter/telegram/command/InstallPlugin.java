@@ -27,7 +27,7 @@ public class InstallPlugin implements CommandExecutor {
 
     @Override
     public String getDescription() {
-        return "установить/обновить плагин";
+        return "установить/обновить плагин. При обновлении релоадит сервер";
     }
 
     @Override
