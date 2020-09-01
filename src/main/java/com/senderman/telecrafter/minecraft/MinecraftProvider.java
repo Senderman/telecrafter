@@ -5,7 +5,6 @@ import org.bukkit.Server;
 import org.bukkit.World.Environment;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Consumer;
 
 import javax.annotation.Nullable;
@@ -16,10 +15,13 @@ import java.util.stream.Collectors;
 public class MinecraftProvider {
 
     private final Plugin plugin;
+    private final ServerStopDelayer serverStopDelayer;
+
 
     @Inject
-    public MinecraftProvider(Plugin plugin) {
+    public MinecraftProvider(Plugin plugin, ServerStopDelayer serverStopDelayer) {
         this.plugin = plugin;
+        this.serverStopDelayer = serverStopDelayer;
     }
 
     public void sendMessage(String message) {
@@ -41,6 +43,11 @@ public class MinecraftProvider {
     }
 
     public void runCommand(String command, @Nullable Consumer<Boolean> callback) {
+        if (command.matches("^(stop|reload).*")) {
+            serverStopDelayer.scheduleServerStop(command);
+            return;
+        }
+
         Server server = plugin.getServer();
         server.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
             boolean result = server.dispatchCommand(server.getConsoleSender(), command);
@@ -50,8 +57,8 @@ public class MinecraftProvider {
         });
     }
 
-    public File getLogsDirectory(){
-        File logsDir =  new File(plugin.getDataFolder().getParentFile().getParentFile(), "logs");
+    public File getLogsDirectory() {
+        File logsDir = new File(plugin.getDataFolder().getParentFile().getParentFile(), "logs");
         if (!logsDir.exists())
             logsDir.mkdirs();
         return logsDir;

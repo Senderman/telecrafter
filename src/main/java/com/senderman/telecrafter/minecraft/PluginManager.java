@@ -28,13 +28,15 @@ public class PluginManager {
     private final Plugin mainPlugin;
     private final File pluginDirectory;
     private final org.bukkit.plugin.PluginManager pluginManager;
+    private final MinecraftProvider minecraftProvider;
     private final BukkitScheduler scheduler;
     private final Set<Plugin> lostPlugins = new HashSet<>();
 
 
     @Inject
-    public PluginManager(Plugin mainPlugin) {
+    public PluginManager(Plugin mainPlugin, MinecraftProvider minecraftProvider) {
         this.mainPlugin = mainPlugin;
+        this.minecraftProvider = minecraftProvider;
         this.pluginManager = mainPlugin.getServer().getPluginManager();
         this.pluginDirectory = this.mainPlugin.getDataFolder().getParentFile();
         this.scheduler = this.mainPlugin.getServer().getScheduler();
@@ -104,8 +106,7 @@ public class PluginManager {
         File copied = new File(pluginDirectory, pluginJar.getName());
         FileUtils.copyFile(pluginJar, copied);
         if (oldPlugin != null)
-            scheduler.scheduleSyncDelayedTask(mainPlugin,
-                    () -> mainPlugin.getServer().dispatchCommand(mainPlugin.getServer().getConsoleSender(), "reload"));
+            minecraftProvider.runCommand("reload", null);
         else {
             try {
                 Plugin newPlugin = pluginManager.loadPlugin(copied);

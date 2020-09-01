@@ -31,15 +31,16 @@ public class DisablePlugin implements CommandExecutor {
 
     @Override
     public void execute(Message message) {
+        long chatId = message.getChatId();
         String[] params = message.getText().split("\\s+", 2);
         if (params.length < 2) {
-            telegram.sendMessage(getCommand() + " pluginName");
+            telegram.sendMessage(chatId, getCommand() + " pluginName");
             return;
         }
         String pluginName = params[1];
         if (pluginManager.disablePlugin(pluginName))
-            telegram.sendMessage("Плагин " + pluginName + " скоро будет выключен!");
+            telegram.sendMessage(chatId,"Плагин " + pluginName + " скоро будет выключен!");
         else
-            telegram.sendMessage("Плагин " + pluginName + " не найден/уже выключен!");
+            telegram.sendMessage(chatId,"Плагин " + pluginName + " не найден/уже выключен!");
     }
 }

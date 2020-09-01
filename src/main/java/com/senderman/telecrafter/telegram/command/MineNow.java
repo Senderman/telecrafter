@@ -27,6 +27,6 @@ public class MineNow implements CommandExecutor {
     @Override
     public void execute(Message message) {
         String messageToSend = "<b>Игроки на сервере:</b>\n\n" + minecraft.getOnlinePlayersNames();
-        telegram.sendMessage(messageToSend);
+        telegram.sendMessage(message.getChatId(), messageToSend);
     }
 }

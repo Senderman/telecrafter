@@ -27,6 +27,6 @@ public class ListPlugins implements CommandExecutor {
     @Override
     public void execute(Message message) {
         String plugins = pluginManager.listPlugins();
-        telegram.sendMessage("<b>Плагины на сервере:</b>\n\n" + plugins);
+        telegram.sendMessage(message.getChatId(), "<b>Плагины на сервере:</b>\n\n" + plugins);
     }
 }

@@ -31,17 +31,18 @@ public class GetProp implements CommandExecutor {
 
     @Override
     public void execute(Message message) {
+        long chatId = message.getChatId();
         String[] params = message.getText().split("\\s+");
         if (params.length < 2) {
-            telegram.sendMessage("Неверное количество аргументов! " + getCommand() + " key");
+            telegram.sendMessage(chatId, "Неверное количество аргументов! " + getCommand() + " key");
             return;
         }
 
         String key = params[1];
         String value = serverProperties.getProperty(key);
         if (value == null)
-            telegram.sendMessage("Нет значения для " + key);
+            telegram.sendMessage(chatId, "Нет значения для " + key);
         else
-            telegram.sendMessage(key + "=" + value);
+            telegram.sendMessage(chatId,key + "=" + value);
     }
 }

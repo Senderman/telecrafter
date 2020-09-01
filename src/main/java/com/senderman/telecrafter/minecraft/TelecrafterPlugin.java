@@ -4,6 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.senderman.telecrafter.InjectorConfig;
 import com.senderman.telecrafter.telegram.TelecrafterBot;
+import com.senderman.telecrafter.telegram.TelegramChat;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
@@ -13,7 +14,7 @@ import org.telegram.telegrambots.meta.generics.BotSession;
 public class TelecrafterPlugin extends JavaPlugin {
 
     private BotSession botSession;
-    private TelecrafterBot telegram;
+    private TelegramChat telegram;
 
     @Override
     public void onEnable() {
@@ -21,19 +22,19 @@ public class TelecrafterPlugin extends JavaPlugin {
         Injector injector = Guice.createInjector(new InjectorConfig(this));
         TelegramBotsApi botsApi = new TelegramBotsApi();
         try {
-            telegram = injector.getInstance(TelecrafterBot.class);
-            botSession = botsApi.registerBot(telegram);
+            botSession = botsApi.registerBot(injector.getInstance(TelecrafterBot.class));
         } catch (TelegramApiRequestException e) {
             e.printStackTrace();
             return;
         }
+        telegram = injector.getInstance(TelegramChat.class);
         getServer().getPluginManager().registerEvents(injector.getInstance(EventListener.class), this);
     }
 
     @Override
     public void onDisable() {
         telegram.sendMessage("⚠️ Внимание, обнаружена <b>возможная</b> остановка/перезагрузка сервера");
-        telegram.sendMessage("\uD83D\uDD04 Завершение работы плагина Telecrafter...");
+        telegram.sendMessage("\uD83D\uDD04 Завершение работы плагина " + getDescription().getName() + "...");
         botSession.stop();
         while (botSession.isRunning()) {
             try {

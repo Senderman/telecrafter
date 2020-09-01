@@ -31,15 +31,16 @@ public class EnablePlugin implements CommandExecutor {
 
     @Override
     public void execute(Message message) {
+        long chatId = message.getChatId();
         String[] params = message.getText().split("\\s+", 2);
         if (params.length < 2) {
-            telegram.sendMessage(getCommand() + " pluginName");
+            telegram.sendMessage(chatId, getCommand() + " pluginName");
             return;
         }
         String pluginName = params[1];
         if (pluginManager.enablePlugin(pluginName))
-            telegram.sendMessage("Плагин " + pluginName + " скоро будет включен!");
+            telegram.sendMessage(chatId, "Плагин " + pluginName + " скоро будет включен!");
         else
-            telegram.sendMessage("Плагин " + pluginName + " не найден/уже включен!");
+            telegram.sendMessage(chatId,"Плагин " + pluginName + " не найден/уже включен!");
     }
 }

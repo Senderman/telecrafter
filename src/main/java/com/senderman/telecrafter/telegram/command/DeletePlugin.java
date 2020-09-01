@@ -31,17 +31,18 @@ public class DeletePlugin implements CommandExecutor {
 
     @Override
     public void execute(Message message) {
+        long chatId = message.getChatId();
         String[] params = message.getText().split("\\s+", 2);
         if (params.length < 2) {
-            telegram.sendMessage("Неверное использование команды! " + getCommand() + " plugin.jar");
+            telegram.sendMessage(chatId, "Неверное использование команды! " + getCommand() + " plugin.jar");
             return;
         }
 
         String pluginFileName = params[1];
         if (pluginManager.deletePlugin(pluginFileName))
-            telegram.sendMessage("Плагин " + pluginFileName + " скоро будет выгружен. Полное удаление после запуска релоада");
+            telegram.sendMessage(chatId, "Плагин " + pluginFileName + " скоро будет выгружен. Полное удаление после запуска релоада");
         else
-            telegram.sendMessage("Не удалось удалить плагин " + pluginFileName);
+            telegram.sendMessage(chatId,"Не удалось удалить плагин " + pluginFileName);
 
     }
 }

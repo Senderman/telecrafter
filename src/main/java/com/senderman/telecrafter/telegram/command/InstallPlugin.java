@@ -37,25 +37,28 @@ public class InstallPlugin implements CommandExecutor {
 
     @Override
     public void execute(Message message) {
+        long chatId = message.getChatId();
         if (!validate(message)) {
-            telegram.sendMessage("Ответьте этой командой на jar-файл с плагином!");
+            telegram.sendMessage(chatId, "Ответьте этой командой на jar-файл с плагином!");
+            return;
         }
+
         Document telegramDoc = message.getReplyToMessage().getDocument();
         File pluginFile;
         try {
             pluginFile = downloadDocument(telegramDoc);
         } catch (TelegramApiException e) {
-            telegram.sendMessage("Не удалось получить документ: " + e.toString());
+            telegram.sendMessage(chatId, "Не удалось получить документ: " + e.toString());
             return;
         }
 
         try {
             if (pluginManager.installPlugin(pluginFile))
-                telegram.sendMessage("Плагин успешно установлен!");
+                telegram.sendMessage(chatId, "Плагин успешно установлен!");
             else
-                telegram.sendMessage("Ошибка установки плагина: неверный формат файла плагина!");
+                telegram.sendMessage(chatId, "Ошибка установки плагина: неверный формат файла плагина!");
         } catch (IOException e) {
-            telegram.sendMessage("Ошибка установки плагина: " + e.toString());
+            telegram.sendMessage(chatId, "Ошибка установки плагина: " + e.toString());
         } finally {
             pluginFile.delete();
         }

@@ -31,7 +31,7 @@ public class Help implements CommandExecutor {
         for (CommandExecutor command : commands.values()) {
             builder.append(formatExecutor(command)).append("\n");
         }
-        telecrafterBot.sendMessage(builder.toString());
+        telecrafterBot.sendMessage(message.getChatId(), builder.toString());
     }
 
     private String formatExecutor(CommandExecutor executor) {

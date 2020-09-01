@@ -47,10 +47,11 @@ public class TelecrafterBot extends TelegramLongPollingBot {
         if (message.getDate() + 120 < System.currentTimeMillis() / 1000) return;
 
         String text = message.getText();
+        long chatId = message.getChatId();
 
         if (text.startsWith("!") && config.isAdmin(message.getFrom().getId())) {
             String command = text.replaceFirst("!", "");
-            runCommandFromText(command);
+            runCommandFromText(chatId, command);
             return;
         }
 
@@ -66,7 +67,7 @@ public class TelecrafterBot extends TelegramLongPollingBot {
         Optional.ofNullable(commandKeeper.getExecutor(command)).ifPresent(executor -> {
             if (userHasPermission(executor, message.getFrom().getId())) {
                 if (executor.pmOnly() && !message.isUserMessage()) {
-                    sendMessage("Команду можно использовать только в лс");
+                    sendMessage(chatId, "Команду можно использовать только в лс");
                     return;
                 }
                 try {
@@ -83,18 +84,13 @@ public class TelecrafterBot extends TelegramLongPollingBot {
         return !executor.adminsOnly() || config.isAdmin(userId);
     }
 
-    private void runCommandFromText(String text) {
+    private void runCommandFromText(long chatId, String text) {
         try {
             minecraft.runCommand(text.replaceFirst("!", ""),
-                    result -> sendMessage(result ? "Команда отправлена серверу!" : "Такой команды нет!"));
+                    result -> sendMessage(chatId, result ? "Команда отправлена серверу!" : "Такой команды нет!"));
         } catch (CommandException e) {
-            sendMessage("<b>Ошибка выполнения команды!</b>\n\n" + exceptionToString(e));
+            sendMessage(chatId, "<b>Ошибка выполнения команды!</b>\n\n" + exceptionToString(e));
         }
-    }
-
-
-    public void sendMessage(String text) {
-        sendMessage(config.getChatId(), text);
     }
 
     public void sendMessage(long chatId, String text) {

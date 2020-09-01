@@ -31,14 +31,15 @@ public class SetProp implements CommandExecutor {
 
     @Override
     public void execute(Message message) {
+        long chatId = message.getChatId();
         String[] params = message.getText().split("\\s+", 3);
         if (params.length < 3) {
-            telegram.sendMessage("Неверный формат! " + getCommand() + " key value");
+            telegram.sendMessage(chatId, "Неверный формат! " + getCommand() + " key value");
             return;
         }
         if (serverProperties.setProperty(params[1], params[2]))
-            telegram.sendMessage("Новое значение для " + params[1] + " установлено!");
+            telegram.sendMessage(chatId,"Новое значение для " + params[1] + " установлено!");
         else
-            telegram.sendMessage("Такого ключа нет!");
+            telegram.sendMessage(chatId,"Такого ключа нет!");
     }
 }
