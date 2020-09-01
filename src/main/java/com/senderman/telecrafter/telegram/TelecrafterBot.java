@@ -44,7 +44,6 @@ public class TelecrafterBot extends TelegramLongPollingBot {
 
         Message message = update.getMessage();
 
-        if (!message.getChatId().equals(config.getChatId())) return;
         if (message.getDate() + 120 < System.currentTimeMillis() / 1000) return;
 
         String text = message.getText();
@@ -66,6 +65,10 @@ public class TelecrafterBot extends TelegramLongPollingBot {
 
         Optional.ofNullable(commandKeeper.getExecutor(command)).ifPresent(executor -> {
             if (userHasPermission(executor, message.getFrom().getId())) {
+                if (executor.pmOnly() && !message.isUserMessage()) {
+                    sendMessage("Команду можно использовать только в лс");
+                    return;
+                }
                 try {
                     executor.execute(message);
                 } catch (TelegramApiException e) {
@@ -89,9 +92,14 @@ public class TelecrafterBot extends TelegramLongPollingBot {
         }
     }
 
+
     public void sendMessage(String text) {
+        sendMessage(config.getChatId(), text);
+    }
+
+    public void sendMessage(long chatId, String text) {
         try {
-            execute(new SendMessage(config.getChatId(), "⛏ " + text).enableHtml(true));
+            execute(new SendMessage(chatId, "⛏ " + text).enableHtml(true));
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }

@@ -31,7 +31,8 @@ public class CommandKeeper {
                 new DeletePlugin(telegram, pluginManager),
                 new EnablePlugin(telegram, pluginManager),
                 new DisablePlugin(telegram, pluginManager),
-                new Help(telegram, commands)
+                new Help(telegram, commands),
+                new GetLogs(telegram, minecraft)
         );
     }
 

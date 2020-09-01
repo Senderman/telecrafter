@@ -8,6 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Consumer;
 
 import javax.annotation.Nullable;
+import java.io.File;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -46,6 +47,13 @@ public class MinecraftProvider {
                 callback.accept(result);
             }
         });
+    }
+
+    public File getLogsDirectory(){
+        File logsDir =  new File(plugin.getDataFolder().getParentFile().getParentFile(), "logs");
+        if (!logsDir.exists())
+            logsDir.mkdirs();
+        return logsDir;
     }
 
     private String getEnvironmentName(Environment environment) {
