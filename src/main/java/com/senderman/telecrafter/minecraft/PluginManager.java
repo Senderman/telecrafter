@@ -1,5 +1,6 @@
 package com.senderman.telecrafter.minecraft;
 
+import com.google.inject.Inject;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.plugin.InvalidDescriptionException;
 import org.bukkit.plugin.InvalidPluginException;
@@ -31,13 +32,10 @@ public class PluginManager {
     private final Set<Plugin> lostPlugins = new HashSet<>();
 
 
+    @Inject
     public PluginManager(JavaPlugin telecrafterPlugin) {
         this.pluginManager = telecrafterPlugin.getServer().getPluginManager();
-        this.mainPlugin = pluginManager.getPlugin("EmptyBukkitPlugin");
-        if (this.mainPlugin == null) {
-            throw new IllegalStateException("You have EmptyBukkitPlugin to be installed!");
-        }
-        ;
+        this.mainPlugin = telecrafterPlugin;
         this.pluginDirectory = mainPlugin.getDataFolder().getParentFile();
         this.scheduler = mainPlugin.getServer().getScheduler();
     }

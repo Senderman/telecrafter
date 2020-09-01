@@ -30,11 +30,10 @@ public class InjectorConfig extends AbstractModule {
                 .toInstance(plugin);
         bind(Config.class)
                 .toInstance(Config.load(plugin.getDataFolder(), objectMapper));
-        bind(PluginManager.class)
-                .toInstance(new PluginManager(plugin));
         bind(ServerPropertiesProvider.class)
                 .toInstance(new ServerPropertiesProvider(plugin.getDataFolder().getParentFile().getParentFile()));
 
+        bind(PluginManager.class);
         bind(EventListener.class);
         bind(MinecraftProvider.class);
         bind(TelecrafterBot.class);
