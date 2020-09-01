@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import org.bukkit.Server;
 import org.bukkit.World.Environment;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Consumer;
 
@@ -14,10 +15,10 @@ import java.util.stream.Collectors;
 
 public class MinecraftProvider {
 
-    private final JavaPlugin plugin;
+    private final Plugin plugin;
 
     @Inject
-    public MinecraftProvider(JavaPlugin plugin) {
+    public MinecraftProvider(Plugin plugin) {
         this.plugin = plugin;
     }
 

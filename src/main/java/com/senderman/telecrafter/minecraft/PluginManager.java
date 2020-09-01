@@ -33,11 +33,11 @@ public class PluginManager {
 
 
     @Inject
-    public PluginManager(JavaPlugin telecrafterPlugin) {
-        this.pluginManager = telecrafterPlugin.getServer().getPluginManager();
-        this.mainPlugin = telecrafterPlugin;
-        this.pluginDirectory = mainPlugin.getDataFolder().getParentFile();
-        this.scheduler = mainPlugin.getServer().getScheduler();
+    public PluginManager(Plugin mainPlugin) {
+        this.mainPlugin = mainPlugin;
+        this.pluginManager = mainPlugin.getServer().getPluginManager();
+        this.pluginDirectory = this.mainPlugin.getDataFolder().getParentFile();
+        this.scheduler = this.mainPlugin.getServer().getScheduler();
     }
 
     public String listPlugins() {

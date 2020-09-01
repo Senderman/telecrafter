@@ -1,6 +1,7 @@
 package com.senderman.telecrafter.minecraft;
 
 import com.google.inject.Inject;
+import org.bukkit.plugin.Plugin;
 
 import java.io.*;
 import java.util.Properties;
@@ -11,10 +12,10 @@ public class ServerPropertiesProvider {
     private final File propFile;
 
     @Inject
-    public ServerPropertiesProvider(File serverRootDir) {
+    public ServerPropertiesProvider(Plugin plugin) {
         properties = new Properties();
         String propertiesFileName = "server.properties";
-        propFile = new File(serverRootDir, propertiesFileName);
+        propFile = new File(plugin.getDataFolder().getParentFile().getParentFile(), propertiesFileName);
         try (InputStream input = new FileInputStream(propFile)) {
             properties.load(input);
         } catch (IOException e) {
