@@ -42,7 +42,7 @@ public class DeletePlugin implements CommandExecutor {
         if (pluginManager.deletePlugin(pluginFileName))
             telegram.sendMessage(chatId, "Плагин " + pluginFileName + " скоро будет выгружен. Полное удаление после запуска релоада");
         else
-            telegram.sendMessage(chatId,"Не удалось удалить плагин " + pluginFileName);
+            telegram.sendMessage(chatId, "Не удалось удалить плагин " + pluginFileName);
 
     }
 }

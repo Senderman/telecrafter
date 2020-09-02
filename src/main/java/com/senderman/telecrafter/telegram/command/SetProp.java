@@ -38,8 +38,8 @@ public class SetProp implements CommandExecutor {
             return;
         }
         if (serverProperties.setProperty(params[1], params[2]))
-            telegram.sendMessage(chatId,"Новое значение для " + params[1] + " установлено!");
+            telegram.sendMessage(chatId, "Новое значение для " + params[1] + " установлено!");
         else
-            telegram.sendMessage(chatId,"Такого ключа нет!");
+            telegram.sendMessage(chatId, "Такого ключа нет!");
     }
 }

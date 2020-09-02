@@ -41,6 +41,6 @@ public class EnablePlugin implements CommandExecutor {
         if (pluginManager.enablePlugin(pluginName))
             telegram.sendMessage(chatId, "Плагин " + pluginName + " скоро будет включен!");
         else
-            telegram.sendMessage(chatId,"Плагин " + pluginName + " не найден/уже включен!");
+            telegram.sendMessage(chatId, "Плагин " + pluginName + " не найден/уже включен!");
     }
 }

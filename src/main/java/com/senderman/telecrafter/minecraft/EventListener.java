@@ -3,15 +3,16 @@ package com.senderman.telecrafter.minecraft;
 import com.google.inject.Inject;
 import com.senderman.telecrafter.telegram.TelegramChat;
 import org.apache.commons.lang.ObjectUtils;
-import org.bukkit.Server;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.BroadcastMessageEvent;
-import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.event.server.ServerCommandEvent;
 import org.bukkit.event.server.ServerLoadEvent;
 import org.bukkit.plugin.Plugin;
@@ -33,13 +34,13 @@ public class EventListener implements Listener {
     @EventHandler
     void onJoin(PlayerJoinEvent event) {
         String playerName = event.getPlayer().getName();
-        telegram.sendMessage("<b>" + playerName + " зашел на сервер!</b>");
+        telegram.sendMessage("▶️ <b>" + playerName + " зашел на сервер!</b>");
     }
 
     @EventHandler
     void onLeave(PlayerQuitEvent event) {
         String playerName = event.getPlayer().getName();
-        telegram.sendMessage("<b>" + playerName + " ушел с сервера!</b>");
+        telegram.sendMessage("◀️ <b>" + playerName + " ушел с сервера!</b>");
     }
 
     @EventHandler
@@ -98,19 +99,23 @@ public class EventListener implements Listener {
 
     @EventHandler
     void onServerStopCommand(ServerCommandEvent event) {
+        if (!event.getCommand().matches("^(stop|reload).*"))
+            return;
+
         event.setCancelled(true);
-        if (event.getCommand().matches("^(stop|reload).*"))
-            serverStopDelayer.scheduleServerStop(event.getCommand());
+        serverStopDelayer.scheduleServerStop(event.getCommand());
     }
 
     @EventHandler
     void onPlayerStopCommand(PlayerCommandPreprocessEvent event) {
+        if (!event.getMessage().matches("^(stop|reload).*"))
+            return;
+
         if (!event.getPlayer().isOp())
             return;
 
         event.setCancelled(true);
-        if (event.getMessage().matches("^(stop|reload).*"))
-            serverStopDelayer.scheduleServerStop(event.getMessage());
+        serverStopDelayer.scheduleServerStop(event.getMessage());
     }
 
 }

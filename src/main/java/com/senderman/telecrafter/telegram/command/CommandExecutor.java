@@ -13,7 +13,9 @@ public interface CommandExecutor {
         return false;
     }
 
-    default boolean pmOnly() {return false;}
+    default boolean pmOnly() {
+        return false;
+    }
 
     void execute(Message message) throws TelegramApiException;
 

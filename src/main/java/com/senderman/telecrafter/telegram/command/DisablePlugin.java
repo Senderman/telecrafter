@@ -39,8 +39,8 @@ public class DisablePlugin implements CommandExecutor {
         }
         String pluginName = params[1];
         if (pluginManager.disablePlugin(pluginName))
-            telegram.sendMessage(chatId,"Плагин " + pluginName + " скоро будет выключен!");
+            telegram.sendMessage(chatId, "Плагин " + pluginName + " скоро будет выключен!");
         else
-            telegram.sendMessage(chatId,"Плагин " + pluginName + " не найден/уже выключен!");
+            telegram.sendMessage(chatId, "Плагин " + pluginName + " не найден/уже выключен!");
     }
 }

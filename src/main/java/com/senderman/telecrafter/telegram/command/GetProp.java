@@ -43,6 +43,6 @@ public class GetProp implements CommandExecutor {
         if (value == null)
             telegram.sendMessage(chatId, "Нет значения для " + key);
         else
-            telegram.sendMessage(chatId,key + "=" + value);
+            telegram.sendMessage(chatId, key + "=" + value);
     }
 }
