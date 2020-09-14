@@ -5,39 +5,39 @@ import com.senderman.telecrafter.Config;
 import com.senderman.telecrafter.minecraft.MinecraftProvider;
 import com.senderman.telecrafter.minecraft.PluginManager;
 import com.senderman.telecrafter.minecraft.ServerPropertiesProvider;
+import com.senderman.telecrafter.telegram.api.TelegramApiWrapper;
+import com.senderman.telecrafter.telegram.api.entity.Message;
+import com.senderman.telecrafter.telegram.api.entity.Update;
 import com.senderman.telecrafter.telegram.command.CommandExecutor;
 import com.senderman.telecrafter.telegram.command.CommandKeeper;
 import org.bukkit.command.CommandException;
-import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
+import java.net.URL;
 import java.util.Optional;
 
-public class TelecrafterBot extends TelegramLongPollingBot {
+public class TelecrafterBot {
 
     private final Config config;
     private final MinecraftProvider minecraft;
     private final CommandKeeper commandKeeper;
+    private final TelegramApiWrapper api;
 
     @Inject
     public TelecrafterBot(
             Config config,
             MinecraftProvider minecraft,
             ServerPropertiesProvider serverProperties,
-            PluginManager pluginManager
+            PluginManager pluginManager,
+            TelegramApiWrapper telegramApiWrapper
     ) {
         this.config = config;
         this.minecraft = minecraft;
+        this.api = telegramApiWrapper;
         this.commandKeeper = new CommandKeeper(this, minecraft, serverProperties, pluginManager);
     }
 
-    @Override
+
     public void onUpdateReceived(Update update) {
 
         if (!update.hasMessage()) return;
@@ -46,6 +46,7 @@ public class TelecrafterBot extends TelegramLongPollingBot {
 
         if (message.getDate() + 120 < System.currentTimeMillis() / 1000) return;
 
+        if (!message.hasText()) return;
         String text = message.getText();
         long chatId = message.getChatId();
 
@@ -70,11 +71,7 @@ public class TelecrafterBot extends TelegramLongPollingBot {
                     sendMessage(chatId, "Команду можно использовать только в лс");
                     return;
                 }
-                try {
-                    executor.execute(message);
-                } catch (TelegramApiException e) {
-                    e.printStackTrace();
-                }
+                executor.execute(message);
             }
         });
 
@@ -94,11 +91,7 @@ public class TelecrafterBot extends TelegramLongPollingBot {
     }
 
     public void sendMessage(long chatId, String text) {
-        try {
-            execute(new SendMessage(chatId, "⛏ " + text).enableHtml(true));
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
+        api.sendMessage(chatId, text);
     }
 
     private String exceptionToString(Exception e) {
@@ -113,13 +106,31 @@ public class TelecrafterBot extends TelegramLongPollingBot {
         }
     }
 
-    @Override
-    public String getBotToken() {
-        return config.getBotToken();
+    public com.senderman.telecrafter.telegram.api.entity.File getFile(String fileId) {
+        return api.getFile(fileId);
     }
 
-    @Override
+    public Message sendDocument(long chatId, java.io.File file) {
+        return api.sendDocument(chatId, file);
+    }
+
+    public File downloadFile(com.senderman.telecrafter.telegram.api.entity.File file, File output) throws IOException {
+        String filePath = file.getFilePath();
+        URL url = new URL("https://api.telegram.org/file/bot" + config.getBotToken() + "/" + filePath);
+        try (
+                FileOutputStream fos = new FileOutputStream(output);
+                InputStream in = url.openConnection().getInputStream()
+        ) {
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = in.read(buffer)) != -1)
+                fos.write(buffer, 0, length);
+        }
+        return output;
+    }
+
     public String getBotUsername() {
         return config.getBotName();
     }
+
 }

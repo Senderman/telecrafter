@@ -1,7 +1,7 @@
 package com.senderman.telecrafter.minecraft;
 
+import com.google.common.io.Files;
 import com.google.inject.Inject;
-import org.apache.commons.io.FileUtils;
 import org.bukkit.plugin.InvalidDescriptionException;
 import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.Plugin;
@@ -104,7 +104,7 @@ public class PluginManager {
             deletePlugin(pluginName, false);
 
         File copied = new File(pluginDirectory, pluginJar.getName());
-        FileUtils.copyFile(pluginJar, copied);
+        Files.copy(pluginJar, copied);
         if (oldPlugin != null)
             serverStopDelayer.scheduleServerStop("reload");
         else {

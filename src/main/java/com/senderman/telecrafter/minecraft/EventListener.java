@@ -15,19 +15,16 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.BroadcastMessageEvent;
 import org.bukkit.event.server.ServerCommandEvent;
 import org.bukkit.event.server.ServerLoadEvent;
-import org.bukkit.plugin.Plugin;
 
 public class EventListener implements Listener {
 
     private final TelegramChat telegram;
-    private final Plugin plugin;
     private final ServerStopDelayer serverStopDelayer;
 
 
     @Inject
-    public EventListener(TelegramChat telegram, Plugin plugin, ServerStopDelayer serverStopDelayer) {
+    public EventListener(TelegramChat telegram, ServerStopDelayer serverStopDelayer) {
         this.telegram = telegram;
-        this.plugin = plugin;
         this.serverStopDelayer = serverStopDelayer;
     }
 

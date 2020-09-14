@@ -2,10 +2,8 @@ package com.senderman.telecrafter.telegram.command;
 
 import com.senderman.telecrafter.minecraft.PluginManager;
 import com.senderman.telecrafter.telegram.TelecrafterBot;
-import org.telegram.telegrambots.meta.api.methods.GetFile;
-import org.telegram.telegrambots.meta.api.objects.Document;
-import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import com.senderman.telecrafter.telegram.api.entity.Document;
+import com.senderman.telecrafter.telegram.api.entity.Message;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,11 +41,11 @@ public class InstallPlugin implements CommandExecutor {
             return;
         }
 
-        Document telegramDoc = message.getReplyToMessage().getDocument();
+        Document telegramDoc = message.getReply().getDocument();
         File pluginFile;
         try {
             pluginFile = downloadDocument(telegramDoc);
-        } catch (TelegramApiException e) {
+        } catch (IOException e) {
             telegram.sendMessage(chatId, "Не удалось получить документ: " + e.toString());
             return;
         }
@@ -64,17 +62,14 @@ public class InstallPlugin implements CommandExecutor {
         }
     }
 
-    private File downloadDocument(Document document) throws TelegramApiException {
-        GetFile getFile = new GetFile()
-                .setFileId(document.getFileId());
-        org.telegram.telegrambots.meta.api.objects.File tgFile = telegram.execute(getFile);
+    private File downloadDocument(Document document) throws IOException {
         File pluginFile = new File(document.getFileName());
-        return telegram.downloadFile(tgFile, pluginFile);
+        return telegram.downloadFile(telegram.getFile(document.getFileId()), pluginFile);
     }
 
     private boolean validate(Message message) {
         return message.isReply() &&
-                message.getReplyToMessage().hasDocument() &&
-                message.getReplyToMessage().getDocument().getFileName().endsWith(".jar");
+                message.getReply().hasDocument() &&
+                message.getReply().getDocument().getFileName().endsWith(".jar");
     }
 }

@@ -2,9 +2,7 @@ package com.senderman.telecrafter.telegram.command;
 
 import com.senderman.telecrafter.minecraft.MinecraftProvider;
 import com.senderman.telecrafter.telegram.TelecrafterBot;
-import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
-import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import com.senderman.telecrafter.telegram.api.entity.Message;
 
 import java.io.*;
 import java.util.Objects;
@@ -44,7 +42,7 @@ public class GetLogs implements CommandExecutor {
     }
 
     @Override
-    public void execute(Message message) throws TelegramApiException {
+    public void execute(Message message) {
         long chatId = message.getChatId();
         String[] params = message.getText().split("\\s+", 2);
         String logName = params.length == 1 ? "latest.log" : params[1];
@@ -57,13 +55,10 @@ public class GetLogs implements CommandExecutor {
             telegram.sendMessage(chatId, "Файл не найден!");
             return;
         }
-        SendDocument sendDocument = new SendDocument()
-                .setChatId(chatId)
-                .setDocument(logsToSend);
-        telegram.execute(sendDocument);
+        telegram.sendDocument(chatId, logsToSend);
     }
 
-    private void sendLogList(long chatId) throws TelegramApiException {
+    private void sendLogList(long chatId) {
         String logList = listFiles();
         File logListFile = new File("LogList.txt");
         try (Writer writer = new BufferedWriter(new FileWriter(logListFile))) {
@@ -72,11 +67,7 @@ public class GetLogs implements CommandExecutor {
             telegram.sendMessage(chatId, "Не удалось создать файл со списком");
             return;
         }
-        SendDocument sendDocument = new SendDocument()
-                .setChatId(chatId)
-                .setDocument(logListFile)
-                .setCaption("Список логов сервера");
-        telegram.execute(sendDocument);
+        telegram.sendDocument(chatId, logListFile);
         logListFile.delete();
     }
 

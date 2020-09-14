@@ -1,7 +1,7 @@
 package com.senderman.telecrafter.telegram.command;
 
 import com.senderman.telecrafter.telegram.TelecrafterBot;
-import org.telegram.telegrambots.meta.api.objects.Message;
+import com.senderman.telecrafter.telegram.api.entity.Message;
 
 import java.util.Map;
 

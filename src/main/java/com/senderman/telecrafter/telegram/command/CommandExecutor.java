@@ -1,7 +1,6 @@
 package com.senderman.telecrafter.telegram.command;
 
-import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import com.senderman.telecrafter.telegram.api.entity.Message;
 
 public interface CommandExecutor {
 
@@ -17,6 +16,6 @@ public interface CommandExecutor {
         return false;
     }
 
-    void execute(Message message) throws TelegramApiException;
+    void execute(Message message);
 
 }
