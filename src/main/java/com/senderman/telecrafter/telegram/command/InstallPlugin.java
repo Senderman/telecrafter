@@ -42,6 +42,10 @@ public class InstallPlugin implements CommandExecutor {
         }
 
         Document telegramDoc = message.getReply().getDocument();
+        if (!telegramDoc.isJar()){
+            telegram.sendMessage(chatId, "Это не файл плагина, а Х какая то!");
+            return;
+        }
         File pluginFile;
         try {
             pluginFile = downloadDocument(telegramDoc);
