@@ -2,14 +2,10 @@ package com.senderman.telecrafter.minecraft;
 
 import com.google.common.io.Files;
 import com.google.inject.Inject;
-import org.bukkit.plugin.InvalidDescriptionException;
-import org.bukkit.plugin.InvalidPluginException;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.plugin.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -94,11 +90,8 @@ public class PluginManager {
         return true;
     }
 
-    // if plugin has to be replaced, reload server
-    public boolean installPlugin(File pluginJar) throws IOException {
+    public void installPlugin(File pluginJar) throws IOException, InvalidPluginException, InvalidDescriptionException, UnknownDependencyException {
         String pluginName = getPluginName(pluginJar);
-        if (pluginName == null) return false;
-
         Plugin oldPlugin = pluginManager.getPlugin(pluginName);
         if (oldPlugin != null)
             deletePlugin(pluginName, false);
@@ -113,24 +106,20 @@ public class PluginManager {
                 scheduler.scheduleSyncDelayedTask(mainPlugin,
                         () -> pluginManager.enablePlugin(Objects.requireNonNull(newPlugin))
                 );
-            } catch (InvalidPluginException | InvalidDescriptionException e) {
+            } catch (InvalidPluginException | InvalidDescriptionException | UnknownDependencyException e) {
                 copied.delete();
-                e.printStackTrace();
-                return false;
+                throw e;
             }
         }
-        return true;
     }
 
-    @Nullable
-    private String getPluginName(File pluginJar) throws IOException {
+    private String getPluginName(File pluginJar) throws IOException, InvalidPluginException, InvalidDescriptionException {
         ZipFile zipFile = new ZipFile(pluginJar);
         ZipEntry zipEntry = zipFile.getEntry("plugin.yml");
-        if (zipEntry == null) return null;
+        if (zipEntry == null) throw new InvalidPluginException("No plugin.yml in the file!");
+
         try (InputStream in = zipFile.getInputStream(zipEntry)) {
             return new PluginDescriptionFile(in).getName();
-        } catch (InvalidDescriptionException e) {
-            return null;
         }
     }
 

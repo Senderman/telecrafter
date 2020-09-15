@@ -4,6 +4,9 @@ import com.senderman.telecrafter.minecraft.PluginManager;
 import com.senderman.telecrafter.telegram.TelecrafterBot;
 import com.senderman.telecrafter.telegram.api.entity.Document;
 import com.senderman.telecrafter.telegram.api.entity.Message;
+import org.bukkit.plugin.InvalidDescriptionException;
+import org.bukkit.plugin.InvalidPluginException;
+import org.bukkit.plugin.UnknownDependencyException;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,7 +45,7 @@ public class InstallPlugin implements CommandExecutor {
         }
 
         Document telegramDoc = message.getReply().getDocument();
-        if (!telegramDoc.isJar()){
+        if (!telegramDoc.isJar()) {
             telegram.sendMessage(chatId, "Это не файл плагина, а Х какая-то!");
             return;
         }
@@ -55,12 +58,16 @@ public class InstallPlugin implements CommandExecutor {
         }
 
         try {
-            if (pluginManager.installPlugin(pluginFile))
-                telegram.sendMessage(chatId, "Плагин успешно установлен!");
-            else
-                telegram.sendMessage(chatId, "Ошибка установки плагина: неверный формат файла плагина!");
+            pluginManager.installPlugin(pluginFile);
+            telegram.sendMessage(chatId, "Плагин успешно установлен!");
         } catch (IOException e) {
             telegram.sendMessage(chatId, "Ошибка установки плагина: " + e.toString());
+        } catch (InvalidDescriptionException e) {
+            telegram.sendMessage(chatId, "Ошибка установки плагина: неправильный plugin.yml");
+        } catch (InvalidPluginException e) {
+            telegram.sendMessage(chatId, "Ошибка установки плагина: неверный формат файла плагина!");
+        } catch (UnknownDependencyException e) {
+            telegram.sendMessage(chatId, "Ошибка установки плагина: не найдены нужные зависимости");
         } finally {
             pluginFile.delete();
         }

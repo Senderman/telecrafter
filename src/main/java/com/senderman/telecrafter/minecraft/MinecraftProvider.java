@@ -2,13 +2,18 @@ package com.senderman.telecrafter.minecraft;
 
 import com.google.inject.Inject;
 import org.bukkit.Server;
+import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Consumer;
 
 import javax.annotation.Nullable;
 import java.io.File;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -29,17 +34,29 @@ public class MinecraftProvider {
     }
 
     public String getOnlinePlayersNames() {
-        return plugin
+        StringBuilder result = new StringBuilder();
+        Map<World, ? extends List<? extends Player>> envPlayersMap = plugin
                 .getServer()
                 .getOnlinePlayers()
                 .stream()
-                .map(player -> String.format(
-                        "\uD83D\uDC64 %s (%d/%d ❤) (Loc: %s)",
+                .collect(Collectors.groupingBy(Entity::getWorld));
+        for (World world : envPlayersMap.keySet()) {
+            String formattedWorld = getEnvironmentEmoji(world.getEnvironment())
+                    + " <b>" + world.getName() + ":</b>\n";
+            result.append(formattedWorld);
+
+            for (Player player : envPlayersMap.get(world)) {
+                String formattedPlayer = String.format(
+                        "\uD83D\uDC64 %s (%d/%d ❤)\n",
                         player.getName(),
                         (int) player.getHealth(),
-                        (int) Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getValue(),
-                        getEnvironmentName(player.getWorld().getEnvironment())
-                )).collect(Collectors.joining("\n"));
+                        (int) Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getValue()
+                );
+                result.append(formattedPlayer);
+            }
+            result.append("\n");
+        }
+        return result.toString();
     }
 
     public void runCommand(String command, @Nullable Consumer<Boolean> callback) {
@@ -64,17 +81,17 @@ public class MinecraftProvider {
         return logsDir;
     }
 
-    private String getEnvironmentName(Environment environment) {
+    private String getEnvironmentEmoji(Environment environment) {
         String result = "Unknown";
         switch (environment) {
             case NORMAL:
-                result = "\uD83C\uDF33 Overworld";
+                result = "\uD83C\uDF33";
                 break;
             case NETHER:
-                result = "\uD83D\uDD25 Nether";
+                result = "\uD83D\uDD25";
                 break;
             case THE_END:
-                result = "\uD83D\uDC7D Ender world";
+                result = "\uD83D\uDD32";
                 break;
         }
         return result;
