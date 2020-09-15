@@ -33,21 +33,17 @@ public class TelegramPolling {
 
     private void polling() {
         int lastUpdateId = -1;
+
         while (doPolling.get()) {
             try {
                 List<Update> updates = api.getUpdates(lastUpdateId == -1 ? null : lastUpdateId + 1);
-                lastUpdateId = updates.isEmpty() ? -1 : updates.get(updates.size() - 1).getUpdateId();
+                lastUpdateId = updates.isEmpty() ? lastUpdateId : updates.get(updates.size() - 1).getUpdateId();
                 for (Update update : updates)
-                    try {
-                        bot.onUpdateReceived(update);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    doPolling.set(false);
-                }
+                    bot.onUpdateReceived(update);
+
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                doPolling.set(false);
             } catch (Exception e) {
                 e.printStackTrace();
             }

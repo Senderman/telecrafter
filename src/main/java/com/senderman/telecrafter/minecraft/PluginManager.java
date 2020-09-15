@@ -114,6 +114,7 @@ public class PluginManager {
                         () -> pluginManager.enablePlugin(Objects.requireNonNull(newPlugin))
                 );
             } catch (InvalidPluginException | InvalidDescriptionException e) {
+                copied.delete();
                 e.printStackTrace();
                 return false;
             }
