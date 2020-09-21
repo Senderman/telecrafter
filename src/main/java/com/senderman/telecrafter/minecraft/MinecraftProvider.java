@@ -20,13 +20,11 @@ import java.util.stream.Collectors;
 public class MinecraftProvider {
 
     private final Plugin plugin;
-    private final ServerStopDelayer serverStopDelayer;
 
 
     @Inject
-    public MinecraftProvider(Plugin plugin, ServerStopDelayer serverStopDelayer) {
+    public MinecraftProvider(Plugin plugin) {
         this.plugin = plugin;
-        this.serverStopDelayer = serverStopDelayer;
     }
 
     public void sendMessage(String message) {
@@ -60,11 +58,6 @@ public class MinecraftProvider {
     }
 
     public void runCommand(String command, @Nullable Consumer<Boolean> callback) {
-        if (command.matches("^(stop|reload).*")) {
-            serverStopDelayer.scheduleServerStop(command);
-            return;
-        }
-
         Server server = plugin.getServer();
         server.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
             boolean result = server.dispatchCommand(server.getConsoleSender(), command);

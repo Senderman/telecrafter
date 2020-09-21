@@ -15,7 +15,7 @@ public class TelegramChat {
     }
 
     public void sendMessage(String message) {
-        bot.sendMessage(config.getChatId(), message);
+        bot.sendMessageAsync(config.getChatId(), message);
     }
 
 }

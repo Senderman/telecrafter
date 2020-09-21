@@ -1,54 +1,39 @@
 package com.senderman.telecrafter.minecraft;
 
 import com.google.inject.Inject;
+import com.senderman.telecrafter.minecraft.crafty.CraftyWrapper;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 
 public class ServerStopDelayer {
 
     private final Plugin plugin;
+    private final CraftyWrapper craftyWrapper;
 
     @Inject
-    public ServerStopDelayer(Plugin plugin) {
+    public ServerStopDelayer(Plugin plugin, CraftyWrapper craftyWrapper) {
         this.plugin = plugin;
+        this.craftyWrapper = craftyWrapper;
     }
 
-    public void scheduleServerStop(String command) {
-        ServerStopAction action;
+    public void scheduleServerStop(ServerStopAction action) {
         String willBe;
-        switch (command.split("\\s+", 2)[0]) {
-            case "stop":
-                action = ServerStopAction.STOP;
+        Runnable whatToDo;
+        switch (action) {
+            case STOP:
                 willBe = "остановлен";
+                whatToDo = craftyWrapper::stopServer;
                 break;
-            case "reload":
-                action = ServerStopAction.RELOAD;
+            case RELOAD:
                 willBe = "перезагружен";
+                whatToDo = craftyWrapper::restartServer;
                 break;
             default:
                 return;
         }
         Server server = plugin.getServer();
         server.broadcastMessage("§4 ВНИМАНИЕ! Сервер будет " + willBe + " через 30 секунд!");
-        server.getScheduler().scheduleSyncDelayedTask(
-                plugin,
-                () -> server.dispatchCommand(server.getConsoleSender(), action.getCommand()),
-                600);
-    }
-
-    private enum ServerStopAction {
-
-        STOP("stop"), RELOAD("reload");
-
-        private final String command;
-
-        ServerStopAction(String command) {
-            this.command = command;
-        }
-
-        public String getCommand() {
-            return command;
-        }
+        server.getScheduler().scheduleSyncDelayedTask(plugin, whatToDo, 600);
     }
 
 }

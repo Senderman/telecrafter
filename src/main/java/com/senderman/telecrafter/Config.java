@@ -1,7 +1,7 @@
 package com.senderman.telecrafter;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.inject.Inject;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
@@ -10,25 +10,25 @@ import java.util.Set;
 
 public class Config {
 
-    private static final String configFileName = "config.yaml";
+    private static final String configFileName = "config.yml";
+
+    @JsonProperty
     private String botToken;
+    @JsonProperty
     private String botName;
+    @JsonProperty
     private Long chatId;
+    @JsonProperty
+    private String craftyToken;
+    @JsonProperty
+    private Integer craftyPort;
+    @JsonProperty
+    private Integer craftyServerId;
+    @JsonProperty
     private Set<Integer> admins;
 
-    public Config() {
-    }
-
-    @Inject
-    public Config(Plugin plugin, ObjectMapper objectMapper) throws IOException {
-        this(objectMapper.readValue(new File(plugin.getDataFolder(), configFileName), Config.class));
-    }
-
-    public Config(Config config) {
-        this.botToken = config.botToken;
-        this.botName = config.botName;
-        this.chatId = config.chatId;
-        this.admins = config.admins;
+    public static Config load(Plugin plugin, ObjectMapper objectMapper) throws IOException {
+        return objectMapper.readValue(new File(plugin.getDataFolder(), configFileName), Config.class);
     }
 
     public String getBotToken() {
@@ -41,6 +41,18 @@ public class Config {
 
     public Long getChatId() {
         return chatId;
+    }
+
+    public String getCraftyToken() {
+        return craftyToken;
+    }
+
+    public int getCraftyPort() {
+        return craftyPort;
+    }
+
+    public int getCraftyServerId() {
+        return craftyServerId;
     }
 
     public Set<Integer> getAdmins() {

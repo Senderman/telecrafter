@@ -90,6 +90,10 @@ public class TelecrafterBot {
         }
     }
 
+    public void sendMessageAsync(long chatId, String text) {
+        api.sendMessageAsync(chatId, text);
+    }
+
     public void sendMessage(long chatId, String text) {
         api.sendMessage(chatId, text);
     }

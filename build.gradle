@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'com.senderman'
-version '2.0.4'
+version '2.1.2'
 
 repositories {
     mavenCentral()
@@ -20,9 +20,15 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
     implementation 'com.google.inject:guice:4.2.3'
 
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.4.2'
+
     compileOnly 'org.spigotmc:spigot-api:1.16.1-R0.1-SNAPSHOT'
 }
 
 shadowJar {
     mergeServiceFiles()
+}
+
+test{
+    useJUnitPlatform()
 }

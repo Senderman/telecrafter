@@ -9,23 +9,19 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.BroadcastMessageEvent;
-import org.bukkit.event.server.ServerCommandEvent;
 import org.bukkit.event.server.ServerLoadEvent;
 
 public class EventListener implements Listener {
 
     private final TelegramChat telegram;
-    private final ServerStopDelayer serverStopDelayer;
 
 
     @Inject
-    public EventListener(TelegramChat telegram, ServerStopDelayer serverStopDelayer) {
+    public EventListener(TelegramChat telegram) {
         this.telegram = telegram;
-        this.serverStopDelayer = serverStopDelayer;
     }
 
     @EventHandler
@@ -92,27 +88,6 @@ public class EventListener implements Listener {
     @EventHandler
     void onServerLoad(ServerLoadEvent event) {
         telegram.sendMessage("✅ Сервер запущен!");
-    }
-
-    @EventHandler
-    void onServerStopCommand(ServerCommandEvent event) {
-        if (!event.getCommand().matches("^(stop|reload).*"))
-            return;
-
-        event.setCancelled(true);
-        serverStopDelayer.scheduleServerStop(event.getCommand());
-    }
-
-    @EventHandler
-    void onPlayerStopCommand(PlayerCommandPreprocessEvent event) {
-        if (!event.getMessage().matches("^(stop|reload).*"))
-            return;
-
-        if (!event.getPlayer().isOp())
-            return;
-
-        event.setCancelled(true);
-        serverStopDelayer.scheduleServerStop(event.getMessage());
     }
 
 }

@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import com.google.inject.AbstractModule;
 import com.senderman.telecrafter.minecraft.*;
+import com.senderman.telecrafter.minecraft.command.RestartCommand;
+import com.senderman.telecrafter.minecraft.command.StopCommand;
+import com.senderman.telecrafter.minecraft.crafty.CraftyWrapper;
 import com.senderman.telecrafter.telegram.TelecrafterBot;
 import com.senderman.telecrafter.telegram.TelegramChat;
 import com.senderman.telecrafter.telegram.TelegramPolling;
@@ -11,6 +14,8 @@ import com.senderman.telecrafter.telegram.api.TelegramApiWrapper;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.IOException;
 
 public class InjectorConfig extends AbstractModule {
 
@@ -22,13 +27,20 @@ public class InjectorConfig extends AbstractModule {
 
     @Override
     protected void configure() {
+        ObjectMapper mapper = new YAMLMapper();
         bind(Plugin.class).toInstance(plugin);
+        bind(Listener.class).to(EventListener.class);
         bind(TelegramApiWrapper.class);
         bind(TelegramPolling.class);
-        bind(ObjectMapper.class).to(YAMLMapper.class);
-        bind(Listener.class).to(EventListener.class);
-        bind(Config.class);
+        try {
+            bind(Config.class).toInstance(Config.load(plugin, mapper));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        bind(RestartCommand.class);
+        bind(StopCommand.class);
         bind(ServerStopDelayer.class);
+        bind(CraftyWrapper.class);
         bind(ServerPropertiesProvider.class);
         bind(PluginManager.class);
         bind(MinecraftProvider.class);

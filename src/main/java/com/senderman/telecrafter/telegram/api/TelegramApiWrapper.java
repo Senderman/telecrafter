@@ -4,10 +4,14 @@ import com.google.inject.Inject;
 import com.senderman.telecrafter.Config;
 import com.senderman.telecrafter.telegram.api.entity.File;
 import com.senderman.telecrafter.telegram.api.entity.Message;
+import com.senderman.telecrafter.telegram.api.entity.Result;
 import com.senderman.telecrafter.telegram.api.entity.Update;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
@@ -43,6 +47,19 @@ public class TelegramApiWrapper {
         } catch (IOException e) {
             return null;
         }
+    }
+
+    public void sendMessageAsync(long chatId, String text) {
+        telegramApi.sendMessage(chatId, text, null, "HTML").enqueue(new Callback<Result<Message>>() {
+            @Override
+            public void onResponse(Call<Result<Message>> call, Response<Result<Message>> response) {
+            }
+
+            @Override
+            public void onFailure(Call<Result<Message>> call, Throwable t) {
+
+            }
+        });
     }
 
     public Message sendMessage(long chatId, String text) {

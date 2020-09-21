@@ -99,7 +99,7 @@ public class PluginManager {
         File copied = new File(pluginDirectory, pluginJar.getName());
         Files.copy(pluginJar, copied);
         if (oldPlugin != null)
-            serverStopDelayer.scheduleServerStop("reload");
+            serverStopDelayer.scheduleServerStop(ServerStopAction.RELOAD);
         else {
             try {
                 Plugin newPlugin = pluginManager.loadPlugin(copied);
