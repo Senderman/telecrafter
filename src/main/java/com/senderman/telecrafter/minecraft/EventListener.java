@@ -1,7 +1,7 @@
 package com.senderman.telecrafter.minecraft;
 
 import com.google.inject.Inject;
-import com.senderman.telecrafter.telegram.TelegramChat;
+import com.senderman.telecrafter.telegram.TelegramProvider;
 import org.apache.commons.lang.ObjectUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,24 +16,24 @@ import org.bukkit.event.server.ServerLoadEvent;
 
 public class EventListener implements Listener {
 
-    private final TelegramChat telegram;
+    private final TelegramProvider telegram;
 
 
     @Inject
-    public EventListener(TelegramChat telegram) {
+    public EventListener(TelegramProvider telegram) {
         this.telegram = telegram;
     }
 
     @EventHandler
     void onJoin(PlayerJoinEvent event) {
         String playerName = event.getPlayer().getName();
-        telegram.sendMessage("▶️ <b>" + playerName + " зашел на сервер!</b>");
+        telegram.sendMessageToMainChat("▶️ <b>" + playerName + " зашел на сервер!</b>");
     }
 
     @EventHandler
     void onLeave(PlayerQuitEvent event) {
         String playerName = event.getPlayer().getName();
-        telegram.sendMessage("◀️ <b>" + playerName + " ушел с сервера!</b>");
+        telegram.sendMessageToMainChat("◀️ <b>" + playerName + " ушел с сервера!</b>");
     }
 
     @EventHandler
@@ -42,27 +42,27 @@ public class EventListener implements Listener {
                 event.getDeathMessage(),
                 event.getEntity().getName() + "умер"
         );
-        telegram.sendMessage("☠️ " + message);
+        telegram.sendMessageToMainChat("☠️ " + message);
     }
 
     @EventHandler
     void onPlayerMessage(AsyncPlayerChatEvent event) {
         String message = event.getMessage();
         String name = event.getPlayer().getName();
-        telegram.sendMessage(String.format("\uD83D\uDCAC <b>[%s]</b>: %s", name, message));
+        telegram.sendMessageToMainChat(String.format("\uD83D\uDCAC <b>[%s]</b>: %s", name, message));
     }
 
     @EventHandler
     void onMobDeath(EntityDeathEvent event) {
         switch (event.getEntityType()) {
             case ENDER_DRAGON:
-                telegram.sendMessage("\uD83C\uDFC6 Дракон Края побежден!");
+                telegram.sendMessageToMainChat("\uD83C\uDFC6 Дракон Края побежден!");
                 break;
             case WITHER:
-                telegram.sendMessage("\uD83D\uDE31 Иссушитель побежден!");
+                telegram.sendMessageToMainChat("\uD83D\uDE31 Иссушитель побежден!");
                 break;
             case ELDER_GUARDIAN:
-                telegram.sendMessage("\uD83D\uDC21 Древний страж побежден!");
+                telegram.sendMessageToMainChat("\uD83D\uDC21 Древний страж побежден!");
                 break;
         }
     }
@@ -71,10 +71,10 @@ public class EventListener implements Listener {
     void onMobSpawn(CreatureSpawnEvent event) {
         switch (event.getEntity().getType()) {
             case ENDER_DRAGON:
-                telegram.sendMessage("\uD83D\uDE0E Сейчас будет сражение с Драконом Края!");
+                telegram.sendMessageToMainChat("\uD83D\uDE0E Сейчас будет сражение с Драконом Края!");
                 break;
             case WITHER:
-                telegram.sendMessage("\uD83D\uDE31 Сейчас будет сражение с Иссушителем!");
+                telegram.sendMessageToMainChat("\uD83D\uDE31 Сейчас будет сражение с Иссушителем!");
                 break;
         }
     }
@@ -82,12 +82,12 @@ public class EventListener implements Listener {
     @EventHandler
     void onServerMessage(BroadcastMessageEvent event) {
         String message = event.getMessage();
-        telegram.sendMessage("\uD83D\uDCAC " + message);
+        telegram.sendMessageToMainChat("\uD83D\uDCAC " + message);
     }
 
     @EventHandler
     void onServerLoad(ServerLoadEvent event) {
-        telegram.sendMessage("✅ Сервер запущен!");
+        telegram.sendMessageToMainChat("✅ Сервер запущен!");
     }
 
 }

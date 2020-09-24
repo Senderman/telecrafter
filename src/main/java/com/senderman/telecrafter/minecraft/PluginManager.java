@@ -42,7 +42,7 @@ public class PluginManager {
         Plugin[] plugins = pluginManager.getPlugins();
         return Stream.of(plugins)
                 .filter(p -> !lostPlugins.contains(p))
-                .map(p -> getPluginStatus(p) + p.getName() + " v" + p.getDescription().getVersion())
+                .map(p -> getPluginStatus(p) + p.getName() + " " + p.getDescription().getVersion())
                 .collect(Collectors.joining("\n"));
     }
 

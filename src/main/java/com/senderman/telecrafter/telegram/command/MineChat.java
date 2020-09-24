@@ -1,5 +1,6 @@
 package com.senderman.telecrafter.telegram.command;
 
+import com.google.inject.Inject;
 import com.senderman.telecrafter.minecraft.MinecraftProvider;
 import com.senderman.telecrafter.telegram.api.entity.Message;
 
@@ -8,6 +9,7 @@ public class MineChat implements CommandExecutor {
     private final MinecraftProvider minecraft;
 
 
+    @Inject
     public MineChat(MinecraftProvider minecraft) {
         this.minecraft = minecraft;
     }

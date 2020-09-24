@@ -1,15 +1,17 @@
 package com.senderman.telecrafter.telegram.command;
 
+import com.google.inject.Inject;
 import com.senderman.telecrafter.minecraft.PluginManager;
-import com.senderman.telecrafter.telegram.TelecrafterBot;
+import com.senderman.telecrafter.telegram.TelegramProvider;
 import com.senderman.telecrafter.telegram.api.entity.Message;
 
 public class DeletePlugin implements CommandExecutor {
 
-    private final TelecrafterBot telegram;
+    private final TelegramProvider telegram;
     private final PluginManager pluginManager;
 
-    public DeletePlugin(TelecrafterBot telegram, PluginManager pluginManager) {
+    @Inject
+    public DeletePlugin(TelegramProvider telegram, PluginManager pluginManager) {
         this.telegram = telegram;
         this.pluginManager = pluginManager;
     }

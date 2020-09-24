@@ -5,8 +5,8 @@ import com.google.inject.Injector;
 import com.senderman.telecrafter.InjectorConfig;
 import com.senderman.telecrafter.minecraft.command.RestartCommand;
 import com.senderman.telecrafter.minecraft.command.StopCommand;
-import com.senderman.telecrafter.telegram.TelegramChat;
 import com.senderman.telecrafter.telegram.TelegramPolling;
+import com.senderman.telecrafter.telegram.TelegramProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
@@ -14,7 +14,7 @@ import java.util.Objects;
 public class TelecrafterPlugin extends JavaPlugin {
 
     private TelegramPolling telegramPolling;
-    private TelegramChat telegram;
+    private TelegramProvider telegram;
 
     @Override
     public void onEnable() {
@@ -26,7 +26,7 @@ public class TelecrafterPlugin extends JavaPlugin {
             throw e;
         }
         telegramPolling = injector.getInstance(TelegramPolling.class);
-        telegram = injector.getInstance(TelegramChat.class);
+        telegram = injector.getInstance(TelegramProvider.class);
         telegramPolling.startPolling();
         getServer().getPluginManager().registerEvents(injector.getInstance(EventListener.class), this);
         Objects.requireNonNull(getCommand("tstop")).setExecutor(injector.getInstance(StopCommand.class));
@@ -37,7 +37,7 @@ public class TelecrafterPlugin extends JavaPlugin {
     @Override
     public void onDisable() {
         telegramPolling.stopPolling();
-        telegram.sendMessage("⚠️ Внимание, обнаружена <b>возможная</b> остановка/перезагрузка сервера");
-        telegram.sendMessage("⭕️ Работа плагина завершена");
+        telegram.sendMessageToMainChat("⚠️ Внимание, обнаружена <b>возможная</b> остановка/перезагрузка сервера");
+        telegram.sendMessageToMainChat("⭕️ Работа плагина завершена");
     }
 }

@@ -1,15 +1,17 @@
 package com.senderman.telecrafter.telegram.command;
 
+import com.google.inject.Inject;
 import com.senderman.telecrafter.minecraft.MinecraftProvider;
-import com.senderman.telecrafter.telegram.TelecrafterBot;
+import com.senderman.telecrafter.telegram.TelegramProvider;
 import com.senderman.telecrafter.telegram.api.entity.Message;
 
 public class MineNow implements CommandExecutor {
 
-    private final TelecrafterBot telegram;
+    private final TelegramProvider telegram;
     private final MinecraftProvider minecraft;
 
-    public MineNow(TelecrafterBot telegram, MinecraftProvider minecraft) {
+    @Inject
+    public MineNow(TelegramProvider telegram, MinecraftProvider minecraft) {
         this.telegram = telegram;
         this.minecraft = minecraft;
     }

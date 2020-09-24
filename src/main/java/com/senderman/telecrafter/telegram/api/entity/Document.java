@@ -26,6 +26,8 @@ public class Document {
     }
 
     public boolean isJar() {
-        return mimeType.equals("application/x-java-archive");
+        return fileName.endsWith(".jar") && (
+                mimeType.equals("application/x-java-archive") || mimeType.equals("application/octet-stream")
+        );
     }
 }

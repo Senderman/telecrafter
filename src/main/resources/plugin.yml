@@ -1,6 +1,6 @@
 name: Telecrafter
 main: com.senderman.telecrafter.minecraft.TelecrafterPlugin
-version: 2.1.2
+version: 2.1.3
 prefix: Telecrafter
 api-version: "1.16"
 permissions:

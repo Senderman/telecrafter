@@ -1,15 +1,17 @@
 package com.senderman.telecrafter.telegram.command;
 
+import com.google.inject.Inject;
 import com.senderman.telecrafter.minecraft.ServerPropertiesProvider;
-import com.senderman.telecrafter.telegram.TelecrafterBot;
+import com.senderman.telecrafter.telegram.TelegramProvider;
 import com.senderman.telecrafter.telegram.api.entity.Message;
 
 public class GetProp implements CommandExecutor {
 
-    private final TelecrafterBot telegram;
+    private final TelegramProvider telegram;
     private final ServerPropertiesProvider serverProperties;
 
-    public GetProp(TelecrafterBot telegram, ServerPropertiesProvider serverProperties) {
+    @Inject
+    public GetProp(TelegramProvider telegram, ServerPropertiesProvider serverProperties) {
         this.telegram = telegram;
         this.serverProperties = serverProperties;
     }

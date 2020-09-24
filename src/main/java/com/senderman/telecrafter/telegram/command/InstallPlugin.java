@@ -1,7 +1,8 @@
 package com.senderman.telecrafter.telegram.command;
 
+import com.google.inject.Inject;
 import com.senderman.telecrafter.minecraft.PluginManager;
-import com.senderman.telecrafter.telegram.TelecrafterBot;
+import com.senderman.telecrafter.telegram.TelegramProvider;
 import com.senderman.telecrafter.telegram.api.entity.Document;
 import com.senderman.telecrafter.telegram.api.entity.Message;
 import org.bukkit.plugin.InvalidDescriptionException;
@@ -13,10 +14,11 @@ import java.io.IOException;
 
 public class InstallPlugin implements CommandExecutor {
 
-    private final TelecrafterBot telegram;
+    private final TelegramProvider telegram;
     private final PluginManager pluginManager;
 
-    public InstallPlugin(TelecrafterBot telegram, PluginManager pluginManager) {
+    @Inject
+    public InstallPlugin(TelegramProvider telegram, PluginManager pluginManager) {
         this.telegram = telegram;
         this.pluginManager = pluginManager;
     }

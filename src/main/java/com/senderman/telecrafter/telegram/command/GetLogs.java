@@ -1,7 +1,8 @@
 package com.senderman.telecrafter.telegram.command;
 
+import com.google.inject.Inject;
 import com.senderman.telecrafter.minecraft.MinecraftProvider;
-import com.senderman.telecrafter.telegram.TelecrafterBot;
+import com.senderman.telecrafter.telegram.TelegramProvider;
 import com.senderman.telecrafter.telegram.api.entity.Message;
 
 import java.io.*;
@@ -11,10 +12,11 @@ import java.util.stream.Stream;
 
 public class GetLogs implements CommandExecutor {
 
-    private final TelecrafterBot telegram;
+    private final TelegramProvider telegram;
     private final File logsDir;
 
-    public GetLogs(TelecrafterBot telegram, MinecraftProvider minecraft) {
+    @Inject
+    public GetLogs(TelegramProvider telegram, MinecraftProvider minecraft) {
         this.telegram = telegram;
         this.logsDir = minecraft.getLogsDirectory();
     }

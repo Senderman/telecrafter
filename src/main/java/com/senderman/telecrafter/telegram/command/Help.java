@@ -1,17 +1,19 @@
 package com.senderman.telecrafter.telegram.command;
 
-import com.senderman.telecrafter.telegram.TelecrafterBot;
+import com.google.inject.Inject;
+import com.senderman.telecrafter.telegram.TelegramProvider;
 import com.senderman.telecrafter.telegram.api.entity.Message;
 
-import java.util.Map;
+import java.util.Set;
 
 public class Help implements CommandExecutor {
 
-    private final TelecrafterBot telecrafterBot;
-    private final Map<String, CommandExecutor> commands;
+    private final TelegramProvider telegram;
+    private final Set<CommandExecutor> commands;
 
-    public Help(TelecrafterBot telecrafterBot, Map<String, CommandExecutor> commands) {
-        this.telecrafterBot = telecrafterBot;
+    @Inject
+    public Help(TelegramProvider telegram, Set<CommandExecutor> commands) {
+        this.telegram = telegram;
         this.commands = commands;
     }
 
@@ -28,10 +30,10 @@ public class Help implements CommandExecutor {
     @Override
     public void execute(Message message) {
         StringBuilder builder = new StringBuilder("<b>Справка по командам</b>\n\n");
-        for (CommandExecutor command : commands.values()) {
+        for (CommandExecutor command : commands) {
             builder.append(formatExecutor(command)).append("\n");
         }
-        telecrafterBot.sendMessage(message.getChatId(), builder.toString());
+        telegram.sendMessage(message.getChatId(), builder.toString());
     }
 
     private String formatExecutor(CommandExecutor executor) {
