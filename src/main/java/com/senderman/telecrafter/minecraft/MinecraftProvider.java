@@ -6,15 +6,17 @@ import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.util.Consumer;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import javax.annotation.Nullable;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class MinecraftProvider {
@@ -64,6 +66,22 @@ public class MinecraftProvider {
             if (callback != null) {
                 callback.accept(result);
             }
+        });
+    }
+
+    /**
+     * Очистить все миры от дропа
+     * @param callback Consumer принимающий long - кол-во удаленных предметов
+     */
+    public void removeAndCountDrop(@Nullable Consumer<Long> callback) {
+        BukkitScheduler scheduler = plugin.getServer().getScheduler();
+        scheduler.scheduleSyncDelayedTask(plugin, () -> {
+            long result = plugin.getServer().getWorlds().stream()
+                    .flatMap(w -> w.getEntitiesByClass(Item.class).stream())
+                    .peek(Entity::remove)
+                    .count();
+            if (callback != null)
+                callback.accept(result);
         });
     }
 

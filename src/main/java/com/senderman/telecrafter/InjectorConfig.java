@@ -40,7 +40,8 @@ public class InjectorConfig extends AbstractModule {
                 GetProp.class,
                 InstallPlugin.class,
                 ListPlugins.class,
-                SetProp.class
+                SetProp.class,
+                ClearDrop.class
 //                Help.class
         );
 
