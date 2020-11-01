@@ -1,19 +1,19 @@
 package com.senderman.telecrafter.telegram.command;
 
 import com.google.inject.Inject;
-import com.senderman.telecrafter.minecraft.PluginManager;
+import com.senderman.telecrafter.minecraft.MinecraftProvider;
 import com.senderman.telecrafter.telegram.TelegramProvider;
 import com.senderman.telecrafter.telegram.api.entity.Message;
 
 public class ListPlugins implements CommandExecutor {
 
     private final TelegramProvider telegram;
-    private final PluginManager pluginManager;
+    private final MinecraftProvider minecraft;
 
     @Inject
-    public ListPlugins(TelegramProvider telegram, PluginManager pluginManager) {
+    public ListPlugins(TelegramProvider telegram, MinecraftProvider minecraft) {
         this.telegram = telegram;
-        this.pluginManager = pluginManager;
+        this.minecraft = minecraft;
     }
 
     @Override
@@ -28,7 +28,7 @@ public class ListPlugins implements CommandExecutor {
 
     @Override
     public void execute(Message message) {
-        String plugins = pluginManager.listPlugins();
+        String plugins = minecraft.getPlugins();
         telegram.sendMessage(message.getChatId(), "<b>Плагины на сервере:</b>\n\n" + plugins);
     }
 }

@@ -39,14 +39,12 @@ public class ServerPropertiesProvider {
      *
      * @param key   key of property to change
      * @param value value of property to change
-     * @return true if property exists, else false
      */
-    public boolean setProperty(String key, String value) {
-        if (!properties.containsKey(key)) return false;
+    public void setProperty(String key, String value) {
+        if (!properties.containsKey(key)) return;
         properties.setProperty(key, value);
         try (OutputStream out = new FileOutputStream(propFile)) {
             properties.store(out, "Minecraft server properties\n");
-            return true;
         } catch (IOException e) {
             throw new RuntimeException("Unable to write to " + propFile.getAbsolutePath());
         }

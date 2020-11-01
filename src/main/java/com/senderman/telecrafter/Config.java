@@ -19,12 +19,6 @@ public class Config {
     @JsonProperty
     private Long chatId;
     @JsonProperty
-    private String craftyToken;
-    @JsonProperty
-    private Integer craftyPort;
-    @JsonProperty
-    private Integer craftyServerId;
-    @JsonProperty
     private Set<Integer> admins;
 
     public static Config load(Plugin plugin, ObjectMapper objectMapper) throws IOException {
@@ -41,18 +35,6 @@ public class Config {
 
     public Long getChatId() {
         return chatId;
-    }
-
-    public String getCraftyToken() {
-        return craftyToken;
-    }
-
-    public int getCraftyPort() {
-        return craftyPort;
-    }
-
-    public int getCraftyServerId() {
-        return craftyServerId;
     }
 
     public Set<Integer> getAdmins() {

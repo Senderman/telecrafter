@@ -4,10 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import com.google.inject.AbstractModule;
 import com.google.inject.multibindings.Multibinder;
-import com.senderman.telecrafter.minecraft.*;
-import com.senderman.telecrafter.minecraft.command.RestartCommand;
-import com.senderman.telecrafter.minecraft.command.StopCommand;
-import com.senderman.telecrafter.minecraft.crafty.CraftyWrapper;
+import com.senderman.telecrafter.minecraft.EventListener;
+import com.senderman.telecrafter.minecraft.MinecraftProvider;
+import com.senderman.telecrafter.minecraft.ServerPropertiesProvider;
 import com.senderman.telecrafter.telegram.TelecrafterBot;
 import com.senderman.telecrafter.telegram.TelegramPolling;
 import com.senderman.telecrafter.telegram.TelegramProvider;
@@ -29,18 +28,14 @@ public class InjectorConfig extends AbstractModule {
 
     @Override
     protected void configure() {
+
         Multibinder<CommandExecutor> commandsBinder = Multibinder.newSetBinder(binder(), CommandExecutor.class);
         addBindings(commandsBinder,
                 MineChat.class,
                 MineNow.class,
-                DeletePlugin.class,
-                DisablePlugin.class,
-                EnablePlugin.class,
                 GetLogs.class,
-                GetProp.class,
-                InstallPlugin.class,
+                Respack.class,
                 ListPlugins.class,
-                SetProp.class,
                 ClearDrop.class
 //                Help.class
         );
@@ -55,12 +50,7 @@ public class InjectorConfig extends AbstractModule {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        bind(RestartCommand.class);
-        bind(StopCommand.class);
-        bind(ServerStopDelayer.class);
-        bind(CraftyWrapper.class);
         bind(ServerPropertiesProvider.class);
-        bind(PluginManager.class);
         bind(MinecraftProvider.class);
         bind(TelecrafterBot.class);
         bind(TelegramProvider.class);

@@ -16,7 +16,9 @@ import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class TelegramApiWrapper {
 
@@ -35,7 +37,9 @@ public class TelegramApiWrapper {
 
     public List<Update> getUpdates(Integer offset) {
         try {
-            return telegramApi.getUpdates(offset).execute().body().getResult();
+            return Optional.ofNullable(telegramApi.getUpdates(offset).execute().body())
+                    .map(Result::getResult)
+                    .orElse(new ArrayList<>());
         } catch (IOException e) {
             return null;
         }

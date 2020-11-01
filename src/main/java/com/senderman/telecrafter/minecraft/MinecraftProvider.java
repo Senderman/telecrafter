@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class MinecraftProvider {
 
@@ -59,6 +60,13 @@ public class MinecraftProvider {
         return result.toString();
     }
 
+    public String getPlugins() {
+        Plugin[] plugins = plugin.getServer().getPluginManager().getPlugins();
+        return Stream.of(plugins)
+                .map(p -> getPluginStatus(p) + p.getName() + " " + p.getDescription().getVersion())
+                .collect(Collectors.joining("\n"));
+    }
+
     public void runCommand(String command, @Nullable Consumer<Boolean> callback) {
         Server server = plugin.getServer();
         server.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
@@ -71,6 +79,7 @@ public class MinecraftProvider {
 
     /**
      * Очистить все миры от дропа
+     *
      * @param callback Consumer принимающий long - кол-во удаленных предметов
      */
     public void removeAndCountDrop(@Nullable Consumer<Long> callback) {
@@ -106,5 +115,9 @@ public class MinecraftProvider {
                 break;
         }
         return result;
+    }
+
+    private String getPluginStatus(Plugin plugin) {
+        return plugin.isEnabled() ? "\uD83D\uDFE2 " : "\uD83D\uDD34 ";
     }
 }

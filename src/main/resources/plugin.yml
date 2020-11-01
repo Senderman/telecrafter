@@ -1,22 +1,4 @@
 name: Telecrafter
 main: com.senderman.telecrafter.minecraft.TelecrafterPlugin
-version: 2.1.4
-prefix: Telecrafter
+version: 2.2.1
 api-version: "1.16"
-permissions:
-  telecrafter.op:
-    description: Allows you to run Telecrafter admin commands
-    default: op
-
-commands:
-  tstop:
-    description: Stop server after 30 seconds
-    usage: /<command>
-    permission: <plugin name>.op
-    permission-message: You don't have <permission>
-
-  trestart:
-    description: Restart server after 30 seconds
-    usage: /<command>
-    permission: <plugin name>.op
-    permission-message: You don't have <permission>

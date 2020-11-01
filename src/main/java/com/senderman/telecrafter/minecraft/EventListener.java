@@ -3,24 +3,16 @@ package com.senderman.telecrafter.minecraft;
 import com.google.inject.Inject;
 import com.senderman.telecrafter.telegram.TelegramProvider;
 import org.apache.commons.lang.ObjectUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.BroadcastMessageEvent;
 import org.bukkit.event.server.ServerLoadEvent;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.FixedMetadataValue;
 
 public class EventListener implements Listener {
 
@@ -31,7 +23,7 @@ public class EventListener implements Listener {
         this.telegram = telegram;
     }
 
-    
+
     @EventHandler
     void onJoin(PlayerJoinEvent event) {
         String playerName = event.getPlayer().getName();
