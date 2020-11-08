@@ -1,7 +1,5 @@
 package com.senderman.telecrafter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import com.google.inject.AbstractModule;
 import com.google.inject.multibindings.Multibinder;
 import com.senderman.telecrafter.minecraft.EventListener;
@@ -16,19 +14,18 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.IOException;
-
 public class InjectorConfig extends AbstractModule {
 
     private final JavaPlugin plugin;
+    private final Config config;
 
-    public InjectorConfig(JavaPlugin plugin) {
+    public InjectorConfig(JavaPlugin plugin, Config config) {
         this.plugin = plugin;
+        this.config = config;
     }
 
     @Override
     protected void configure() {
-
         Multibinder<CommandExecutor> commandsBinder = Multibinder.newSetBinder(binder(), CommandExecutor.class);
         addBindings(commandsBinder,
                 MineChat.class,
@@ -40,16 +37,12 @@ public class InjectorConfig extends AbstractModule {
 //                Help.class
         );
 
-        ObjectMapper mapper = new YAMLMapper();
+
         bind(Plugin.class).toInstance(plugin);
+        bind(Config.class).toInstance(config);
         bind(Listener.class).to(EventListener.class);
         bind(TelegramApiWrapper.class);
         bind(TelegramPolling.class);
-        try {
-            bind(Config.class).toInstance(Config.load(plugin, mapper));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         bind(ServerPropertiesProvider.class);
         bind(MinecraftProvider.class);
         bind(TelecrafterBot.class);

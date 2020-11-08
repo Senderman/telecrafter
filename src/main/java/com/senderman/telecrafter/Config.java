@@ -1,16 +1,10 @@
 package com.senderman.telecrafter;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.bukkit.plugin.Plugin;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Set;
 
 public class Config {
-
-    private static final String configFileName = "config.yml";
 
     @JsonProperty
     private String botToken;
@@ -20,10 +14,6 @@ public class Config {
     private Long chatId;
     @JsonProperty
     private Set<Integer> admins;
-
-    public static Config load(Plugin plugin, ObjectMapper objectMapper) throws IOException {
-        return objectMapper.readValue(new File(plugin.getDataFolder(), configFileName), Config.class);
-    }
 
     public String getBotToken() {
         return botToken;
