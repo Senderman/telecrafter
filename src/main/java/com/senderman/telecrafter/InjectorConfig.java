@@ -33,7 +33,8 @@ public class InjectorConfig extends AbstractModule {
                 GetLogs.class,
                 Respack.class,
                 ListPlugins.class,
-                ClearDrop.class
+                ClearDrop.class,
+                RunCommand.class
 //                Help.class
         );
 
