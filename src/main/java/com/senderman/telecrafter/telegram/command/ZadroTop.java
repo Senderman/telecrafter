@@ -4,11 +4,11 @@ import com.senderman.telecrafter.minecraft.MinecraftProvider;
 import com.senderman.telecrafter.minecraft.PlayersInfo;
 import com.senderman.telecrafter.telegram.TelegramProvider;
 import com.senderman.telecrafter.telegram.api.entity.Message;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Statistic;
 
 import javax.inject.Inject;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.stream.Collectors;
 
 public class ZadroTop implements CommandExecutor {
@@ -37,12 +37,16 @@ public class ZadroTop implements CommandExecutor {
 
         PlayersInfo info = minecraft.getOnlineInfo();
         String top = Arrays.stream(info.getOfflinePlayers())
-                .sorted(Comparator.comparing(p -> p.getStatistic(Statistic.PLAY_ONE_MINUTE)))
+                .sorted((p1, p2) -> Integer.compare(getTickPlayer(p2), getTickPlayer(p1)))
                 .limit(10)
                 .map(p -> "\uD83D\uDC64 " + p.getName() + " (" + formatTicks(p.getStatistic(Statistic.PLAY_ONE_MINUTE)) + ")")
                 .collect(Collectors.joining("\n"));
 
         telegram.sendMessageToMainChat("<b>Топ задротов:</b>\n\n" + top);
+    }
+
+    private int getTickPlayer(OfflinePlayer player) {
+        return player.getStatistic(Statistic.PLAY_ONE_MINUTE);
     }
 
     private String formatTicks(int ticks) {
