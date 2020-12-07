@@ -2,20 +2,13 @@ package com.senderman.telecrafter.minecraft;
 
 import com.google.inject.Inject;
 import org.bukkit.Server;
-import org.bukkit.World;
-import org.bukkit.World.Environment;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import javax.annotation.Nullable;
 import java.io.File;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -23,7 +16,6 @@ import java.util.stream.Stream;
 public class MinecraftProvider {
 
     private final Plugin plugin;
-
 
     @Inject
     public MinecraftProvider(Plugin plugin) {
@@ -34,30 +26,9 @@ public class MinecraftProvider {
         plugin.getServer().broadcastMessage(message);
     }
 
-    public String getOnlinePlayersNames() {
-        StringBuilder result = new StringBuilder();
-        Map<World, ? extends List<? extends Player>> envPlayersMap = plugin
-                .getServer()
-                .getOnlinePlayers()
-                .stream()
-                .collect(Collectors.groupingBy(Entity::getWorld));
-        for (World world : envPlayersMap.keySet()) {
-            String formattedWorld = getEnvironmentEmoji(world.getEnvironment())
-                    + " <b>" + world.getName() + ":</b>\n";
-            result.append(formattedWorld);
-
-            for (Player player : envPlayersMap.get(world)) {
-                String formattedPlayer = String.format(
-                        "\uD83D\uDC64 %s (%d/%d ❤)\n",
-                        player.getName(),
-                        (int) player.getHealth(),
-                        (int) Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getValue()
-                );
-                result.append(formattedPlayer);
-            }
-            result.append("\n");
-        }
-        return result.toString();
+    public PlayersInfo getOnlineInfo() {
+        Server server = plugin.getServer();
+        return new PlayersInfo(server.getOnlinePlayers(), server.getOfflinePlayers());
     }
 
     public String getPlugins() {
@@ -99,22 +70,6 @@ public class MinecraftProvider {
         if (!logsDir.exists())
             logsDir.mkdirs();
         return logsDir;
-    }
-
-    private String getEnvironmentEmoji(Environment environment) {
-        String result = "Unknown";
-        switch (environment) {
-            case NORMAL:
-                result = "\uD83C\uDF33";
-                break;
-            case NETHER:
-                result = "\uD83D\uDD25";
-                break;
-            case THE_END:
-                result = "\uD83D\uDD32";
-                break;
-        }
-        return result;
     }
 
     private String getPluginStatus(Plugin plugin) {

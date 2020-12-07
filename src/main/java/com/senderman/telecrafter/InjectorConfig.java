@@ -34,7 +34,8 @@ public class InjectorConfig extends AbstractModule {
                 Respack.class,
                 ListPlugins.class,
                 ClearDrop.class,
-                RunCommand.class
+                RunCommand.class,
+                ZadroTop.class
 //                Help.class
         );
 
