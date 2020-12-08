@@ -53,7 +53,7 @@ public class MineNow implements CommandExecutor {
                     .map(this::formatPlayer)
                     .collect(Collectors.joining("\n"));
 
-            text.append(playersInWorld).append("\n");
+            text.append(playersInWorld).append("\n\n");
         }
 
         telegram.sendMessage(message.getChatId(), text.toString());
