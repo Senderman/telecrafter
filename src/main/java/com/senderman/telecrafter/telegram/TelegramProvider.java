@@ -2,8 +2,7 @@ package com.senderman.telecrafter.telegram;
 
 import com.google.inject.Inject;
 import com.senderman.telecrafter.Config;
-import com.senderman.telecrafter.telegram.api.TelegramApiWrapper;
-import com.senderman.telecrafter.telegram.api.entity.Message;
+import com.senderman.telecrafter.telegram.api.TelegramApi;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -13,30 +12,26 @@ import java.net.URL;
 
 public class TelegramProvider {
 
-    private final TelegramApiWrapper api;
+    private final TelegramApi api;
     private final Config config;
 
 
     @Inject
-    public TelegramProvider(TelegramApiWrapper api, Config config) {
+    public TelegramProvider(TelegramApi api, Config config) {
         this.api = api;
         this.config = config;
     }
 
     public void sendMessage(long chatId, String text) {
-        api.sendMessageAsync(chatId, text);
+        api.sendMessage(chatId, text);
     }
 
     public void sendMessageToMainChat(String message) {
         sendMessage(config.getChatId(), message);
     }
 
-    public com.senderman.telecrafter.telegram.api.entity.File getFile(String fileId) {
-        return api.getFile(fileId);
-    }
-
-    public Message sendDocument(long chatId, java.io.File file) {
-        return api.sendDocument(chatId, file);
+    public void sendDocument(long chatId, File file) {
+        api.sendDocument(chatId, file);
     }
 
     public File downloadFile(com.senderman.telecrafter.telegram.api.entity.File file, File output) throws IOException {

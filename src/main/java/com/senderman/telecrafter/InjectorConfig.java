@@ -8,7 +8,7 @@ import com.senderman.telecrafter.minecraft.ServerPropertiesProvider;
 import com.senderman.telecrafter.telegram.TelecrafterBot;
 import com.senderman.telecrafter.telegram.TelegramPolling;
 import com.senderman.telecrafter.telegram.TelegramProvider;
-import com.senderman.telecrafter.telegram.api.TelegramApiWrapper;
+import com.senderman.telecrafter.telegram.api.TelegramApi;
 import com.senderman.telecrafter.telegram.command.*;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
@@ -43,7 +43,7 @@ public class InjectorConfig extends AbstractModule {
         bind(Plugin.class).toInstance(plugin);
         bind(Config.class).toInstance(config);
         bind(Listener.class).to(EventListener.class);
-        bind(TelegramApiWrapper.class);
+        bind(TelegramApi.class);
         bind(TelegramPolling.class);
         bind(ServerPropertiesProvider.class);
         bind(MinecraftProvider.class);
