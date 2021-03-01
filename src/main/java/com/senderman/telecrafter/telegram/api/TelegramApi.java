@@ -13,6 +13,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TelegramApi {
@@ -30,8 +32,15 @@ public class TelegramApi {
     }
 
 
-    public void getUpdates(Integer offset, Callback<Result<List<Update>>> callback) {
-        telegramService.getUpdates(offset).enqueue(callback);
+    public List<Update> getUpdates(Integer offset) {
+        try {
+            Response<Result<List<Update>>> response = telegramService.getUpdates(offset).execute();
+            if (!response.isSuccessful())
+                return new ArrayList<>();
+            return response.body().getResult();
+        } catch (IOException e) {
+            return new ArrayList<>();
+        }
     }
 
     public void sendMessage(long chatId, String text) {

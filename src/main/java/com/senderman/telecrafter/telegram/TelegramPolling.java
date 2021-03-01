@@ -2,12 +2,7 @@ package com.senderman.telecrafter.telegram;
 
 import com.google.inject.Inject;
 import com.senderman.telecrafter.telegram.api.TelegramApi;
-import com.senderman.telecrafter.telegram.api.entity.Result;
 import com.senderman.telecrafter.telegram.api.entity.Update;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.internal.EverythingIsNonNull;
 
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -42,26 +37,14 @@ public class TelegramPolling {
     }
 
     private void polling() {
-        api.getUpdates(lastReceivedUpdateId + 1, new Callback<Result<List<Update>>>() {
-            @Override
-            @EverythingIsNonNull
-            public void onResponse(Call<Result<List<Update>>> call, Response<Result<List<Update>>> response) {
-                if (response.body() == null) return;
-                List<Update> updates = response.body().getResult();
-                if (updates.isEmpty()) return;
+        List<Update> updates = api.getUpdates(lastReceivedUpdateId + 1);
+        if (updates.isEmpty()) return;
 
-                updates.removeIf(u -> u.getUpdateId() <= lastReceivedUpdateId);
-                lastReceivedUpdateId = updates.parallelStream()
-                        .map(Update::getUpdateId)
-                        .max(Integer::compareTo)
-                        .orElse(lastReceivedUpdateId);
-                updates.forEach(bot::onUpdateReceived);
-            }
-
-            @Override
-            @EverythingIsNonNull
-            public void onFailure(Call<Result<List<Update>>> call, Throwable t) {
-            }
-        });
+        lastReceivedUpdateId = updates
+                .parallelStream()
+                .map(Update::getUpdateId)
+                .max(Integer::compareTo)
+                .orElse(lastReceivedUpdateId);
+        updates.forEach(bot::onUpdateReceived);
     }
 }
