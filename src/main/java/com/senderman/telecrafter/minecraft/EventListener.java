@@ -2,13 +2,14 @@ package com.senderman.telecrafter.minecraft;
 
 import com.google.inject.Inject;
 import com.senderman.telecrafter.telegram.TelegramProvider;
+import io.papermc.paper.event.player.AsyncChatEvent;
+import net.kyori.adventure.text.TextComponent;
 import org.apache.commons.lang.ObjectUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.BroadcastMessageEvent;
@@ -39,15 +40,16 @@ public class EventListener implements Listener {
     @EventHandler
     void onDeath(PlayerDeathEvent event) {
         String message = (String) ObjectUtils.defaultIfNull(
-                event.getDeathMessage(),
+                event.deathMessage(),
                 event.getEntity().getName() + "умер"
         );
         telegram.sendMessageToMainChat("☠️ " + message);
     }
 
     @EventHandler
-    void onPlayerMessage(AsyncPlayerChatEvent event) {
-        String message = event.getMessage();
+    void onPlayerMessage(AsyncChatEvent event) {
+        // this cast is safe as AsyncChatEvent contains TextComponent
+        String message = ((TextComponent) event.message()).content();
         String name = event.getPlayer().getName();
         telegram.sendMessageToMainChat(String.format("\uD83D\uDCAC <b>[%s]</b>: %s", name, message));
     }
@@ -81,7 +83,8 @@ public class EventListener implements Listener {
 
     @EventHandler
     void onServerMessage(BroadcastMessageEvent event) {
-        String message = event.getMessage();
+        // this cast is safe as BroadcastMessageEvent contains TextComponent
+        String message = ((TextComponent) event.message()).content();
         telegram.sendMessageToMainChat("\uD83D\uDCAC " + message);
     }
 

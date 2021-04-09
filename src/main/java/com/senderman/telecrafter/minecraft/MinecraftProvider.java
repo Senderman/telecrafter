@@ -1,6 +1,7 @@
 package com.senderman.telecrafter.minecraft;
 
 import com.google.inject.Inject;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Server;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -23,7 +24,7 @@ public class MinecraftProvider {
     }
 
     public void sendMessage(String message) {
-        plugin.getServer().broadcastMessage(message);
+        plugin.getServer().broadcast(Component.text(message), "*");
     }
 
     public PlayersInfo getOnlineInfo() {
