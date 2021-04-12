@@ -1,4 +1,9 @@
 name: Telecrafter
 main: com.senderman.telecrafter.minecraft.TelecrafterPlugin
-version: 3.0.1
+version: 3.0.2
 api-version: 1.16
+
+permissions:
+  telecrafter.receive:
+    default: true
+    description: Allows you to receive messages from Telegram

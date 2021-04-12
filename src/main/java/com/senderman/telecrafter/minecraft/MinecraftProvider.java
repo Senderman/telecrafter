@@ -24,7 +24,7 @@ public class MinecraftProvider {
     }
 
     public void sendMessage(String message) {
-        plugin.getServer().broadcast(Component.text(message), "*");
+        plugin.getServer().broadcast(Component.text(message), "telecrafter.receive");
     }
 
     public PlayersInfo getOnlineInfo() {
