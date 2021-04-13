@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 import com.senderman.telecrafter.telegram.TelegramProvider;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.TextComponent;
-import org.apache.commons.lang.ObjectUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -14,6 +13,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.BroadcastMessageEvent;
 import org.bukkit.event.server.ServerLoadEvent;
+
+import java.util.Optional;
 
 public class EventListener implements Listener {
 
@@ -38,11 +39,10 @@ public class EventListener implements Listener {
     }
 
     @EventHandler
-    void onDeath(PlayerDeathEvent event) {
-        String message = (String) ObjectUtils.defaultIfNull(
-                event.deathMessage(),
-                event.getEntity().getName() + "умер"
-        );
+    void onPlayerDeath(PlayerDeathEvent event) {
+        String message = Optional.ofNullable(event.getDeathMessage())
+                .orElseGet(() -> event.getEntity().getName() + "умер");
+        System.err.println(message);
         telegram.sendMessageToMainChat("☠️ " + message);
     }
 
@@ -55,7 +55,7 @@ public class EventListener implements Listener {
     }
 
     @EventHandler
-    void onMobDeath(EntityDeathEvent event) {
+    void onEntityDeath(EntityDeathEvent event) {
         switch (event.getEntityType()) {
             case ENDER_DRAGON:
                 telegram.sendMessageToMainChat("\uD83C\uDFC6 Дракон Края побежден!");
