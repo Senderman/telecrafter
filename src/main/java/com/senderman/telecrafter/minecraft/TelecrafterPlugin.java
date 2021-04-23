@@ -20,7 +20,6 @@ public class TelecrafterPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-
         Config config;
         File configFile = new File(getDataFolder(), "config.yml");
         if (configFile.exists()) {
@@ -30,14 +29,7 @@ public class TelecrafterPlugin extends JavaPlugin {
                 throw new RuntimeException("Error occurred while trying to read contents from" + configFile);
             }
         } else {
-            // copy default config to config dir and do not turn plugin on
-            if (!getDataFolder().exists())
-                getDataFolder().mkdir();
-            try {
-                createDefaultConfig(configFile);
-            } catch (IOException e) {
-                throw new RuntimeException("Error occurred while trying to write to " + configFile);
-            }
+            saveDefaultConfig();
             throw new RuntimeException("No " + configFile + " was found. Default config was created, please fill it in and restart server");
         }
 

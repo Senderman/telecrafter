@@ -4,13 +4,10 @@ plugins {
 }
 
 group 'com.senderman'
-version '3.0.3'
+version '3.0.4'
 
 repositories {
     mavenCentral()
-    maven {
-        url "https://hub.spigotmc.org/nexus/content/repositories/snapshots"
-    }
     maven {
         url 'https://papermc.io/repo/repository/maven-public/'
     }
@@ -24,10 +21,8 @@ dependencies {
     implementation 'com.google.inject:guice:4.2.3'
     implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
 
-
     testImplementation 'org.junit.jupiter:junit-jupiter:5.4.2'
 
-    //compileOnly 'org.spigotmc:spigot-api:1.16.1-R0.1-SNAPSHOT'
     compileOnly 'com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT'
 }
 

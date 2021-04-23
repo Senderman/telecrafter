@@ -73,10 +73,10 @@ public class EventListener implements Listener {
     void onMobSpawn(CreatureSpawnEvent event) {
         switch (event.getEntity().getType()) {
             case ENDER_DRAGON:
-                telegram.sendMessageToMainChat("\uD83D\uDE0E Сейчас будет сражение с Драконом Края!");
+                telegram.sendMessageToMainChat("😎 Сейчас будет сражение с Драконом Края!");
                 break;
             case WITHER:
-                telegram.sendMessageToMainChat("\uD83D\uDE31 Сейчас будет сражение с Иссушителем!");
+                telegram.sendMessageToMainChat("😱 Сейчас будет сражение с Иссушителем!");
                 break;
         }
     }
@@ -85,7 +85,7 @@ public class EventListener implements Listener {
     void onServerMessage(BroadcastMessageEvent event) {
         // this cast is safe as BroadcastMessageEvent contains TextComponent
         String message = ((TextComponent) event.message()).content();
-        telegram.sendMessageToMainChat("\uD83D\uDCAC " + message);
+        telegram.sendMessageToMainChat("💬 " + message);
     }
 
     @EventHandler
