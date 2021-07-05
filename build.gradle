@@ -4,21 +4,19 @@ plugins {
 }
 
 group 'com.senderman'
-version '3.0.4'
+version '3.0.5'
 
 repositories {
     mavenCentral()
-    maven {
-        url 'https://papermc.io/repo/repository/maven-public/'
-    }
+    maven { url 'https://papermc.io/repo/repository/maven-public/' }
 }
 
 dependencies {
-    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.11.2'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.2'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.12.3'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
-    implementation 'com.google.inject:guice:4.2.3'
+    implementation 'com.google.inject:guice:5.0.1'
     implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.4.2'
