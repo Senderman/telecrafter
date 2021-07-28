@@ -1,15 +1,17 @@
 package com.senderman.telecrafter.telegram.command;
 
-import com.google.inject.Inject;
 import com.senderman.telecrafter.minecraft.MinecraftProvider;
 import com.senderman.telecrafter.telegram.TelegramProvider;
 import com.senderman.telecrafter.telegram.api.entity.Message;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.io.*;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Singleton
 public class GetLogs implements CommandExecutor {
 
     private final TelegramProvider telegram;

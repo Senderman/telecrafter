@@ -1,9 +1,9 @@
 package com.senderman.telecrafter.telegram;
 
-import com.google.inject.Inject;
 import com.senderman.telecrafter.Config;
 import com.senderman.telecrafter.telegram.api.TelegramApi;
 
+import javax.inject.Inject;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;

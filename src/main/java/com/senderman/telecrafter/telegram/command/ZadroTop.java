@@ -8,9 +8,11 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.Statistic;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+@Singleton
 public class ZadroTop implements CommandExecutor {
 
     private final MinecraftProvider minecraft;

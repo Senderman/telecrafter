@@ -1,13 +1,15 @@
 package com.senderman.telecrafter.telegram.command;
 
-import com.google.inject.Inject;
 import com.senderman.telecrafter.telegram.TelegramProvider;
 
 import javax.annotation.Nullable;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+@Singleton
 public class CommandKeeper {
 
     private final Map<String, CommandExecutor> commands;

@@ -1,10 +1,13 @@
 package com.senderman.telecrafter.telegram.command;
 
-import com.google.inject.Inject;
 import com.senderman.telecrafter.minecraft.MinecraftProvider;
 import com.senderman.telecrafter.telegram.TelegramProvider;
 import com.senderman.telecrafter.telegram.api.entity.Message;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
 public class ClearDrop implements CommandExecutor {
 
     private final MinecraftProvider minecraftProvider;

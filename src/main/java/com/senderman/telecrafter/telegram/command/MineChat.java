@@ -1,9 +1,12 @@
 package com.senderman.telecrafter.telegram.command;
 
-import com.google.inject.Inject;
 import com.senderman.telecrafter.minecraft.MinecraftProvider;
 import com.senderman.telecrafter.telegram.api.entity.Message;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
 public class MineChat implements CommandExecutor {
 
     private final MinecraftProvider minecraft;

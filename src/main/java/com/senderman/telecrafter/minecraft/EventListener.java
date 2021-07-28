@@ -1,6 +1,5 @@
 package com.senderman.telecrafter.minecraft;
 
-import com.google.inject.Inject;
 import com.senderman.telecrafter.telegram.TelegramProvider;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.TextComponent;
@@ -14,8 +13,11 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.BroadcastMessageEvent;
 import org.bukkit.event.server.ServerLoadEvent;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.Optional;
 
+@Singleton
 public class EventListener implements Listener {
 
     private final TelegramProvider telegram;

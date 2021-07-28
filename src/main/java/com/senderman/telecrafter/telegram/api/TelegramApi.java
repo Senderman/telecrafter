@@ -1,6 +1,5 @@
 package com.senderman.telecrafter.telegram.api;
 
-import com.google.inject.Inject;
 import com.senderman.telecrafter.Config;
 import com.senderman.telecrafter.telegram.api.entity.Result;
 import com.senderman.telecrafter.telegram.api.entity.Update;
@@ -14,10 +13,13 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Singleton
 public class TelegramApi {
 
     private final TelegramService telegramService;

@@ -1,12 +1,12 @@
 package com.senderman.telecrafter.telegram;
 
-import com.google.inject.Inject;
 import com.senderman.telecrafter.Config;
 import com.senderman.telecrafter.telegram.api.entity.Message;
 import com.senderman.telecrafter.telegram.api.entity.Update;
 import com.senderman.telecrafter.telegram.command.CommandExecutor;
 import com.senderman.telecrafter.telegram.command.CommandKeeper;
 
+import javax.inject.Inject;
 import java.util.Optional;
 
 public class TelecrafterBot {

@@ -1,11 +1,13 @@
 package com.senderman.telecrafter.telegram.command;
 
-import com.google.inject.Inject;
 import com.senderman.telecrafter.telegram.TelegramProvider;
 import com.senderman.telecrafter.telegram.api.entity.Message;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.Set;
 
+@Singleton
 public class Help implements CommandExecutor {
 
     private final TelegramProvider telegram;

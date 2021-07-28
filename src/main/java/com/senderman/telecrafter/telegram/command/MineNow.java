@@ -1,6 +1,5 @@
 package com.senderman.telecrafter.telegram.command;
 
-import com.google.inject.Inject;
 import com.senderman.telecrafter.minecraft.MinecraftProvider;
 import com.senderman.telecrafter.minecraft.PlayersInfo;
 import com.senderman.telecrafter.telegram.TelegramProvider;
@@ -10,10 +9,13 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@Singleton
 public class MineNow implements CommandExecutor {
 
     private final TelegramProvider telegram;

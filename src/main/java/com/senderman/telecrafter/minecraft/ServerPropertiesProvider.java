@@ -1,11 +1,13 @@
 package com.senderman.telecrafter.minecraft;
 
-import com.google.inject.Inject;
 import org.bukkit.plugin.Plugin;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.io.*;
 import java.util.Properties;
 
+@Singleton
 public class ServerPropertiesProvider {
 
     private final Properties properties;
