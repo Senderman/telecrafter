@@ -10,7 +10,8 @@ import com.senderman.telecrafter.telegram.TelegramPolling;
 import com.senderman.telecrafter.telegram.TelegramProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 
 
 public class TelecrafterPlugin extends JavaPlugin {
@@ -22,24 +23,18 @@ public class TelecrafterPlugin extends JavaPlugin {
     public void onEnable() {
         Config config;
         File configFile = new File(getDataFolder(), "config.yml");
-        if (configFile.exists()) {
+        if (!configFile.exists()) {
+            saveDefaultConfig();
+            throw new RuntimeException("No " + configFile + " was found. Default config was created, please fill it in and restart server");
+        } else {
             try {
                 config = loadConfig(configFile);
             } catch (IOException e) {
-                throw new RuntimeException("Error occurred while trying to read contents from" + configFile);
+                throw new RuntimeException("Error occurred while trying to read contents from" + configFile, e);
             }
-        } else {
-            saveDefaultConfig();
-            throw new RuntimeException("No " + configFile + " was found. Default config was created, please fill it in and restart server");
         }
 
-        Injector injector;
-        try {
-            injector = Guice.createInjector(new InjectorConfig(this, config));
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
+        Injector injector = Guice.createInjector(new InjectorConfig(this, config));
         telegramPolling = injector.getInstance(TelegramPolling.class);
         telegram = injector.getInstance(TelegramProvider.class);
         telegramPolling.startPolling();
@@ -54,26 +49,6 @@ public class TelecrafterPlugin extends JavaPlugin {
         }
         telegramPolling.stopPolling();
         telegram.sendMessageToMainChat("⭕️ Работа плагина завершена");
-    }
-
-
-    /**
-     * Create default config from classpath resource in given location
-     *
-     * @param configDestination where to create default config
-     * @throws IOException if unable to write to file
-     */
-    private void createDefaultConfig(File configDestination) throws IOException {
-        try (
-                InputStream in = getClass().getResourceAsStream("/default-config.yml");
-                OutputStream out = new FileOutputStream(configDestination)
-        ) {
-            int length;
-            byte[] buffer = new byte[1024];
-            while ((length = in.read(buffer)) != -1) {
-                out.write(buffer, 0, length);
-            }
-        }
     }
 
     /**

@@ -1,10 +1,12 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
 plugins {
     id 'java'
     id 'com.github.johnrengelman.shadow' version '5.2.0'
 }
 
 group 'com.senderman'
-version '3.0.5'
+version '3.0.6'
 
 repositories {
     mavenCentral()
@@ -12,14 +14,14 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.12.3'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.12.4'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.4'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
     implementation 'com.google.inject:guice:5.0.1'
     implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
 
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.4.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
 
     compileOnly 'com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT'
 }
@@ -30,4 +32,10 @@ shadowJar {
 
 test{
     useJUnitPlatform()
+}
+
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        filter ReplaceTokens, tokens: [version: version]
+    }
 }
