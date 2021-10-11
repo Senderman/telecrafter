@@ -3,7 +3,6 @@ package com.senderman.telecrafter.telegram;
 import com.senderman.telecrafter.telegram.api.TelegramApi;
 import com.senderman.telecrafter.telegram.api.entity.Update;
 
-import javax.inject.Inject;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -18,7 +17,6 @@ public class TelegramPolling {
     private ScheduledFuture<?> control;
     private int lastReceivedUpdateId;
 
-    @Inject
     public TelegramPolling(TelegramApi apiWrapper, TelecrafterBot bot) {
         this.api = apiWrapper;
         this.bot = bot;

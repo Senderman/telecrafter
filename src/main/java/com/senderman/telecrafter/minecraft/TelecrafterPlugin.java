@@ -2,10 +2,8 @@ package com.senderman.telecrafter.minecraft;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 import com.senderman.telecrafter.Config;
-import com.senderman.telecrafter.InjectorConfig;
+import com.senderman.telecrafter.InjectionConfig;
 import com.senderman.telecrafter.telegram.TelegramPolling;
 import com.senderman.telecrafter.telegram.TelegramProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -34,7 +32,7 @@ public class TelecrafterPlugin extends JavaPlugin {
             }
         }
 
-        Injector injector = Guice.createInjector(new InjectorConfig(this, config));
+        InjectionConfig injector = new InjectionConfig(this, config);
         telegramPolling = injector.getInstance(TelegramPolling.class);
         telegram = injector.getInstance(TelegramProvider.class);
         telegramPolling.startPolling();

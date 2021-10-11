@@ -13,19 +13,15 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Singleton
 public class TelegramApi {
 
     private final TelegramService telegramService;
 
 
-    @Inject
     public TelegramApi(Config config) {
         this.telegramService = new Retrofit.Builder()
                 .addConverterFactory(JacksonConverterFactory.create())

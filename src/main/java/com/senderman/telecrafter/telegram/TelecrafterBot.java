@@ -6,7 +6,6 @@ import com.senderman.telecrafter.telegram.api.entity.Update;
 import com.senderman.telecrafter.telegram.command.CommandExecutor;
 import com.senderman.telecrafter.telegram.command.CommandKeeper;
 
-import javax.inject.Inject;
 import java.util.Optional;
 
 public class TelecrafterBot {
@@ -15,7 +14,7 @@ public class TelecrafterBot {
     private final CommandKeeper commandKeeper;
     private final TelegramProvider telegram;
 
-    @Inject
+
     public TelecrafterBot(Config config, CommandKeeper commandKeeper, TelegramProvider telegram) {
         this.config = config;
         this.commandKeeper = commandKeeper;

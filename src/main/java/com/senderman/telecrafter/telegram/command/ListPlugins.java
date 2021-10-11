@@ -4,16 +4,11 @@ import com.senderman.telecrafter.minecraft.MinecraftProvider;
 import com.senderman.telecrafter.telegram.TelegramProvider;
 import com.senderman.telecrafter.telegram.api.entity.Message;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-@Singleton
 public class ListPlugins implements CommandExecutor {
 
     private final TelegramProvider telegram;
     private final MinecraftProvider minecraft;
 
-    @Inject
     public ListPlugins(TelegramProvider telegram, MinecraftProvider minecraft) {
         this.telegram = telegram;
         this.minecraft = minecraft;

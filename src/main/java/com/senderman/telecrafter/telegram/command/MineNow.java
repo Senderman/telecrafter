@@ -8,20 +8,16 @@ import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
+;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-@Singleton
 public class MineNow implements CommandExecutor {
 
     private final TelegramProvider telegram;
     private final MinecraftProvider minecraft;
 
-    @Inject
     public MineNow(TelegramProvider telegram, MinecraftProvider minecraft) {
         this.telegram = telegram;
         this.minecraft = minecraft;

@@ -8,19 +8,15 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import javax.annotation.Nullable;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.io.File;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Singleton
 public class MinecraftProvider {
 
     private final Plugin plugin;
 
-    @Inject
     public MinecraftProvider(Plugin plugin) {
         this.plugin = plugin;
     }

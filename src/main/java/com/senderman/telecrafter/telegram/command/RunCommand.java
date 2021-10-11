@@ -5,19 +5,15 @@ import com.senderman.telecrafter.telegram.TelegramProvider;
 import com.senderman.telecrafter.telegram.api.entity.Message;
 import org.bukkit.command.CommandException;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-@Singleton
 public class RunCommand implements CommandExecutor {
 
     private final TelegramProvider telegram;
     private final MinecraftProvider minecraft;
 
-    @Inject
     public RunCommand(TelegramProvider telegram, MinecraftProvider minecraft) {
         this.telegram = telegram;
         this.minecraft = minecraft;

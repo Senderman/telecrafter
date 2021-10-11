@@ -4,17 +4,12 @@ import com.senderman.telecrafter.minecraft.MinecraftProvider;
 import com.senderman.telecrafter.telegram.TelegramProvider;
 import com.senderman.telecrafter.telegram.api.entity.Message;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-@Singleton
 public class ClearDrop implements CommandExecutor {
 
     private final MinecraftProvider minecraftProvider;
     private final TelegramProvider telegram;
 
-    @Inject
-    public ClearDrop(MinecraftProvider minecraftProvider, TelegramProvider telegram) {
+    public ClearDrop(TelegramProvider telegram, MinecraftProvider minecraftProvider) {
         this.minecraftProvider = minecraftProvider;
         this.telegram = telegram;
     }

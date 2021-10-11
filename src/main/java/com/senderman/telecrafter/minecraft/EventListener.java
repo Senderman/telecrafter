@@ -13,16 +13,12 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.BroadcastMessageEvent;
 import org.bukkit.event.server.ServerLoadEvent;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.util.Optional;
 
-@Singleton
 public class EventListener implements Listener {
 
     private final TelegramProvider telegram;
 
-    @Inject
     public EventListener(TelegramProvider telegram) {
         this.telegram = telegram;
     }

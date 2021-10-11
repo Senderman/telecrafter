@@ -2,18 +2,14 @@ package com.senderman.telecrafter.minecraft;
 
 import org.bukkit.plugin.Plugin;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.io.*;
 import java.util.Properties;
 
-@Singleton
 public class ServerPropertiesProvider {
 
     private final Properties properties;
     private final File propFile;
 
-    @Inject
     public ServerPropertiesProvider(Plugin plugin) {
         properties = new Properties();
         String propertiesFileName = "server.properties";

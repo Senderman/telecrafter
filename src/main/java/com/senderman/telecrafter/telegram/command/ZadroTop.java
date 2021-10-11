@@ -7,19 +7,15 @@ import com.senderman.telecrafter.telegram.api.entity.Message;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Statistic;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-@Singleton
 public class ZadroTop implements CommandExecutor {
 
     private final MinecraftProvider minecraft;
     private final TelegramProvider telegram;
 
-    @Inject
-    public ZadroTop(MinecraftProvider minecraft, TelegramProvider telegram) {
+    public ZadroTop(TelegramProvider telegram, MinecraftProvider minecraft) {
         this.minecraft = minecraft;
         this.telegram = telegram;
     }
