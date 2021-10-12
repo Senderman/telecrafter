@@ -38,6 +38,7 @@ public class InjectionConfig {
         commandExecutors.add(new GetLogs(telegram, minecraft));
         commandExecutors.add(new ListPlugins(telegram, minecraft));
         commandExecutors.add(new MineChat(minecraft));
+        commandExecutors.add(new MineNow(telegram, minecraft));
         commandExecutors.add(new Respack(telegram, getInstance(ServerPropertiesProvider.class)));
         commandExecutors.add(new RunCommand(telegram, minecraft));
         commandExecutors.add(new ZadroTop(telegram, minecraft));
