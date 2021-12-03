@@ -44,7 +44,7 @@ public class TelecrafterBot {
         if (command.contains("@")) return; // skip other's bot commands
 
         Optional.ofNullable(commandKeeper.getExecutor(command)).ifPresent(executor -> {
-            if (userHasPermission(executor, message.getFrom().getId())) {
+            if (userHasPermission(executor, message)) {
                 if (executor.pmOnly() && !message.isUserMessage()) {
                     telegram.sendMessage(chatId, "Команду можно использовать только в лс");
                     return;
@@ -55,8 +55,12 @@ public class TelecrafterBot {
 
     }
 
-    private boolean userHasPermission(CommandExecutor executor, int userId) {
-        return !executor.adminsOnly() || config.isAdmin(userId);
+    private boolean userHasPermission(CommandExecutor executor, Message message) {
+        long userId = message.getFrom().getId();
+        long chatId = message.getChatId();
+        return config.isAdmin(userId) ||
+                config.isAllowForeignChats() ||
+                chatId == config.getChatId();
     }
 
     public String getBotUsername() {

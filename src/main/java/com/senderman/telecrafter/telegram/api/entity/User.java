@@ -6,13 +6,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
 
-    private int id;
+    private long id;
     @JsonProperty("is_bot")
     private boolean isBot;
     @JsonProperty("first_name")
     private String firstName;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

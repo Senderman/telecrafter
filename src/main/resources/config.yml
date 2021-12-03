@@ -1,6 +1,7 @@
 botToken: bot token
 botName: bot username without @
 chatId: -1009248292344 # chat id of telegram group to connect
+allowForeignChats: false # allow users from foreign chats to use the bot (admins are always allowed)
 admins: # list of telegram admins user id (to access admin commands in bot)
  - 123453242
  - 678914242

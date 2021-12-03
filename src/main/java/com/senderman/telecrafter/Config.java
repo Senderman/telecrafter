@@ -13,7 +13,9 @@ public class Config {
     @JsonProperty
     private Long chatId;
     @JsonProperty
-    private Set<Integer> admins;
+    private Set<Long> admins;
+    @JsonProperty(defaultValue = "false")
+    private boolean allowForeignChats;
 
     public String getBotToken() {
         return botToken;
@@ -27,11 +29,15 @@ public class Config {
         return chatId;
     }
 
-    public Set<Integer> getAdmins() {
+    public Set<Long> getAdmins() {
         return admins;
     }
 
-    public boolean isAdmin(int userId) {
+    public boolean isAdmin(long userId) {
         return admins.contains(userId);
+    }
+
+    public boolean isAllowForeignChats() {
+        return allowForeignChats;
     }
 }
