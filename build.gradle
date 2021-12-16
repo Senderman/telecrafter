@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'com.senderman'
-version '3.1.0'
+version '3.1.1'
 
 repositories {
     mavenCentral()
@@ -20,7 +20,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
     implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
 
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
 
     compileOnly 'com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT'
 }
@@ -29,7 +29,7 @@ shadowJar {
     mergeServiceFiles()
 }
 
-test{
+test {
     useJUnitPlatform()
 }
 
@@ -37,4 +37,8 @@ processResources {
     from(sourceSets.main.resources.srcDirs) {
         filter ReplaceTokens, tokens: [version: version]
     }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
 }
