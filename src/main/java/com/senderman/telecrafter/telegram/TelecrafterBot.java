@@ -48,10 +48,6 @@ public class TelecrafterBot {
                 telegram.sendMessage(chatId, "Простите, но вы не можете использовать эту команду.");
                 return;
             }
-            if (message.getText().length() > 300) {
-                telegram.sendMessage(chatId, "Менее 300 символов, будьте добры.");
-                return;
-            }
             if (executor.pmOnly() && !message.isUserMessage()) {
                 telegram.sendMessage(chatId, "Команду можно использовать только в лс");
                 return;
