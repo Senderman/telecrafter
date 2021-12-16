@@ -44,13 +44,15 @@ public class TelecrafterBot {
         if (command.contains("@")) return; // skip other's bot commands
 
         Optional.ofNullable(commandKeeper.getExecutor(command)).ifPresent(executor -> {
-            if (userHasPermission(executor, message)) {
-                if (executor.pmOnly() && !message.isUserMessage()) {
-                    telegram.sendMessage(chatId, "Команду можно использовать только в лс");
-                    return;
-                }
-                executor.execute(message);
+            if (!userHasPermission(executor, message)) {
+                telegram.sendMessage(chatId, "Простите, но вы не можете использовать эту команду.");
+                return;
             }
+            if (executor.pmOnly() && !message.isUserMessage()) {
+                telegram.sendMessage(chatId, "Команду можно использовать только в лс");
+                return;
+            }
+            executor.execute(message);
         });
 
     }
@@ -58,7 +60,10 @@ public class TelecrafterBot {
     private boolean userHasPermission(CommandExecutor executor, Message message) {
         long userId = message.getFrom().getId();
         long chatId = message.getChatId();
-        return config.isAdmin(userId) ||
+        if (executor.adminsOnly()) {
+            return config.isAdmin(userId);
+        }
+        return  config.isAdmin(userId) ||
                 config.isAllowForeignChats() ||
                 chatId == config.getChatId();
     }
