@@ -3,8 +3,7 @@ package com.senderman.telecrafter.telegram;
 import com.senderman.telecrafter.Config;
 import com.senderman.telecrafter.telegram.api.entity.Message;
 import com.senderman.telecrafter.telegram.api.entity.Update;
-import com.senderman.telecrafter.telegram.command.CommandExecutor;
-import com.senderman.telecrafter.telegram.command.CommandKeeper;
+import com.senderman.telecrafter.telegram.command.abs.CommandExecutor;
 
 import java.util.Optional;
 
@@ -63,7 +62,7 @@ public class TelecrafterBot {
         if (executor.adminsOnly()) {
             return config.isAdmin(userId);
         }
-        return  config.isAdmin(userId) ||
+        return config.isAdmin(userId) ||
                 config.isAllowForeignChats() ||
                 chatId == config.getChatId();
     }

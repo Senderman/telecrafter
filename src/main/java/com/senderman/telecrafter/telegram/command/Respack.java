@@ -1,8 +1,9 @@
 package com.senderman.telecrafter.telegram.command;
 
-import com.senderman.telecrafter.minecraft.ServerPropertiesProvider;
+import com.senderman.telecrafter.minecraft.provider.ServerPropertiesProvider;
 import com.senderman.telecrafter.telegram.TelegramProvider;
 import com.senderman.telecrafter.telegram.api.entity.Message;
+import com.senderman.telecrafter.telegram.command.abs.CommandExecutor;
 
 import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;

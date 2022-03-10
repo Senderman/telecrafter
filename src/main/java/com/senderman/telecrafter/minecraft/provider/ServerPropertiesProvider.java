@@ -1,4 +1,4 @@
-package com.senderman.telecrafter.minecraft;
+package com.senderman.telecrafter.minecraft.provider;
 
 import org.bukkit.plugin.Plugin;
 

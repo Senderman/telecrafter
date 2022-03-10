@@ -1,8 +1,9 @@
 package com.senderman.telecrafter.telegram.command;
 
-import com.senderman.telecrafter.minecraft.MinecraftProvider;
+import com.senderman.telecrafter.minecraft.provider.MinecraftProvider;
 import com.senderman.telecrafter.telegram.TelegramProvider;
 import com.senderman.telecrafter.telegram.api.entity.Message;
+import com.senderman.telecrafter.telegram.command.abs.CommandExecutor;
 
 import java.io.*;
 import java.util.Objects;

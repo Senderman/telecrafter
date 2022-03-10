@@ -1,4 +1,4 @@
-package com.senderman.telecrafter.minecraft;
+package com.senderman.telecrafter.minecraft.data;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;

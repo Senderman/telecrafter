@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'com.senderman'
-version '3.1.1'
+version '3.1.2-beta1'
 
 repositories {
     mavenCentral()
@@ -14,8 +14,8 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.13.0'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.0'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.13.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.2'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
     implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'

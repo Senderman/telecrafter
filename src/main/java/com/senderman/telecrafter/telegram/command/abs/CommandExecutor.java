@@ -1,4 +1,4 @@
-package com.senderman.telecrafter.telegram.command;
+package com.senderman.telecrafter.telegram.command.abs;
 
 import com.senderman.telecrafter.telegram.api.entity.Message;
 

@@ -1,13 +1,15 @@
 package com.senderman.telecrafter;
 
 import com.senderman.telecrafter.minecraft.EventListener;
-import com.senderman.telecrafter.minecraft.MinecraftProvider;
-import com.senderman.telecrafter.minecraft.ServerPropertiesProvider;
+import com.senderman.telecrafter.minecraft.provider.MinecraftProvider;
+import com.senderman.telecrafter.minecraft.provider.ServerPropertiesProvider;
+import com.senderman.telecrafter.telegram.CommandKeeper;
 import com.senderman.telecrafter.telegram.TelecrafterBot;
 import com.senderman.telecrafter.telegram.TelegramPolling;
 import com.senderman.telecrafter.telegram.TelegramProvider;
 import com.senderman.telecrafter.telegram.api.TelegramApi;
 import com.senderman.telecrafter.telegram.command.*;
+import com.senderman.telecrafter.telegram.command.abs.CommandExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;

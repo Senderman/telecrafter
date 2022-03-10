@@ -1,7 +1,8 @@
 package com.senderman.telecrafter.telegram.command;
 
-import com.senderman.telecrafter.minecraft.MinecraftProvider;
+import com.senderman.telecrafter.minecraft.provider.MinecraftProvider;
 import com.senderman.telecrafter.telegram.api.entity.Message;
+import com.senderman.telecrafter.telegram.command.abs.CommandExecutor;
 
 public class MineChat implements CommandExecutor {
 

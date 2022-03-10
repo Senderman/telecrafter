@@ -1,7 +1,10 @@
-package com.senderman.telecrafter.minecraft;
+package com.senderman.telecrafter.minecraft.provider;
 
+import com.senderman.telecrafter.minecraft.data.PlayersInfo;
 import net.kyori.adventure.text.Component;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
+import org.bukkit.Statistic;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.plugin.Plugin;
@@ -9,6 +12,8 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 import javax.annotation.Nullable;
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -45,6 +50,13 @@ public class MinecraftProvider {
                 callback.accept(result);
             }
         });
+    }
+
+    public List<OfflinePlayer> getTopNPlayersByStatistic(int n, Statistic statistic) {
+        return Arrays.stream(plugin.getServer().getOfflinePlayers())
+                .sorted((p1, p2) -> Integer.compare(p2.getStatistic(statistic), p1.getStatistic(statistic)))
+                .limit(n)
+                .collect(Collectors.toList());
     }
 
     /**

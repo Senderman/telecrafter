@@ -1,6 +1,7 @@
-package com.senderman.telecrafter.telegram.command;
+package com.senderman.telecrafter.telegram;
 
-import com.senderman.telecrafter.telegram.TelegramProvider;
+import com.senderman.telecrafter.telegram.command.Help;
+import com.senderman.telecrafter.telegram.command.abs.CommandExecutor;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;

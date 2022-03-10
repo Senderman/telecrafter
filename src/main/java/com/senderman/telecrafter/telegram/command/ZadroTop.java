@@ -1,22 +1,18 @@
 package com.senderman.telecrafter.telegram.command;
 
-import com.senderman.telecrafter.minecraft.MinecraftProvider;
-import com.senderman.telecrafter.minecraft.PlayersInfo;
+import com.senderman.telecrafter.minecraft.provider.MinecraftProvider;
 import com.senderman.telecrafter.telegram.TelegramProvider;
 import com.senderman.telecrafter.telegram.api.entity.Message;
+import com.senderman.telecrafter.telegram.command.abs.AbsRatingCommandExecutor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Statistic;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
+public class ZadroTop extends AbsRatingCommandExecutor {
 
-public class ZadroTop implements CommandExecutor {
-
-    private final MinecraftProvider minecraft;
     private final TelegramProvider telegram;
 
     public ZadroTop(TelegramProvider telegram, MinecraftProvider minecraft) {
-        this.minecraft = minecraft;
+        super(minecraft, Statistic.PLAY_ONE_MINUTE);
         this.telegram = telegram;
     }
 
@@ -32,19 +28,8 @@ public class ZadroTop implements CommandExecutor {
 
     @Override
     public void execute(Message message) {
-
-        PlayersInfo info = minecraft.getOnlineInfo();
-        String top = Arrays.stream(info.getOfflinePlayers())
-                .sorted((p1, p2) -> Integer.compare(getTickPlayer(p2), getTickPlayer(p1)))
-                .limit(10)
-                .map(p -> "\uD83D\uDC64 " + p.getName() + " (" + formatTicks(p.getStatistic(Statistic.PLAY_ONE_MINUTE)) + ")")
-                .collect(Collectors.joining("\n"));
-
+        String top = getStatisticsAsString(10);
         telegram.sendMessageToMainChat("<b>Топ задротов:</b>\n\n" + top);
-    }
-
-    private int getTickPlayer(OfflinePlayer player) {
-        return player.getStatistic(Statistic.PLAY_ONE_MINUTE);
     }
 
     private String formatTicks(int ticks) {
@@ -54,5 +39,10 @@ public class ZadroTop implements CommandExecutor {
         int seconds = totalSecs % 60;
 
         return String.format("%s:%s:%s", hours, minutes, seconds);
+    }
+
+    @Override
+    protected String format(OfflinePlayer player) {
+        return "\uD83D\uDC64 " + player.getName() + " (" + formatTicks(player.getStatistic(statistic)) + ")";
     }
 }
