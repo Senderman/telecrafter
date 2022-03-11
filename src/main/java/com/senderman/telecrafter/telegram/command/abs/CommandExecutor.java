@@ -1,6 +1,9 @@
 package com.senderman.telecrafter.telegram.command.abs;
 
 import com.senderman.telecrafter.telegram.api.entity.Message;
+import com.senderman.telecrafter.telegram.command.Role;
+
+import java.util.EnumSet;
 
 public interface CommandExecutor {
 
@@ -8,8 +11,8 @@ public interface CommandExecutor {
 
     String getDescription();
 
-    default boolean adminsOnly() {
-        return false;
+    default EnumSet<Role> roles() {
+        return EnumSet.of(Role.USER);
     }
 
     default boolean pmOnly() {

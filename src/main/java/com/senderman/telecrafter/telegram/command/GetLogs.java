@@ -6,6 +6,7 @@ import com.senderman.telecrafter.telegram.api.entity.Message;
 import com.senderman.telecrafter.telegram.command.abs.CommandExecutor;
 
 import java.io.*;
+import java.util.EnumSet;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -33,8 +34,8 @@ public class GetLogs implements CommandExecutor {
     }
 
     @Override
-    public boolean adminsOnly() {
-        return true;
+    public EnumSet<Role> roles() {
+        return EnumSet.of(Role.ADMIN);
     }
 
     @Override

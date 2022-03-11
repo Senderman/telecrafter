@@ -1,6 +1,6 @@
 package com.senderman.telecrafter.telegram;
 
-import com.senderman.telecrafter.Config;
+import com.senderman.telecrafter.config.Config;
 import com.senderman.telecrafter.telegram.api.TelegramApi;
 
 import java.io.File;

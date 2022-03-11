@@ -1,6 +1,6 @@
 package com.senderman.telecrafter.telegram.api;
 
-import com.senderman.telecrafter.Config;
+import com.senderman.telecrafter.config.Config;
 import com.senderman.telecrafter.telegram.api.entity.Result;
 import com.senderman.telecrafter.telegram.api.entity.Update;
 import okhttp3.MediaType;
@@ -52,7 +52,7 @@ public class TelegramApi {
 
 
     public void sendMessage(long chatId, String text, Integer replyToMessageId, String parseMode) {
-        telegramService.sendMessage(chatId, text, replyToMessageId, parseMode).enqueue(new Callback<Void>() {
+        telegramService.sendMessage(chatId, text, replyToMessageId, parseMode).enqueue(new Callback<>() {
             @Override
             public void onResponse(@NotNull Call<Void> call, @NotNull Response<Void> response) {
             }
@@ -66,7 +66,7 @@ public class TelegramApi {
     public void sendDocument(long chatId, java.io.File file) {
         RequestBody body = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         MultipartBody.Part document = MultipartBody.Part.createFormData("document", file.getName(), body);
-        telegramService.sendDocument(chatId, document).enqueue(new Callback<Void>() {
+        telegramService.sendDocument(chatId, document).enqueue(new Callback<>() {
             @Override
             public void onResponse(@NotNull Call<Void> call, @NotNull Response<Void> response) {
 

@@ -1,5 +1,6 @@
 package com.senderman.telecrafter;
 
+import com.senderman.telecrafter.config.ConfigProvider;
 import com.senderman.telecrafter.minecraft.EventListener;
 import com.senderman.telecrafter.minecraft.provider.MinecraftProvider;
 import com.senderman.telecrafter.minecraft.provider.ServerPropertiesProvider;
@@ -10,8 +11,10 @@ import com.senderman.telecrafter.telegram.TelegramProvider;
 import com.senderman.telecrafter.telegram.api.TelegramApi;
 import com.senderman.telecrafter.telegram.command.*;
 import com.senderman.telecrafter.telegram.command.abs.CommandExecutor;
+import com.senderman.telecrafter.telegram.command.alias.AliasExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -21,7 +24,7 @@ public class InjectionConfig {
 
     private final Map<Class<?>, Object> instances;
 
-    public InjectionConfig(JavaPlugin plugin, Config config) {
+    public InjectionConfig(JavaPlugin plugin, ConfigProvider config, File configFile) {
         this.instances = new HashMap<>();
         save(plugin);
         save(config);
@@ -32,6 +35,7 @@ public class InjectionConfig {
         save(telegram);
         save(minecraft);
 
+        save(new AliasExecutor(minecraft));
         save(new EventListener(getInstance(TelegramProvider.class)));
         save(new ServerPropertiesProvider(plugin));
 
@@ -45,9 +49,11 @@ public class InjectionConfig {
         commandExecutors.add(new RunCommand(telegram, minecraft));
         commandExecutors.add(new ZadroTop(telegram, minecraft));
         commandExecutors.add(new Help(telegram, commandExecutors));
+        commandExecutors.add(new ReloadConfigCommand(telegram, config, configFile));
+        commandExecutors.add(new ListAliasesCommand(telegram, config));
 
         save(new CommandKeeper(telegram, commandExecutors));
-        save(new TelecrafterBot(config, getInstance(CommandKeeper.class), telegram));
+        save(new TelecrafterBot(config, getInstance(CommandKeeper.class), getInstance(AliasExecutor.class), telegram));
         save(new TelegramPolling(getInstance(TelegramApi.class), getInstance(TelecrafterBot.class)));
     }
 

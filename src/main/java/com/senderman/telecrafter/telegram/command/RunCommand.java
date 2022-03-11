@@ -6,9 +6,7 @@ import com.senderman.telecrafter.telegram.api.entity.Message;
 import com.senderman.telecrafter.telegram.command.abs.CommandExecutor;
 import org.bukkit.command.CommandException;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.util.EnumSet;
 
 public class RunCommand implements CommandExecutor {
 
@@ -31,8 +29,8 @@ public class RunCommand implements CommandExecutor {
     }
 
     @Override
-    public boolean adminsOnly() {
-        return true;
+    public EnumSet<Role> roles() {
+        return EnumSet.of(Role.ADMIN);
     }
 
     @Override
@@ -51,19 +49,7 @@ public class RunCommand implements CommandExecutor {
             minecraft.runCommand(command,
                     successful -> telegram.sendMessage(chatId, successful ? "Команда отправлена серверу!" : "Такой команды нет!"));
         } catch (CommandException e) {
-            telegram.sendMessage(chatId, "<b>Ошибка выполнения команды!</b>\n\n" + exceptionToString(e));
-        }
-    }
-
-    private String exceptionToString(Exception e) {
-        try (
-                StringWriter string = new StringWriter();
-                PrintWriter pw = new PrintWriter(string)
-        ) {
-            e.printStackTrace(pw);
-            return string.toString();
-        } catch (IOException ioException) {
-            throw new IllegalStateException(ioException);
+            telegram.sendMessage(chatId, "Ошибка выполнения команды. См. логи для подробностей");
         }
     }
 }

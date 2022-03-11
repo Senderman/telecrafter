@@ -1,25 +1,28 @@
 package com.senderman.telecrafter.telegram;
 
-import com.senderman.telecrafter.Config;
+import com.senderman.telecrafter.config.Config;
 import com.senderman.telecrafter.telegram.api.entity.Message;
 import com.senderman.telecrafter.telegram.api.entity.Update;
-import com.senderman.telecrafter.telegram.command.abs.CommandExecutor;
+import com.senderman.telecrafter.telegram.command.Role;
+import com.senderman.telecrafter.telegram.command.alias.Alias;
+import com.senderman.telecrafter.telegram.command.alias.AliasExecutor;
 
-import java.util.Optional;
+import java.util.EnumSet;
 
 public class TelecrafterBot {
 
     private final Config config;
     private final CommandKeeper commandKeeper;
+    private final AliasExecutor aliasExecutor;
     private final TelegramProvider telegram;
 
 
-    public TelecrafterBot(Config config, CommandKeeper commandKeeper, TelegramProvider telegram) {
+    public TelecrafterBot(Config config, CommandKeeper commandKeeper, AliasExecutor aliasExecutor, TelegramProvider telegram) {
         this.config = config;
         this.commandKeeper = commandKeeper;
+        this.aliasExecutor = aliasExecutor;
         this.telegram = telegram;
     }
-
 
     public void onUpdateReceived(Update update) {
 
@@ -42,8 +45,9 @@ public class TelecrafterBot {
 
         if (command.contains("@")) return; // skip other's bot commands
 
-        Optional.ofNullable(commandKeeper.getExecutor(command)).ifPresent(executor -> {
-            if (!userHasPermission(executor, message)) {
+        var executor = commandKeeper.getExecutor(command);
+        if (executor != null) {
+            if (!userHasPermission(executor.roles(), message)) {
                 telegram.sendMessage(chatId, "Простите, но вы не можете использовать эту команду.");
                 return;
             }
@@ -52,14 +56,21 @@ public class TelecrafterBot {
                 return;
             }
             executor.execute(message);
-        });
+        } else { // try to get and execute alias
+            Alias alias = config.getAliases().get(command.replaceFirst("/", ""));
+            if (alias == null) return;
+            aliasExecutor.execute(alias,
+                    roles -> userHasPermission(roles, message),
+                    callback -> telegram.sendMessage(message.getChatId(), callback)
+            );
+        }
 
     }
 
-    private boolean userHasPermission(CommandExecutor executor, Message message) {
+    private boolean userHasPermission(EnumSet<Role> roles, Message message) {
         long userId = message.getFrom().getId();
         long chatId = message.getChatId();
-        if (executor.adminsOnly()) {
+        if (roles.contains(Role.ADMIN)) {
             return config.isAdmin(userId);
         }
         return config.isAdmin(userId) ||

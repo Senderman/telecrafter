@@ -1,10 +1,12 @@
-package com.senderman.telecrafter;
+package com.senderman.telecrafter.config;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.senderman.telecrafter.telegram.command.alias.Alias;
 
+import java.util.Map;
 import java.util.Set;
 
-public class Config {
+public class ConfigImpl implements Config {
 
     @JsonProperty
     private String botToken;
@@ -16,28 +18,41 @@ public class Config {
     private Set<Long> admins;
     @JsonProperty(defaultValue = "false")
     private boolean allowForeignChats;
+    @JsonProperty
+    private Map<String, Alias> aliases;
 
+    @Override
     public String getBotToken() {
         return botToken;
     }
 
+    @Override
     public String getBotName() {
         return botName;
     }
 
+    @Override
     public Long getChatId() {
         return chatId;
     }
 
+    @Override
     public Set<Long> getAdmins() {
         return admins;
     }
 
+    @Override
     public boolean isAdmin(long userId) {
         return admins.contains(userId);
     }
 
+    @Override
     public boolean isAllowForeignChats() {
         return allowForeignChats;
+    }
+
+    @Override
+    public Map<String, Alias> getAliases() {
+        return aliases;
     }
 }

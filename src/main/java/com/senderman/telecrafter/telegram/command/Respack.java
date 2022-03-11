@@ -12,6 +12,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.EnumSet;
 
 public class Respack implements CommandExecutor {
 
@@ -34,8 +35,8 @@ public class Respack implements CommandExecutor {
     }
 
     @Override
-    public boolean adminsOnly() {
-        return true;
+    public EnumSet<Role> roles() {
+        return EnumSet.of(Role.ADMIN);
     }
 
     @Override
