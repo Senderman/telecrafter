@@ -1,10 +1,8 @@
 package com.senderman.telecrafter.telegram.command.alias;
 
 import com.senderman.telecrafter.minecraft.provider.MinecraftProvider;
-import com.senderman.telecrafter.telegram.command.Role;
 import org.bukkit.command.CommandException;
 
-import java.util.EnumSet;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -16,8 +14,8 @@ public class AliasExecutor {
         this.minecraftProvider = minecraftProvider;
     }
 
-    public void execute(Alias alias, Predicate<EnumSet<Role>> hasPermissions, Consumer<String> callback) {
-        if (!hasPermissions.test(alias.getPermissions())) {
+    public void execute(Alias alias, Predicate<Boolean> hasPermissions, Consumer<String> callback) {
+        if (!hasPermissions.test(alias.isAdminOnly())) {
             callback.accept("У вас недостаточно прав для данной команды!");
             return;
         }

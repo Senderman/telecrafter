@@ -6,8 +6,6 @@ import com.senderman.telecrafter.telegram.api.entity.Message;
 import com.senderman.telecrafter.telegram.command.abs.CommandExecutor;
 import org.bukkit.command.CommandException;
 
-import java.util.EnumSet;
-
 public class RunCommand implements CommandExecutor {
 
     private final TelegramProvider telegram;
@@ -29,8 +27,8 @@ public class RunCommand implements CommandExecutor {
     }
 
     @Override
-    public EnumSet<Role> roles() {
-        return EnumSet.of(Role.ADMIN);
+    public boolean adminOnly() {
+        return true;
     }
 
     @Override

@@ -5,8 +5,6 @@ import com.senderman.telecrafter.telegram.TelegramProvider;
 import com.senderman.telecrafter.telegram.api.entity.Message;
 import com.senderman.telecrafter.telegram.command.abs.CommandExecutor;
 
-import java.util.EnumSet;
-
 public class ClearDrop implements CommandExecutor {
 
     private final MinecraftProvider minecraftProvider;
@@ -28,8 +26,8 @@ public class ClearDrop implements CommandExecutor {
     }
 
     @Override
-    public EnumSet<Role> roles() {
-        return EnumSet.of(Role.ADMIN);
+    public boolean adminOnly() {
+        return true;
     }
 
     @Override

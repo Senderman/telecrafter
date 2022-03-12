@@ -9,7 +9,6 @@ import com.senderman.telecrafter.telegram.command.abs.CommandExecutor;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.EnumSet;
 
 public class ReloadConfigCommand implements CommandExecutor {
 
@@ -34,8 +33,8 @@ public class ReloadConfigCommand implements CommandExecutor {
     }
 
     @Override
-    public EnumSet<Role> roles() {
-        return EnumSet.of(Role.ADMIN);
+    public boolean adminOnly() {
+        return true;
     }
 
     @Override

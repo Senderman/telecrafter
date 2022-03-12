@@ -36,7 +36,7 @@ public class Help implements CommandExecutor {
     }
 
     private String formatExecutor(CommandExecutor executor) {
-        String adminOnly = executor.roles().contains(Role.ADMIN) ? " (админам)" : " ";
+        String adminOnly = executor.adminOnly() ? " (админам)" : " ";
         String pmOnly = executor.pmOnly() ? " (PM)" : " ";
         String options = (adminOnly + pmOnly).trim();
         return executor.getCommand() + " " + options + " - " + executor.getDescription();

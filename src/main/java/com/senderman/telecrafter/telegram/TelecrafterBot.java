@@ -3,11 +3,8 @@ package com.senderman.telecrafter.telegram;
 import com.senderman.telecrafter.config.Config;
 import com.senderman.telecrafter.telegram.api.entity.Message;
 import com.senderman.telecrafter.telegram.api.entity.Update;
-import com.senderman.telecrafter.telegram.command.Role;
 import com.senderman.telecrafter.telegram.command.alias.Alias;
 import com.senderman.telecrafter.telegram.command.alias.AliasExecutor;
-
-import java.util.EnumSet;
 
 public class TelecrafterBot {
 
@@ -47,7 +44,7 @@ public class TelecrafterBot {
 
         var executor = commandKeeper.getExecutor(command);
         if (executor != null) {
-            if (!userHasPermission(executor.roles(), message)) {
+            if (!userHasPermission(executor.adminOnly(), message)) {
                 telegram.sendMessage(chatId, "Простите, но вы не можете использовать эту команду.");
                 return;
             }
@@ -67,10 +64,10 @@ public class TelecrafterBot {
 
     }
 
-    private boolean userHasPermission(EnumSet<Role> roles, Message message) {
+    private boolean userHasPermission(boolean isAdminOnly, Message message) {
         long userId = message.getFrom().getId();
         long chatId = message.getChatId();
-        if (roles.contains(Role.ADMIN)) {
+        if (isAdminOnly) {
             return config.isAdmin(userId);
         }
         return config.isAdmin(userId) ||

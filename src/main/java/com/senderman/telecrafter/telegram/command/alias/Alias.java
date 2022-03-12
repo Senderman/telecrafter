@@ -1,16 +1,14 @@
 package com.senderman.telecrafter.telegram.command.alias;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.senderman.telecrafter.telegram.command.Role;
-
-import java.util.EnumSet;
 
 public class Alias {
 
     @JsonProperty(required = true)
     private String command;
     private String description;
-    private EnumSet<Role> permissions;
+    @JsonProperty(defaultValue = "false")
+    private boolean adminOnly;
 
     public String getCommand() {
         return command;
@@ -20,8 +18,7 @@ public class Alias {
         return description;
     }
 
-    public EnumSet<Role> getPermissions() {
-        return permissions;
+    public boolean isAdminOnly() {
+        return adminOnly;
     }
-
 }

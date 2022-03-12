@@ -46,7 +46,7 @@ public class ListAliasesCommand implements CommandExecutor {
     }
 
     private String formatAlias(String name, Alias alias) {
-        String forAdmin = alias.getPermissions().contains(Role.ADMIN) ? " (админам)" : "";
+        String forAdmin = alias.isAdminOnly() ? " (админам)" : "";
         return "/" + name + forAdmin + " - " + alias.getDescription();
     }
 }
