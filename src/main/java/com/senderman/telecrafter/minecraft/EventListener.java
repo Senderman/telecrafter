@@ -40,7 +40,6 @@ public class EventListener implements Listener {
     void onPlayerDeath(PlayerDeathEvent event) {
         String message = Optional.ofNullable(event.getDeathMessage())
                 .orElseGet(() -> event.getEntity().getName() + "умер");
-        System.err.println(message);
         telegram.sendMessageToMainChat("☠️ " + message);
     }
 
