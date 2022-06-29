@@ -2,10 +2,17 @@ botToken: bot token
 botName: bot username without @
 chatId: -1009248292344 # chat id of telegram group to connect
 allowForeignChats: false # allow users from foreign chats to use the bot (admins are always allowed)
+
 admins: # list of telegram admins user id (to access admin commands in bot)
  - 123453242
  - 678914242
  - 428483242
+
+# telegram commands that should be available only for admins (even if they're available for users by default)
+# use [] here to leave empty
+forceAdminCommands:
+ - /plugins
+
 aliases: # use {} here to have no aliases
  hello: # name of the alias. you can execute it from tg as /hello
   command: say hello # server command to run

@@ -4,7 +4,6 @@ import com.senderman.telecrafter.config.ConfigProvider;
 import com.senderman.telecrafter.minecraft.EventListener;
 import com.senderman.telecrafter.minecraft.provider.MinecraftProvider;
 import com.senderman.telecrafter.minecraft.provider.ServerPropertiesProvider;
-import com.senderman.telecrafter.telegram.CommandKeeper;
 import com.senderman.telecrafter.telegram.TelecrafterBot;
 import com.senderman.telecrafter.telegram.TelegramPolling;
 import com.senderman.telecrafter.telegram.TelegramProvider;
@@ -35,7 +34,7 @@ public class InjectionConfig {
         save(telegram);
         save(minecraft);
 
-        save(new AliasExecutor(minecraft));
+
         save(new EventListener(getInstance(TelegramProvider.class)));
         save(new ServerPropertiesProvider(plugin));
 
@@ -48,17 +47,22 @@ public class InjectionConfig {
         commandExecutors.add(new Respack(telegram, getInstance(ServerPropertiesProvider.class)));
         commandExecutors.add(new RunCommand(telegram, minecraft));
         commandExecutors.add(new ZadroTop(telegram, minecraft));
-        commandExecutors.add(new Help(telegram, commandExecutors));
+        commandExecutors.add(new Help(telegram, commandExecutors, config));
         commandExecutors.add(new ReloadConfigCommand(telegram, config, configFile));
         commandExecutors.add(new ListAliasesCommand(telegram, config));
 
-        save(new CommandKeeper(telegram, commandExecutors));
+        save(new CommandKeeper(telegram, commandExecutors, config));
+        save(new AliasExecutor(telegram, minecraft));
         save(new TelecrafterBot(config, getInstance(CommandKeeper.class), getInstance(AliasExecutor.class), telegram));
         save(new TelegramPolling(getInstance(TelegramApi.class), getInstance(TelecrafterBot.class)));
     }
 
     public <T> T getInstance(Class<T> tClass) {
-        return (T) instances.get(tClass);
+        T instance = (T) instances.get(tClass);
+        if (instance == null) {
+            throw new NullPointerException("No class found with type " + tClass);
+        }
+        return instance;
     }
 
     private void save(Object object) {

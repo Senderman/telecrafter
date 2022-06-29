@@ -6,17 +6,23 @@ import java.util.Map;
 import java.util.Set;
 
 public interface Config {
+
     String getBotToken();
 
     String getBotName();
 
     Long getChatId();
 
+    boolean isAllowForeignChats();
+
     Set<Long> getAdmins();
 
     boolean isAdmin(long userId);
 
-    boolean isAllowForeignChats();
+    Set<String> getForceAdminCommands();
+
+    boolean isForcedAdminCommand(String command);
 
     Map<String, Alias> getAliases();
+
 }

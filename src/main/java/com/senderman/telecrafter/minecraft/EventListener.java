@@ -45,9 +45,12 @@ public class EventListener implements Listener {
 
     @EventHandler
     void onPlayerMessage(AsyncChatEvent event) {
+        var player = event.getPlayer();
+        if (!player.hasPermission("telecrafter.send"))
+            return;
         // this cast is safe as AsyncChatEvent contains TextComponent
         String message = ((TextComponent) event.message()).content();
-        String name = event.getPlayer().getName();
+        String name = player.getName();
         telegram.sendMessageToMainChat(String.format("\uD83D\uDCAC <b>[%s]</b>: %s", name, message));
     }
 

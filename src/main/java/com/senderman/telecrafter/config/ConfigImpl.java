@@ -10,14 +10,22 @@ public class ConfigImpl implements Config {
 
     @JsonProperty
     private String botToken;
+
     @JsonProperty
     private String botName;
+
     @JsonProperty
     private Long chatId;
-    @JsonProperty
-    private Set<Long> admins;
+
     @JsonProperty(defaultValue = "false")
     private boolean allowForeignChats;
+
+    @JsonProperty
+    private Set<Long> admins;
+
+    @JsonProperty
+    private Set<String> forceAdminCommands;
+
     @JsonProperty
     private Map<String, Alias> aliases;
 
@@ -37,6 +45,11 @@ public class ConfigImpl implements Config {
     }
 
     @Override
+    public boolean isAllowForeignChats() {
+        return allowForeignChats;
+    }
+
+    @Override
     public Set<Long> getAdmins() {
         return admins;
     }
@@ -47,8 +60,13 @@ public class ConfigImpl implements Config {
     }
 
     @Override
-    public boolean isAllowForeignChats() {
-        return allowForeignChats;
+    public Set<String> getForceAdminCommands() {
+        return forceAdminCommands;
+    }
+
+    @Override
+    public boolean isForcedAdminCommand(String command) {
+        return forceAdminCommands.contains(command);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.senderman.telecrafter.telegram.command;
 
+import com.senderman.telecrafter.config.Config;
 import com.senderman.telecrafter.telegram.TelegramProvider;
 import com.senderman.telecrafter.telegram.api.entity.Message;
 import com.senderman.telecrafter.telegram.command.abs.CommandExecutor;
@@ -10,10 +11,12 @@ public class Help implements CommandExecutor {
 
     private final TelegramProvider telegram;
     private final Set<CommandExecutor> commands;
+    private final Config config;
 
-    public Help(TelegramProvider telegram, Set<CommandExecutor> commands) {
+    public Help(TelegramProvider telegram, Set<CommandExecutor> commands, Config config) {
         this.telegram = telegram;
         this.commands = commands;
+        this.config = config;
     }
 
     @Override
@@ -35,10 +38,10 @@ public class Help implements CommandExecutor {
         telegram.sendMessage(message.getChatId(), builder.toString());
     }
 
-    private String formatExecutor(CommandExecutor executor) {
-        String adminOnly = executor.adminOnly() ? " (админам)" : " ";
-        String pmOnly = executor.pmOnly() ? " (PM)" : " ";
+    private String formatExecutor(CommandExecutor exe) {
+        String adminOnly = exe.adminOnly() || config.isForcedAdminCommand(exe.getCommand()) ? " (админам)" : " ";
+        String pmOnly = exe.pmOnly() ? " (PM)" : " ";
         String options = (adminOnly + pmOnly).trim();
-        return executor.getCommand() + " " + options + " - " + executor.getDescription();
+        return exe.getCommand() + " " + options + " - " + exe.getDescription();
     }
 }

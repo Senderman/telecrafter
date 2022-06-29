@@ -20,12 +20,17 @@ public class ConfigProvider implements Config {
 
     @Override
     public String getBotName() {
-        return currentConfig.getBotName();
+        return getCurrentConfig().getBotName();
     }
 
     @Override
     public Long getChatId() {
         return currentConfig.getChatId();
+    }
+
+    @Override
+    public boolean isAllowForeignChats() {
+        return currentConfig.isAllowForeignChats();
     }
 
     @Override
@@ -39,8 +44,13 @@ public class ConfigProvider implements Config {
     }
 
     @Override
-    public boolean isAllowForeignChats() {
-        return currentConfig.isAllowForeignChats();
+    public Set<String> getForceAdminCommands() {
+        return currentConfig.getForceAdminCommands();
+    }
+
+    @Override
+    public boolean isForcedAdminCommand(String command) {
+        return currentConfig.isForcedAdminCommand(command);
     }
 
     @Override

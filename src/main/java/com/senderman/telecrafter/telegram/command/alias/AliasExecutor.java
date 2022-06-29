@@ -1,32 +1,29 @@
 package com.senderman.telecrafter.telegram.command.alias;
 
 import com.senderman.telecrafter.minecraft.provider.MinecraftProvider;
+import com.senderman.telecrafter.telegram.TelegramProvider;
+import com.senderman.telecrafter.telegram.api.entity.Message;
 import org.bukkit.command.CommandException;
-
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 public class AliasExecutor {
 
-    private final MinecraftProvider minecraftProvider;
+    private final TelegramProvider telegram;
+    private final MinecraftProvider minecraft;
 
-    public AliasExecutor(MinecraftProvider minecraftProvider) {
-        this.minecraftProvider = minecraftProvider;
+    public AliasExecutor(TelegramProvider telegram, MinecraftProvider minecraft) {
+        this.telegram = telegram;
+        this.minecraft = minecraft;
     }
 
-    public void execute(Alias alias, Predicate<Boolean> hasPermissions, Consumer<String> callback) {
-        if (!hasPermissions.test(alias.isAdminOnly())) {
-            callback.accept("У вас недостаточно прав для данной команды!");
-            return;
-        }
+    public void execute(Alias alias, Message message) {
+
+        long chatId = message.getChatId();
 
         try {
-            minecraftProvider.runCommand(alias.getCommand(), result ->
-                    callback.accept(result ? "Команда отправлена серверу!" : "Такой команды нет!")
-            );
+            minecraft.runCommand(alias.getCommand(),
+                    successful -> telegram.sendMessage(chatId, successful ? "Команда отправлена серверу!" : "Такой команды нет!"));
         } catch (CommandException e) {
-            callback.accept("Ошибка выполнения команды. См. логи для подробностей");
-            e.printStackTrace();
+            telegram.sendMessage(chatId, "Ошибка выполнения команды. См. логи для подробностей");
         }
     }
 }

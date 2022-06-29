@@ -6,7 +6,10 @@ public class Alias {
 
     @JsonProperty(required = true)
     private String command;
+
+    @JsonProperty
     private String description;
+
     @JsonProperty(defaultValue = "false")
     private boolean adminOnly;
 

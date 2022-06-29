@@ -7,3 +7,6 @@ permissions:
   telecrafter.receive:
     default: true
     description: Allows you to receive messages from Telegram
+  telecrafter.send:
+    default: true
+    description: Allows you to send messages to Telegram
