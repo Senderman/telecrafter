@@ -8,28 +8,28 @@ import java.util.Set;
 
 public class ConfigImpl implements Config {
 
-    @JsonProperty
+    @JsonProperty(required = true)
     private String botToken;
 
-    @JsonProperty
+    @JsonProperty(required = true)
     private String botName;
 
-    @JsonProperty
+    @JsonProperty(required = true)
     private Long chatId;
 
     @JsonProperty(defaultValue = "false")
     private boolean allowForeignChats;
 
-    @JsonProperty
+    @JsonProperty(required = true)
     private Set<Long> admins;
 
-    @JsonProperty
+    @JsonProperty(required = true)
     private Set<Long> ignoredUsers;
 
-    @JsonProperty
+    @JsonProperty(required = true)
     private Set<String> forceAdminCommands;
 
-    @JsonProperty
+    @JsonProperty(required = true)
     private Map<String, Alias> aliases;
 
     @Override
