@@ -49,6 +49,16 @@ public class ConfigProvider implements Config {
     }
 
     @Override
+    public Set<Long> getIgnoredUsers() {
+        return currentConfig.getIgnoredUsers();
+    }
+
+    @Override
+    public boolean isIgnored(long userId) {
+        return currentConfig.isIgnored(userId);
+    }
+
+    @Override
     public boolean isForcedAdminCommand(String command) {
         return currentConfig.isForcedAdminCommand(command);
     }

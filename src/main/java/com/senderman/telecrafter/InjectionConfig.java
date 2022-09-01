@@ -50,6 +50,7 @@ public class InjectionConfig {
         commandExecutors.add(new Help(telegram, commandExecutors, config));
         commandExecutors.add(new ReloadConfigCommand(telegram, config, configFile));
         commandExecutors.add(new ListAliasesCommand(telegram, config));
+        commandExecutors.add(new HealthCommand(telegram));
 
         save(new CommandKeeper(telegram, commandExecutors, config));
         save(new AliasExecutor(telegram, minecraft));
@@ -58,6 +59,7 @@ public class InjectionConfig {
     }
 
     public <T> T getInstance(Class<T> tClass) {
+        @SuppressWarnings("unchecked")
         T instance = (T) instances.get(tClass);
         if (instance == null) {
             throw new NullPointerException("No class found with type " + tClass);

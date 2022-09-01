@@ -21,6 +21,10 @@ public interface Config {
 
     Set<String> getForceAdminCommands();
 
+    Set<Long> getIgnoredUsers();
+
+    boolean isIgnored(long userId);
+
     boolean isForcedAdminCommand(String command);
 
     Map<String, Alias> getAliases();

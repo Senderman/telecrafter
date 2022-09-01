@@ -31,6 +31,8 @@ public class TelecrafterBot {
 
         if (message.getDate() + 120 < System.currentTimeMillis() / 1000) return;
 
+        if (config.isIgnored(message.getFrom().getId())) return;
+
         if (!message.hasText()) return;
         long chatId = message.getChatId();
 

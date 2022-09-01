@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class File {
 
     @JsonProperty("file_size")
-    int fileSize;
+    long fileSize;
     @JsonProperty("file_path")
     String filePath;
     @JsonProperty("file_id")
@@ -24,7 +24,7 @@ public class File {
         return fileUniqueId;
     }
 
-    public int getFileSize() {
+    public long getFileSize() {
         return fileSize;
     }
 

@@ -24,6 +24,9 @@ public class ConfigImpl implements Config {
     private Set<Long> admins;
 
     @JsonProperty
+    private Set<Long> ignoredUsers;
+
+    @JsonProperty
     private Set<String> forceAdminCommands;
 
     @JsonProperty
@@ -62,6 +65,16 @@ public class ConfigImpl implements Config {
     @Override
     public Set<String> getForceAdminCommands() {
         return forceAdminCommands;
+    }
+
+    @Override
+    public Set<Long> getIgnoredUsers() {
+        return ignoredUsers;
+    }
+
+    @Override
+    public boolean isIgnored(long userId) {
+        return ignoredUsers.contains(userId);
     }
 
     @Override
