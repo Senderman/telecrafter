@@ -1,6 +1,7 @@
 package com.senderman.telecrafter.telegram.api;
 
 import com.senderman.telecrafter.config.Config;
+import com.senderman.telecrafter.telegram.api.entity.File;
 import com.senderman.telecrafter.telegram.api.entity.Result;
 import com.senderman.telecrafter.telegram.api.entity.Update;
 import okhttp3.MediaType;
@@ -61,6 +62,18 @@ public class TelegramApi {
             public void onFailure(@NotNull Call<Void> call, @NotNull Throwable t) {
             }
         });
+    }
+
+    public File getFile(String fileId) {
+        try {
+            var response = telegramService.getFile(fileId).execute();
+            if (!response.isSuccessful()) {
+                return null;
+            }
+            return response.body().getResult();
+        } catch (IOException e) {
+            return null;
+        }
     }
 
     public void sendDocument(long chatId, java.io.File file) {

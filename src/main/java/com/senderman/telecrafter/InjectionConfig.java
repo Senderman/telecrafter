@@ -51,6 +51,7 @@ public class InjectionConfig {
         commandExecutors.add(new ReloadConfigCommand(telegram, config, configFile));
         commandExecutors.add(new ListAliasesCommand(telegram, config));
         commandExecutors.add(new HealthCommand(telegram));
+        commandExecutors.add(new InstallPlugin(telegram, minecraft));
 
         save(new CommandKeeper(telegram, commandExecutors, config));
         save(new AliasExecutor(telegram, minecraft));

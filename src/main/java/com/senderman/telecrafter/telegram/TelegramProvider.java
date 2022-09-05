@@ -32,6 +32,10 @@ public class TelegramProvider {
         api.sendDocument(chatId, file);
     }
 
+    public com.senderman.telecrafter.telegram.api.entity.File getFile(String fileId) {
+        return api.getFile(fileId);
+    }
+
     public File downloadFile(com.senderman.telecrafter.telegram.api.entity.File file, File output) throws IOException {
         String filePath = file.getFilePath();
         URL url = new URL("https://api.telegram.org/file/bot" + config.getBotToken() + "/" + filePath);

@@ -1,5 +1,6 @@
 package com.senderman.telecrafter.telegram.api;
 
+import com.senderman.telecrafter.telegram.api.entity.File;
 import com.senderman.telecrafter.telegram.api.entity.Result;
 import com.senderman.telecrafter.telegram.api.entity.Update;
 import okhttp3.MultipartBody;
@@ -20,6 +21,9 @@ public interface TelegramService {
             @Query("reply_to_message_id") Integer replyToMessageId,
             @Query("parse_mode") String parseMode
     );
+
+    @GET("getFile")
+    Call<Result<File>> getFile(@Query("file_id") String fileId);
 
     @Multipart
     @POST("sendDocument")

@@ -36,7 +36,7 @@ public class ListAliasesCommand implements CommandExecutor {
             telegram.sendMessage(chatId, "Алиасов не задано! Админы могут задать их в конфиг-файле");
             return;
         }
-        StringBuilder builder = new StringBuilder("\uD83D\uDCA1 <b>Алисаы сервера:</b>\n\n");
+        StringBuilder builder = new StringBuilder("\uD83D\uDCA1 <b>Алиасы сервера:</b>\n\n");
         for (Map.Entry<String, Alias> entry : aliases.entrySet()) {
             builder.append(formatAlias(entry.getKey(), entry.getValue())).append("\n");
         }

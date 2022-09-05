@@ -2,12 +2,14 @@ package com.senderman.telecrafter.telegram;
 
 import com.senderman.telecrafter.telegram.api.TelegramApi;
 import com.senderman.telecrafter.telegram.api.entity.Update;
+import org.bukkit.Bukkit;
 
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 public class TelegramPolling {
 
@@ -43,6 +45,12 @@ public class TelegramPolling {
                 .map(Update::getUpdateId)
                 .max(Integer::compareTo)
                 .orElse(lastReceivedUpdateId);
-        updates.forEach(bot::onUpdateReceived);
+        for (var update : updates) {
+            try {
+                bot.onUpdateReceived(update);
+            } catch (Exception e) {
+                Bukkit.getLogger().log(Level.SEVERE, "Error while processing telegram update: ", e);
+            }
+        }
     }
 }

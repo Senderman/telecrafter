@@ -8,6 +8,8 @@ import org.bukkit.Statistic;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginLoader;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import javax.annotation.Nullable;
@@ -28,6 +30,14 @@ public class MinecraftProvider {
 
     public void sendMessage(String message) {
         plugin.getServer().broadcast(Component.text(message), "telecrafter.receive");
+    }
+
+    public PluginLoader getPluginLoader() {
+        return plugin.getPluginLoader();
+    }
+
+    public PluginManager getPluginManager() {
+        return plugin.getServer().getPluginManager();
     }
 
     public PlayersInfo getOnlineInfo() {
@@ -77,10 +87,19 @@ public class MinecraftProvider {
     }
 
     public File getLogsDirectory() {
-        File logsDir = new File(plugin.getDataFolder().getParentFile().getParentFile(), "logs");
-        if (!logsDir.exists())
-            logsDir.mkdirs();
-        return logsDir;
+        return getOrCreateAndGetDirectoryInServerRoot("logs");
+    }
+
+    public File getPluginsDirectory() {
+        return getOrCreateAndGetDirectoryInServerRoot("plugins");
+    }
+
+    private File getOrCreateAndGetDirectoryInServerRoot(String name) {
+        File directory = new File(plugin.getDataFolder().getParentFile().getParentFile(), name);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+        return directory;
     }
 
     private String getPluginStatus(Plugin plugin) {
