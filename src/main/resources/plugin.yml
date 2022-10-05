@@ -1,8 +1,14 @@
 name: Telecrafter
 main: com.senderman.telecrafter.minecraft.TelecrafterPlugin
 version: '${version}'
-api-version: 1.16
+api-version: 1.18
+prefix: Telecrafter
 
+commands:
+  tg:
+    description: Send text to telegram
+    usage: /<command> text
+    permission: telecrafter.command
 permissions:
   telecrafter.receive:
     default: true
@@ -10,3 +16,6 @@ permissions:
   telecrafter.send:
     default: true
     description: Allows you to send messages to Telegram
+  telecrafter.command:
+    default: op
+    description: Allows you to use telecrafter in-game commands

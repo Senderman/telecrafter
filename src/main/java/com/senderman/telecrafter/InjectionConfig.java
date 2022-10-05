@@ -2,6 +2,7 @@ package com.senderman.telecrafter;
 
 import com.senderman.telecrafter.config.ConfigProvider;
 import com.senderman.telecrafter.minecraft.EventListener;
+import com.senderman.telecrafter.minecraft.TgCommandExecutor;
 import com.senderman.telecrafter.minecraft.provider.MinecraftProvider;
 import com.senderman.telecrafter.minecraft.provider.ServerPropertiesProvider;
 import com.senderman.telecrafter.telegram.TelecrafterBot;
@@ -35,6 +36,7 @@ public class InjectionConfig {
         save(minecraft);
 
 
+        save(new TgCommandExecutor(telegram));
         save(new EventListener(getInstance(TelegramProvider.class)));
         save(new ServerPropertiesProvider(plugin));
 

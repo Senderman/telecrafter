@@ -62,6 +62,7 @@ public class InstallPlugin implements CommandExecutor {
             newDesc = getPluginDescription(pluginFile);
         } catch (InvalidDescriptionException e) {
             telegram.sendMessage(chatId, "Не удалось загрузить описание плагина: " + e);
+            pluginFile.delete();
             return;
         }
 
@@ -76,6 +77,7 @@ public class InstallPlugin implements CommandExecutor {
                 telegram.sendMessage(chatId, updateText);
             } catch (IOException e) {
                 telegram.sendMessage(chatId, "Ошибка во время установки файла плагина: " + e);
+                pluginFile.delete();
             }
         } else {
             var oldFile = getPluginFile((JavaPlugin) oldPlugin);

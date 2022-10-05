@@ -10,6 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class TelecrafterPlugin extends JavaPlugin {
 
@@ -35,7 +36,9 @@ public class TelecrafterPlugin extends JavaPlugin {
         telegramPolling = injector.getInstance(TelegramPolling.class);
         telegram = injector.getInstance(TelegramProvider.class);
         telegramPolling.startPolling();
+
         getServer().getPluginManager().registerEvents(injector.getInstance(EventListener.class), this);
+        Objects.requireNonNull(getCommand("tg")).setExecutor(injector.getInstance(TgCommandExecutor.class));
     }
 
     @Override

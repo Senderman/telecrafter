@@ -40,10 +40,11 @@ public class MineNow implements CommandExecutor {
         PlayersInfo info = minecraft.getOnlineInfo();
         text.append(info.getOnlinePlayersCount()).append("/").append(info.getOfflinePlayersCount()).append(")\n\n");
 
-        List<World> worlds = info.getOnlinePlayers().stream()
+        List<World> worlds = info.onlinePlayers()
+                .stream()
                 .map(Entity::getWorld)
                 .distinct()
-                .collect(Collectors.toList());
+                .toList();
 
         for (World world : worlds) {
             text.append(formatWorld(world)).append("\n");
@@ -73,18 +74,11 @@ public class MineNow implements CommandExecutor {
     }
 
     private String getEnvironmentEmoji(World.Environment environment) {
-        String result = "Unknown";
-        switch (environment) {
-            case NORMAL:
-                result = "\uD83C\uDF33";
-                break;
-            case NETHER:
-                result = "\uD83D\uDD25";
-                break;
-            case THE_END:
-                result = "\uD83D\uDD32";
-                break;
-        }
-        return result;
+        return switch (environment) {
+            case NORMAL -> "\uD83C\uDF33";
+            case NETHER -> "\uD83D\uDD25";
+            case THE_END -> "\uD83D\uDD32";
+            case CUSTOM -> "\uD83D\uDCE6";
+        };
     }
 }

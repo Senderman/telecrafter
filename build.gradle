@@ -8,17 +8,17 @@ version '3.5.0'
 
 repositories {
     mavenCentral()
-    maven { url 'https://papermc.io/repo/repository/maven-public/' }
+    maven { url = uri("https://repo.papermc.io/repository/maven-public/") }
 }
 
 dependencies {
-    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.13.3'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.3'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.13.4'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
     implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
 
-    compileOnly 'com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT'
+    compileOnly 'io.papermc.paper:paper-api:1.18-R0.1-SNAPSHOT'
 }
 
 shadowJar {
@@ -36,5 +36,5 @@ processResources {
 
 compileJava {
     options.encoding = 'UTF-8'
-    options.release.set(11)
+    options.release.set(17)
 }

@@ -34,15 +34,17 @@ public class HealthCommand implements CommandExecutor {
         var r = Runtime.getRuntime();
         double delimiter = 1048576f;
         return String.format(
-                "🖥 <b>Нагрузка:</b>\n\n" +
+                """
+                        <b>Нагрузка:</b>
 
-                        "Занято: <code>%.2f MiB</code>\n" +
-                        "Свободно: <code>%.2f MiB</code>\n" +
-                        "Выделено JVM: <code>%.2f MiB</code>\n" +
-                        "Доступно JVM: <code>%.2f MiB</code>\n" +
-                        "Аптайм: <code>%d min</code>\n" +
-                        "Потоки: <code>%d</code>\n" +
-                        "CPUs: <code>%d</code>\n",
+                        Занято: <code>%.2f MiB</code>
+                        Свободно: <code>%.2f MiB</code>
+                        Выделено JVM: <code>%.2f MiB</code>
+                        Доступно JVM: <code>%.2f MiB</code>
+                        Аптайм: <code>%d min</code>
+                        Потоки: <code>%d</code>
+                        CPUs: <code>%d</code>
+                        """,
                 (r.totalMemory() - r.freeMemory()) / delimiter,
                 r.freeMemory() / delimiter,
                 r.totalMemory() / delimiter,
