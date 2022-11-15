@@ -76,18 +76,9 @@ public class TelegramApi {
         }
     }
 
-    public void sendDocument(long chatId, java.io.File file) {
+    public void sendDocument(long chatId, java.io.File file, Callback<Void> callback) {
         RequestBody body = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         MultipartBody.Part document = MultipartBody.Part.createFormData("document", file.getName(), body);
-        telegramService.sendDocument(chatId, document).enqueue(new Callback<>() {
-            @Override
-            public void onResponse(@NotNull Call<Void> call, @NotNull Response<Void> response) {
-
-            }
-
-            @Override
-            public void onFailure(@NotNull Call<Void> call, @NotNull Throwable t) {
-            }
-        });
+        telegramService.sendDocument(chatId, document).enqueue(callback);
     }
 }

@@ -2,6 +2,10 @@ package com.senderman.telecrafter.telegram;
 
 import com.senderman.telecrafter.config.Config;
 import com.senderman.telecrafter.telegram.api.TelegramApi;
+import org.jetbrains.annotations.NotNull;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -29,7 +33,19 @@ public class TelegramProvider {
     }
 
     public void sendDocument(long chatId, File file) {
-        api.sendDocument(chatId, file);
+        sendDocument(chatId, file, new Callback<>() {
+            @Override
+            public void onResponse(@NotNull Call<Void> call, @NotNull Response<Void> response) {
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<Void> call, @NotNull Throwable t) {
+            }
+        });
+    }
+
+    public void sendDocument(long chatId, File file, Callback<Void> callback) {
+        api.sendDocument(chatId, file, callback);
     }
 
     public com.senderman.telecrafter.telegram.api.entity.File getFile(String fileId) {

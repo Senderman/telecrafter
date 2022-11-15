@@ -4,6 +4,7 @@ import com.senderman.telecrafter.InjectionConfig;
 import com.senderman.telecrafter.config.Config;
 import com.senderman.telecrafter.config.ConfigLoader;
 import com.senderman.telecrafter.config.ConfigProvider;
+import com.senderman.telecrafter.minecraft.command.TgCommandExecutor;
 import com.senderman.telecrafter.telegram.TelegramPolling;
 import com.senderman.telecrafter.telegram.TelegramProvider;
 import org.bukkit.plugin.java.JavaPlugin;

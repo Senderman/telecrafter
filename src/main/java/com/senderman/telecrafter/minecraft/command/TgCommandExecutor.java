@@ -1,4 +1,4 @@
-package com.senderman.telecrafter.minecraft;
+package com.senderman.telecrafter.minecraft.command;
 
 import com.senderman.telecrafter.telegram.TelegramProvider;
 import org.bukkit.command.Command;

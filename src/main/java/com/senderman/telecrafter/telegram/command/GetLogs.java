@@ -4,6 +4,10 @@ import com.senderman.telecrafter.minecraft.provider.MinecraftProvider;
 import com.senderman.telecrafter.telegram.TelegramProvider;
 import com.senderman.telecrafter.telegram.api.entity.Message;
 import com.senderman.telecrafter.telegram.command.abs.CommandExecutor;
+import org.jetbrains.annotations.NotNull;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import java.io.*;
 import java.util.Objects;
@@ -68,8 +72,18 @@ public class GetLogs implements CommandExecutor {
             telegram.sendMessage(chatId, "Не удалось создать файл со списком");
             return;
         }
-        telegram.sendDocument(chatId, logListFile);
-        logListFile.delete();
+        telegram.sendDocument(chatId, logListFile, new Callback<>() {
+            @Override
+            public void onResponse(@NotNull Call<Void> call, @NotNull Response<Void> response) {
+                logListFile.delete();
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<Void> call, @NotNull Throwable t) {
+                telegram.sendMessage(chatId, "Не удалось отправить файл!");
+                logListFile.delete();
+            }
+        });
     }
 
     private String listFiles() {
