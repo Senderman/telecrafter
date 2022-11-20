@@ -10,6 +10,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.server.BroadcastMessageEvent;
 import org.bukkit.event.server.ServerLoadEvent;
 
 import java.util.Optional;
@@ -85,6 +86,13 @@ public class EventListener implements Listener {
             case ENDER_DRAGON -> telegram.sendMessageToMainChat("😎 Сейчас будет сражение с Драконом Края!");
             case WITHER -> telegram.sendMessageToMainChat("😱 Сейчас будет сражение с Иссушителем!");
         }
+    }
+
+    @EventHandler
+    void onServerMessage(BroadcastMessageEvent event) {
+        // this cast is safe as BroadcastMessageEvent contains TextComponent
+        String message = ((TextComponent) event.message()).content();
+        telegram.sendMessageToMainChat("💬 " + message);
     }
 
     @EventHandler

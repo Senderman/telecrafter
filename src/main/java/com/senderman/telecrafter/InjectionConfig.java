@@ -2,6 +2,7 @@ package com.senderman.telecrafter;
 
 import com.senderman.telecrafter.config.ConfigProvider;
 import com.senderman.telecrafter.minecraft.EventListener;
+import com.senderman.telecrafter.minecraft.PluginManager;
 import com.senderman.telecrafter.minecraft.command.TgCommandExecutor;
 import com.senderman.telecrafter.minecraft.provider.MinecraftProvider;
 import com.senderman.telecrafter.minecraft.provider.ServerPropertiesProvider;
@@ -35,7 +36,7 @@ public class InjectionConfig {
         save(telegram);
         save(minecraft);
 
-
+        save(new PluginManager(minecraft));
         save(new TgCommandExecutor(telegram));
         save(new EventListener(getInstance(TelegramProvider.class)));
         save(new ServerPropertiesProvider(plugin));
@@ -53,7 +54,8 @@ public class InjectionConfig {
         commandExecutors.add(new ReloadConfigCommand(telegram, config, configFile));
         commandExecutors.add(new ListAliasesCommand(telegram, config));
         commandExecutors.add(new HealthCommand(telegram));
-        commandExecutors.add(new InstallPlugin(telegram, minecraft));
+        commandExecutors.add(new InstallPlugin(telegram, getInstance(PluginManager.class)));
+        commandExecutors.add(new RemovePlugin(telegram, getInstance(PluginManager.class)));
 
         save(new CommandKeeper(telegram, commandExecutors, config));
         save(new AliasExecutor(telegram, minecraft));
