@@ -25,10 +25,10 @@ public class ConfigLoader {
     }
 
     private static Map<String, Alias> getAliases(FileConfiguration config) {
-        var alisesSection = config.getConfigurationSection("aliases");
+        var aliasesSection = config.getConfigurationSection("aliases");
         var result = new HashMap<String, Alias>();
-        for (var key : alisesSection.getKeys(false)) {
-            var alias = alisesSection.getConfigurationSection(key);
+        for (var key : aliasesSection.getKeys(false)) {
+            var alias = aliasesSection.getConfigurationSection(key);
             result.put(key, new Alias(
                     alias.getString("command"),
                     alias.getString("description"),
