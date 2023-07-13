@@ -1,18 +1,41 @@
 package com.senderman.telecrafter.config;
 
-import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
+import com.senderman.telecrafter.telegram.command.alias.Alias;
+import org.bukkit.configuration.file.FileConfiguration;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.NoSuchFileException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 
 public class ConfigLoader {
 
-    public static Config load(File file) throws IOException {
-        if (!file.exists()) {
-            throw new NoSuchFileException(file.getAbsolutePath());
+    public static Config load(FileConfiguration config) throws IOException {
+
+        return new ConfigImpl(
+                config.getString("botToken"),
+                config.getString("botName"),
+                config.getLong("chatId"),
+                config.getBoolean("allowForeignChats"),
+                new HashSet<>(config.getLongList("admins")),
+                new HashSet<>(config.getLongList("ignoredUsers")),
+                new HashSet<>(config.getStringList("forceAdminCommands")),
+                getAliases(config)
+        );
+    }
+
+    private static Map<String, Alias> getAliases(FileConfiguration config) {
+        var alisesSection = config.getConfigurationSection("aliases");
+        var result = new HashMap<String, Alias>();
+        for (var key : alisesSection.getKeys(false)) {
+            var alias = alisesSection.getConfigurationSection(key);
+            result.put(key, new Alias(
+                    alias.getString("command"),
+                    alias.getString("description"),
+                    alias.getBoolean("adminOnly")
+            ));
         }
-        return new YAMLMapper().readValue(file, ConfigImpl.class);
+        return result;
     }
 
 }

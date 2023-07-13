@@ -27,7 +27,7 @@ public class TelecrafterPlugin extends JavaPlugin {
         }
         Config config;
         try {
-            config = ConfigLoader.load(configFile);
+            config = ConfigLoader.load(getConfig());
         } catch (IOException e) {
             throw new RuntimeException("Failed to load config file", e);
         }

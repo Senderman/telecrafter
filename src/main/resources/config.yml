@@ -21,4 +21,4 @@ aliases: # use {} here to have no aliases
   hello: # name of the alias. you can execute it from tg as /hello
     command: say hello # server command to run
     description: say hello to everyone on the server
-  adminOnly: true # can be omitted, false by default
+    adminOnly: true # can be omitted, false by default

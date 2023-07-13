@@ -1,17 +1,18 @@
 package com.senderman.telecrafter.telegram.command.alias;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class Alias {
 
-    @JsonProperty(required = true)
-    private String command;
+    private final String command;
 
-    @JsonProperty
-    private String description;
+    private final String description;
 
-    @JsonProperty(defaultValue = "false")
-    private boolean adminOnly;
+    private final boolean adminOnly;
+
+    public Alias(String command, String description, boolean adminOnly) {
+        this.command = command;
+        this.description = description;
+        this.adminOnly = adminOnly;
+    }
 
     public String getCommand() {
         return command;

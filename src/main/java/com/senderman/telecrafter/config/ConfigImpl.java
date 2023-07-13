@@ -1,6 +1,5 @@
 package com.senderman.telecrafter.config;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.senderman.telecrafter.telegram.command.alias.Alias;
 
 import java.util.Map;
@@ -8,29 +7,41 @@ import java.util.Set;
 
 public class ConfigImpl implements Config {
 
-    @JsonProperty(required = true)
-    private String botToken;
+    private final String botToken;
 
-    @JsonProperty(required = true)
-    private String botName;
+    private final String botName;
 
-    @JsonProperty(required = true)
-    private Long chatId;
+    private final Long chatId;
 
-    @JsonProperty(defaultValue = "false")
-    private boolean allowForeignChats;
+    private final boolean allowForeignChats;
 
-    @JsonProperty(required = true)
-    private Set<Long> admins;
+    private final Set<Long> admins;
 
-    @JsonProperty(required = true)
-    private Set<Long> ignoredUsers;
+    private final Set<Long> ignoredUsers;
 
-    @JsonProperty(required = true)
-    private Set<String> forceAdminCommands;
+    private final Set<String> forceAdminCommands;
 
-    @JsonProperty(required = true)
-    private Map<String, Alias> aliases;
+    private final Map<String, Alias> aliases;
+
+    public ConfigImpl(
+            String botToken,
+            String botName,
+            Long chatId,
+            boolean allowForeignChats,
+            Set<Long> admins,
+            Set<Long> ignoredUsers,
+            Set<String> forceAdminCommands,
+            Map<String, Alias> aliases) {
+        this.botToken = botToken;
+        this.botName = botName;
+        this.chatId = chatId;
+        this.allowForeignChats = allowForeignChats;
+        this.admins = admins;
+        this.ignoredUsers = ignoredUsers;
+        this.forceAdminCommands = forceAdminCommands;
+        this.aliases = aliases;
+    }
+
 
     @Override
     public String getBotToken() {
