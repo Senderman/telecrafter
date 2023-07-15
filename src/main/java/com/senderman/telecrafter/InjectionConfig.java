@@ -51,7 +51,7 @@ public class InjectionConfig {
         commandExecutors.add(new RunCommand(telegram, minecraft));
         commandExecutors.add(new ZadroTop(telegram, minecraft));
         commandExecutors.add(new Help(telegram, commandExecutors, config));
-        commandExecutors.add(new ReloadConfigCommand(telegram, config, plugin.getConfig()));
+        commandExecutors.add(new ReloadConfigCommand(telegram, config, plugin));
         commandExecutors.add(new ListAliasesCommand(telegram, config));
         commandExecutors.add(new HealthCommand(telegram));
         commandExecutors.add(new InstallPlugin(telegram, getInstance(PluginManager.class)));

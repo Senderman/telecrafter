@@ -39,7 +39,7 @@ public class TelecrafterBot {
         if (!message.isCommand()) return;
 
         String command = extractCommand(message);
-        if (command.contains("@")) return; // skip other's bot commands
+        if (command.contains("@")) return; // skip other's bots commands
 
         var executor = commandKeeper.getExecutor(command);
         if (executor != null) {
@@ -75,7 +75,7 @@ public class TelecrafterBot {
         return message.getText()
                 .split("\\s+", 2)[0]
                 .toLowerCase()
-                .replaceAll("@" + getBotUsername(), "");
+                .replaceAll("@" + getBotUsername().toLowerCase(), "");
     }
 
     private boolean userHasPermission(CommandExecutor executor, Message message) {

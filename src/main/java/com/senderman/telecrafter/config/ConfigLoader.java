@@ -3,14 +3,13 @@ package com.senderman.telecrafter.config;
 import com.senderman.telecrafter.telegram.command.alias.Alias;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
 public class ConfigLoader {
 
-    public static Config load(FileConfiguration config) throws IOException {
+    public static Config load(FileConfiguration config) {
 
         return new ConfigImpl(
                 config.getString("botToken"),

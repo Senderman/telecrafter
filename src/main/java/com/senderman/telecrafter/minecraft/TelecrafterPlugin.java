@@ -10,7 +10,6 @@ import com.senderman.telecrafter.telegram.TelegramProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Objects;
 
 public class TelecrafterPlugin extends JavaPlugin {
@@ -28,7 +27,7 @@ public class TelecrafterPlugin extends JavaPlugin {
         Config config;
         try {
             config = ConfigLoader.load(getConfig());
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new RuntimeException("Failed to load config file", e);
         }
 

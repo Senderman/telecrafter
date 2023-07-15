@@ -6,20 +6,20 @@ import com.senderman.telecrafter.config.ConfigProvider;
 import com.senderman.telecrafter.telegram.TelegramProvider;
 import com.senderman.telecrafter.telegram.api.entity.Message;
 import com.senderman.telecrafter.telegram.command.abs.CommandExecutor;
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.Plugin;
 
-import java.io.IOException;
+import java.util.logging.Level;
 
 public class ReloadConfigCommand implements CommandExecutor {
 
     private final TelegramProvider telegram;
     private final ConfigProvider configProvider;
-    private final FileConfiguration fileConfiguration;
+    private final Plugin plugin;
 
-    public ReloadConfigCommand(TelegramProvider telegram, ConfigProvider configProvider, FileConfiguration fileConfiguration) {
+    public ReloadConfigCommand(TelegramProvider telegram, ConfigProvider configProvider, Plugin plugin) {
         this.telegram = telegram;
         this.configProvider = configProvider;
-        this.fileConfiguration = fileConfiguration;
+        this.plugin = plugin;
     }
 
     @Override
@@ -40,16 +40,13 @@ public class ReloadConfigCommand implements CommandExecutor {
     @Override
     public void execute(Message message) {
         long chatId = message.getChatId();
-        if (fileConfiguration == null) {
-            telegram.sendMessage(chatId, "❌ Конфиг-файл не найден!");
-            return;
-        }
+        plugin.reloadConfig();
         Config config;
         try {
-            config = ConfigLoader.load(fileConfiguration);
-        } catch (IOException e) {
+            config = ConfigLoader.load(plugin.getConfig());
+        } catch (Exception e) {
             telegram.sendMessage(chatId, "В процессе загрузки конфига произошла ошибка. См. логи для подробностей");
-            e.printStackTrace();
+            plugin.getLogger().log(Level.SEVERE, e.getMessage(), e);
             return;
         }
         configProvider.setCurrentConfig(config);
